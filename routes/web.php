@@ -89,4 +89,16 @@ Route::group(['middleware' => ['authLogin']], function () {
         Route::get('plasa/delete/{id}','PlasaController@destroy');
         Route::get('plasa/name/{nama}','PlasaController@getPlasa');
 
+        //Produk
+        Route::get('produk','MasterController@indexProduk');
+        Route::get('produk/load','MasterController@loadDataProduk');
+        Route::post('produk/insert','MasterController@insertProduk');
+        Route::get('produk/edit/{id}','MasterController@editProduk');
+        Route::post('produk/update/{id}','MasterController@updateProduk');
+        Route::get('produk/delete/{id}','MasterController@destroyProduk');
+
+    //New Indihome Form
+    Route::get('indihome','IndihomeController@index');
+    Route::post('indihome/insert','IndihomeController@insert');
+
 });

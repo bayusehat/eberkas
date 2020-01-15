@@ -8,6 +8,7 @@ use App\Layanan;
 use App\JenisOnt;
 use App\PaketTambahan;
 use App\JenisTransaksi;
+use App\Produk;
 
 class MasterController extends Controller
 {
@@ -526,6 +527,136 @@ class MasterController extends Controller
             return response([
                 'status' => 500,
                 'result' => 'Gagal menghapus data Jenis s!'
+            ]);
+        }
+    }
+    /*
+        JENIS TRANSAKSI END
+    */
+
+    /*
+        PRODUK BEGIN
+    */
+    public function indexProduk()
+    {
+        $data = [
+            'title' => 'Data Produk',
+            'content' => 'admin.master.produk',
+            'parentActive' => 'pengaturan',
+            'urlActive' => 'produk'
+        ];
+
+        return view('admin.layout.index',['data' => $data]);
+    }
+
+    public function loadDataProduk()
+    {
+        $response['data'] = [];
+        $produk = Produk::where('delete_produk',0)->orderBy('id_produk','asc')->get();
+
+        foreach ($produk as $i => $v) {
+            $response['data'][] = [
+                ++$i,
+                $v->nama_produk,
+                '
+                <a href="javascript:void(0)" onclick="show('.$v->id_produk.')" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                <button type="button" onclick="deleteData('.$v->id_produk.')" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Hapus</button>
+                '
+            ];
+        }
+
+        return response($response);
+    }
+
+    public function insertProduk(Request $request)
+    {
+        $rules = [
+            'nama_produk' => 'required'
+        ];
+
+        $isValid = Validator::make($request->all(),$rules);
+
+        if($isValid->fails()){
+            return response([
+                'status' => 401,
+                'errors' => $isValid->errors()
+            ]);
+        }else{
+            $data = [
+                'nama_produk' => $request->input('nama_produk')
+            ];
+
+            $act = Produk::insert($data);
+
+            if($act){
+                return response([
+                    'status' => 200,
+                    'result' => 'Berhasil menambahkan Produk baru!'
+                ]);
+            }else{
+                return response([
+                    'status' => 500,
+                    'result' => 'Gagal menambahkan Produk baru!'
+                ]);
+            }
+        }
+    }
+
+    public function editProduk($id)
+    {
+        $data = Produk::find($id);
+        return response($data);
+    }
+
+    public function updateProduk(Request $request, $id)
+    {
+        $rules = [
+            'nama_produk' => 'required'
+        ];
+
+        $isValid = Validator::make($request->all(),$rules);
+
+        if($isValid->fails()){
+            return response([
+                'status' => 401,
+                'errors' => $isValid->errors()
+            ]);
+        }else{
+            $data = [
+                'nama_produk' => $request->input('nama_produk')
+            ];
+
+            $act = Produk::where('id_produk',$id)->update($data);
+
+            if($act){
+                return response([
+                    'status' => 200,
+                    'result' => 'Berhasil memperbarui Produk!'
+                ]);
+            }else{
+                return response([
+                    'status' => 500,
+                    'result' => 'Gagal memperbarui Produk!'
+                ]);
+            }
+        }
+    }
+
+    public function destroyProduk($id)
+    {
+        $delete = Produk::where('id_produk',$id)->update([
+            'delete_produk' => 1
+        ]);
+
+        if($delete){
+            return response([
+                'status' => 200,
+                'result' => 'Berhasil menghapus data Produk!' 
+            ]);
+        }else{
+            return response([
+                'status' => 500,
+                'result' => 'Gagal menghapus data Produk!'
             ]);
         }
     }

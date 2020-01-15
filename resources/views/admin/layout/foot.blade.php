@@ -5,7 +5,7 @@
       <footer class="sticky-footer">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright © www.yadia.org 2020</span>
+            <span>Copyright © E-berkas</span>
           </div>
         </div>
       </footer>

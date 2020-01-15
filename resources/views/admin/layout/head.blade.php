@@ -20,6 +20,8 @@
   <!-- Custom styles for this template-->
   <link href="{{ asset('assets/admin/css/sb-admin.css') }}" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/css/select2.min.css" rel="stylesheet" />
+  <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet">
+  <link href="/resources/demos/style.css" rel="stylesheet">
 
   <script src="{{ asset('assets/admin/vendor/jquery/jquery.min.js') }}"></script>
   <script src="{{ asset('assets/admin/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -33,6 +35,7 @@
   <script src="{{ asset('assets/admin/vendor/datatables/dataTables.bootstrap4.js') }}"></script>
   <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
     $(document).ready(function() {
       tinymce.init({
@@ -50,6 +53,8 @@
       $('.tags').select2({
         tags : true
       });
+
+      $('.datepicker').datepicker({ dateFormat: 'yy-mm-dd' })
     });
   </script>
   <style>

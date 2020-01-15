@@ -31,7 +31,7 @@
         <li class="nav-item dropdown no-arrow mx-1">
           <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-bell fa-fw"></i>
-            <span class="badge badge-danger">9+</span>
+            {{-- <span class="badge badge-danger">9+</span> --}}
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
             <a class="dropdown-item" href="#">Action</a>
@@ -72,7 +72,7 @@
       <!-- Sidebar -->
       <ul class="sidebar navbar-nav">
         <li class="nav-item @if($data['parentActive'] == 'home') {{ 'active' }} @else {{ '' }} @endif">
-          <a class="nav-link" href="{{ url('/admin/dashboard') }} ">
+          <a class="nav-link" href="{{ url('/home') }} ">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
           </a>
