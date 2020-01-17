@@ -28,6 +28,11 @@
                     </button>
                 </div>
             @endif
+            @if (count($errors) > 0)
+                @foreach ($errors as $err)
+                    {{ $err }}
+                @endforeach
+            @endif
             <form action="{{ url('indihome/insert') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">
@@ -374,6 +379,31 @@
                     <div class="form-group">
                         <label for="lampiran_indihome">Lampiran :</label>
                         <input type="file" class="form-control" name="lampiran_indihome" id="lampiran_indihome">
+                    </div>
+                    <div class="form-group">
+                        <a href="javascript:void(0)" class="btn btn-primary btn-sm btn-block" id="signature"><i class="fas fa-sign"></i> Tanda Tangan Pelanggan</a>
+                        <input type="hidden" name="id_signature" id="id_signature" value="{{ old('id_signature') }}">
+                        @error('id_signature') <small class="text-danger">{{ $message }}</small>@enderror
+                        <br>
+                        <div id="signature-pad" class="jay-signature-pad">
+                            <div class="jay-signature-pad--body">
+                                <canvas id="jay-signature-pad" height="100px"></canvas>
+                            </div>
+                            <div class="signature-pad--footer txt-center">
+                                <small class="description">Tanda Tangan Diatas</small>
+                                <div class="signature-pad--actions txt-center">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button type="button" class="button clear" data-action="clear">Clear</button>
+                                            <button type="button" class="button" data-action="change-color">Change color</button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button type="button" class="button save" data-action="save-png">Save as PNG</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

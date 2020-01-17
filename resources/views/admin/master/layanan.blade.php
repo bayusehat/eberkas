@@ -13,8 +13,16 @@
             </div>
         <hr>
             <div class="row">
-                <div class="col-md-8 col-sm-12 col-xl-8">
+                <div class="col-md-4 col-sm-12 col-xl-4">
                     <input type="text" class="form-control" name="nama_layanan" id="nama_layanan" placeholder="Nama Layanan">
+                    <small class="text-danger" id="valid_nama_layanan"></small>
+                </div>
+                <div class="col-md-4 col-sm-12 col-xl-4">
+                   <select name="role_layanan" id="role_layanan" class="form-control">
+                       <option value="">-- Pilih Role --</option>
+                       <option value="0">Baru</option>
+                       <option value="1">Lama</option>
+                   </select>
                     <small class="text-danger" id="valid_nama_layanan"></small>
                 </div>
                 <div class="col-md-4 col-sm-12 col-xl-4">
@@ -30,6 +38,7 @@
                        <tr>
                             <th>No</th>   
                             <th>Nama</th>
+                            <th>Jenis</th>
                             <th>Action</th>
                         </tr> 
                     </thead>
@@ -77,6 +86,7 @@
             columns: [
                 { name: 'id_layanan', searchable: false, orderable: true, className: 'text-center' },
                 { name: 'nama_layanan' },
+                { name: 'role_layanan'},
                 { name: 'action', searchable: false, orderable: false, className: 'text-center' }
             ],
             order: [[0, 'asc']],
@@ -86,6 +96,7 @@
 
     function tambah(){
         var formData = $('#nama_layanan').val();
+        var role = $('#role_layanan').val();
         $.ajax({
             url : '{{ url("layanan/insert") }}',
             headers : {
@@ -93,12 +104,15 @@
             },
             dataType : 'JSON',
             data : {
-                'nama_layanan' : formData
+                'nama_layanan' : formData,
+                'role_layanan' : role
             },
             method : 'POST',
             success:function(res){
                 if(res.status == 200){
+                    $('#nama_layanan').focus();
                     $('#nama_layanan').val('');
+                    $('#role_layanan').trigger('reset');
                     $('#tableData').DataTable().ajax.reload(null, false);
                 }else if(res.status == 401){
                     $.each(res.errors, function (i, val) {
@@ -121,6 +135,7 @@
             dataType : 'JSON',
             success:function(res){
                 $('#nama_layanan').val(res.nama_layanan)
+                $('#role_layanan').val(res.role_layanan).trigger('reset')
                 $('#update').attr('onclick','ubah('+res.id_layanan+')');
             }
         })
@@ -128,6 +143,7 @@
 
     function ubah(id){
         var formData = $('#nama_layanan').val();
+        var role = $('#role_layanan').val();
         $.ajax({
             url : '{{ url("layanan/update") }}/'+id,
             headers : {
@@ -135,7 +151,8 @@
             },
             dataType : 'JSON',
             data : {
-                'nama_layanan' : formData
+                'nama_layanan' : formData,
+                'role_layanan' : role
             },
             method : 'POST',
             success:function(res){
@@ -146,6 +163,7 @@
                     $('#update').hide();
                     $('small').text('');
                     $('#nama_layanan').val('')
+                    $('#role_layanan').trigger('reset')
                 }else if(res.status == 401){
                     $.each(res.errors, function (i, val) {
                         $('#valid_'+i).text(val);
@@ -170,6 +188,28 @@
                 }else{
                     alert(res.result);
                 }
+            }
+        })
+    }
+
+    function changeRole(id,role){
+        if(role == 0){
+            var param = 1;
+        }else{
+            var param = 0;
+        }
+        $.ajax({
+            url: '{{ url("layanan/change") }}/'+id+'/'+param,
+            headers : {
+                'X-CSRF-TOKEN' : $('meta[name=csrf-token]').attr('content')
+            },
+            dataType : 'JSON',
+            success:function(res){
+                if(res.status == 200){
+                    $('#tableData').DataTable().ajax.reload(null,false);
+                }else{
+                    alert(res.result);
+                } 
             }
         })
     }

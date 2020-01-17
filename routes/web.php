@@ -14,8 +14,9 @@ Route::get('/','AuthController@login');
 Route::post('/login','AuthController@doLogin');
 Route::get('/logout','AuthController@doLogout');
 
-Route::group(['middleware' => ['authLogin']], function () {
+Route::group(['middleware' => ['authLogin','web']], function () {
     Route::get('/home','DashboardController@index');
+    Route::post('signature/save','DashboardController@signature');
 
     //Menu
     Route::get('menu','MenuController@index');
@@ -54,6 +55,7 @@ Route::group(['middleware' => ['authLogin']], function () {
         Route::get('layanan/edit/{id}','MasterController@editLayanan');
         Route::post('layanan/update/{id}','MasterController@updateLayanan');
         Route::get('layanan/delete/{id}','MasterController@destroyLayanan');
+        Route::get('layanan/change/{id}/{role}','MasterController@changeRole');
 
         //ONT
         Route::get('ont','MasterController@indexOnt');
@@ -97,8 +99,55 @@ Route::group(['middleware' => ['authLogin']], function () {
         Route::post('produk/update/{id}','MasterController@updateProduk');
         Route::get('produk/delete/{id}','MasterController@destroyProduk');
 
+         //Fitur
+         Route::get('fitur','MasterController@indexFitur');
+         Route::get('fitur/load','MasterController@loadDataFitur');
+         Route::post('fitur/insert','MasterController@insertFitur');
+         Route::get('fitur/edit/{id}','MasterController@editFitur');
+         Route::post('fitur/update/{id}','MasterController@updateFitur');
+         Route::get('fitur/delete/{id}','MasterController@destroyFitur');
+
     //New Indihome Form
     Route::get('indihome','IndihomeController@index');
     Route::post('indihome/insert','IndihomeController@insert');
 
+    //BNA
+    Route::get('bna/1','BnaController@index');
+    Route::post('bna/insert','BnaController@insert');
+
+    //GNO
+    Route::get('gno/2','GnoController@index');
+    Route::post('gno/insert','GnoController@insert');
+
+     //Cabut
+     Route::get('cabut/3','CabutController@index');
+     Route::post('cabut/insert','CabutController@insert');
+
+     //PDA
+     Route::get('pda/4','PdaController@index');
+     Route::post('pda/insert','PdaController@insert');
+
+     //ISOLIR 
+     Route::get('isolir/5','IsolirController@index');
+     Route::post('isolir/insert','IsolirController@insert');
+
+     //FITUR
+     Route::get('fitur/6','FiturController@index');
+     Route::post('fitur/6/insert','FiturController@insert');
+
+     //PENGADUAN
+     Route::get('pengaduan/8','PengaduanController@index');
+     Route::post('pengaduan/insert','PengaduanController@insert');
+
+     //ALIH PAKET
+     Route::get('alih/9','AlihPaketController@index');
+     Route::post('alih/insert','AlihPaketController@insert');
+
+     //KALIM TAGIHAN
+     Route::get('claim/10','ClaimController@index');
+     Route::post('claim/insert','ClaimController@insert');
+
+     //CICILAN
+     Route::get('cicilan/11','CicilanController@index');
+     Route::post('cicilan/insert','CicilanController@insert');
 });

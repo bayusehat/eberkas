@@ -46,7 +46,103 @@
   <!-- Demo scripts for this page-->
   <script src="{{ asset('assets/admin/js/demo/datatables-demo.js') }}"></script>
   <script src="{{ asset('assets/admin/js/demo/chart-area-demo.js') }}"></script>
+  <script>
+    $('#signature').click(function () {
+      $('#signature-pad').fadeIn();
+      $('#jay-signature-pad').attr('width','500px');
+      $('#jay-signature-pad').attr('height','200px');
+    })
+  </script>
+  <script>
+    var wrapper = document.getElementById("signature-pad");
+    var clearButton = wrapper.querySelector("[data-action=clear]");
+    var changeColorButton = wrapper.querySelector("[data-action=change-color]");
+    var savePNGButton = wrapper.querySelector("[data-action=save-png]");
+    var canvas = wrapper.querySelector("canvas");
+    var signaturePad = new SignaturePad(canvas, {
+        backgroundColor: 'rgb(255, 255, 255)'
+    });
+    function makeid(length) {
+      var result           = '';
+      var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      var charactersLength = characters.length;
+      for ( var i = 0; i < length; i++ ) {
+          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
+      return result;
+    }
+    function resizeCanvas() {
+        var ratio =  Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext("2d").scale(ratio, ratio);
+  
+        signaturePad.clear();
+    }
 
+    window.onresize = resizeCanvas;
+    resizeCanvas();
+    function download(dataURL, filename) {
+        var blob = dataURLToBlob(dataURL);
+        var url = window.URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.style = "display: none";
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+    }
+    // One could simply use Canvas#toBlob method instead, but it's just to show
+    // that it can be done using result of SignaturePad#toDataURL.
+    function dataURLToBlob(dataURL) {
+        var parts = dataURL.split(';base64,');
+        var contentType = parts[0].split(":")[1];
+        var raw = window.atob(parts[1]);
+        var rawLength = raw.length;
+        var uInt8Array = new Uint8Array(rawLength);
+        for (var i = 0; i < rawLength; ++i) {
+            uInt8Array[i] = raw.charCodeAt(i);
+        }
+        return new Blob([uInt8Array], { type: contentType });
+    }
+    clearButton.addEventListener("click", function (event) {
+        signaturePad.clear();
+    });
+    changeColorButton.addEventListener("click", function (event) {
+        var r = Math.round(Math.random() * 255);
+        var g = Math.round(Math.random() * 255);
+        var b = Math.round(Math.random() * 255);
+        var color = "rgb(" + r + "," + g + "," + b +")";
+        signaturePad.penColor = color;
+    });
+
+    function simpanFile(dataURL) {
+      $.ajax({
+        url : '{{ url("signature/save") }}',
+        headers : {
+          'X-CSRF-TOKEN' : $('meta[name=csrf-token]').attr('content')
+        },
+        data : {
+          'id_signature' : dataURL
+        },
+        method : 'POST',
+        success:function(res){
+          alert('Tanda tangan berhasil disimpan!');
+          $('#id_signature').val(res.name);
+        }
+      })
+    }
+
+    savePNGButton.addEventListener("click", function (event) {
+        if (signaturePad.isEmpty()) {
+        alert("Please provide a signature first.");
+        } else {
+        var dataURL = signaturePad.toDataURL();
+        simpanFile(dataURL);
+        }
+    });
+</script>
 </body>
 
 </html>

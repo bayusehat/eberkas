@@ -56,19 +56,10 @@ class IndihomeController extends Controller
             'kodepos_penagihan_indihome'         => 'required',
         ];
 
-        $p1 = $request->input('pl1');
-        $p2 = $request->input('pl2');
-        $p3 = $request->input('pl3');
-        $p4 = $request->input('pl4');
-        $p5 = $request->input('pl5');
-        $p6 = $request->input('pl6');
-        $p7 = $request->input('pl7');
-
         $isValid = Validator::make($request->all(),$rules);
 
         if($isValid->fails()){
-            return redirect()->back()->withErrors($isValid->errors());
-            // dd($isValid->errors());
+            return redirect()->back()->withInput()->withErrors($isValid->errors());
         }else{
             if($request->has('lampiran_indihome')){
                 $img = $request->file('lampiran_indihome');
@@ -77,6 +68,15 @@ class IndihomeController extends Controller
             }else{
                 $lampiran_indihome = null;
             }
+
+            $p1 = $request->input('pl1');
+            $p2 = $request->input('pl2');
+            $p3 = $request->input('pl3');
+            $p4 = $request->input('pl4');
+            $p5 = $request->input('pl5');
+            $p6 = $request->input('pl6');
+            $p7 = $request->input('pl7');
+
             $data = [
                 'jenis_permohonan_indihome'          => $request->input('jenis_permohonan_indihome'),
                 'id_layanan'                         => $request->input('id_layanan'),
@@ -110,6 +110,7 @@ class IndihomeController extends Controller
                 'lampiran_indihome'                  => $lampiran_indihome,
                 'signature_pelanggan_indihome'       => 'test',
                 'persetujuan_indihome'               => $p1.';'.$p2.';'.$p3.';'.$p4.';'.$p5.';'.$p6.';'.$p7,
+                'signature_pelanggan_transaksi'      => $request->input('id_signature'),
                 'create_indihome'                    => date('Y-m-d H:i:s'),
                 'update_indihome'                    => date('Y-m-d H:i:s'),
             ];

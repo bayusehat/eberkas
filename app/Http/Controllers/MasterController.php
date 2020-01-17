@@ -9,6 +9,7 @@ use App\JenisOnt;
 use App\PaketTambahan;
 use App\JenisTransaksi;
 use App\Produk;
+use App\Fitur;
 
 class MasterController extends Controller
 {
@@ -33,9 +34,15 @@ class MasterController extends Controller
         $layanan = Layanan::where('delete_layanan',0)->orderBy('id_layanan','asc')->get();
 
         foreach ($layanan as $i => $v) {
+            if($v->role_layanan == 0){
+                $roleLayanan = '<a href="javascript:void(0)" onclick="changeRole('.$v->id_layanan.','.$v->role_layanan.')" class="text-success"><i class="fas fa-check"></i> Baru</a>';
+            }else{
+                $roleLayanan = '<a href="javascript:void(0)" onclick="changeRole('.$v->id_layanan.','.$v->role_layanan.')" class="text-danger"><i class="fas fa-times"></i> Lama</a>';
+            }
             $response['data'][] = [
                 ++$i,
                 $v->nama_layanan,
+                $roleLayanan,
                 '
                 <a href="javascript:void(0)" onclick="show('.$v->id_layanan.')" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a>
                 <button type="button" onclick="deleteData('.$v->id_layanan.')" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Hapus</button>
@@ -49,7 +56,8 @@ class MasterController extends Controller
     public function insertLayanan(Request $request)
     {
         $rules = [
-            'nama_layanan' => 'required'
+            'nama_layanan' => 'required',
+            'role_layanan' => 'required'
         ];
 
         $isValid = Validator::make($request->all(),$rules);
@@ -61,7 +69,8 @@ class MasterController extends Controller
             ]);
         }else{
             $data = [
-                'nama_layanan' => $request->input('nama_layanan')
+                'nama_layanan' => $request->input('nama_layanan'),
+                'role_layanan' => $request->input('role_layanan')
             ];
 
             $act = Layanan::insert($data);
@@ -89,7 +98,8 @@ class MasterController extends Controller
     public function updateLayanan(Request $request, $id)
     {
         $rules = [
-            'nama_layanan' => 'required'
+            'nama_layanan' => 'required',
+            'role_layanan' => 'required'
         ];
 
         $isValid = Validator::make($request->all(),$rules);
@@ -101,7 +111,8 @@ class MasterController extends Controller
             ]);
         }else{
             $data = [
-                'nama_layanan' => $request->input('nama_layanan')
+                'nama_layanan' => $request->input('nama_layanan'),
+                'role_layanan' => $request->input('role_layanan')
             ];
 
             $act = Layanan::where('id_layanan',$id)->update($data);
@@ -135,6 +146,25 @@ class MasterController extends Controller
             return response([
                 'status' => 500,
                 'result' => 'Gagal menghapus data Layanan!'
+            ]);
+        }
+    }
+
+    public function changeRole($id,$role)
+    {
+        $update = Layanan::where('id_layanan',$id)->update([
+            'role_layanan' => $role
+        ]);
+
+        if($update){
+            return response([
+                'status' => 200,
+                'result' => 'Berhasil merubah role!'
+            ]);
+        }else{
+            return response([
+                'status' => 500,
+                'result' => 'Gagal merubah role!'
             ]);
         }
     }
@@ -660,4 +690,137 @@ class MasterController extends Controller
             ]);
         }
     }
+    /* 
+        PRODUK END
+    */
+
+    /*
+        FITUR BEGIN
+    */
+    public function indexFitur()
+    {
+        $data = [
+            'title' => 'Data Fitur',
+            'content' => 'admin.master.fitur',
+            'parentActive' => 'pengaturan',
+            'urlActive' => 'master-fitur'
+        ];
+
+        return view('admin.layout.index',['data' => $data]);
+    }
+
+    public function loadDataFitur()
+    {
+        $response['data'] = [];
+        $fitur = Fitur::where('delete_fitur',0)->orderBy('id_fitur','asc')->get();
+
+        foreach ($fitur as $i => $v) {
+            $response['data'][] = [
+                ++$i,
+                $v->nama_fitur,
+                '
+                <a href="javascript:void(0)" onclick="show('.$v->id_fitur.')" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                <button type="button" onclick="deleteData('.$v->id_fitur.')" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Hapus</button>
+                '
+            ];
+        }
+
+        return response($response);
+    }
+
+    public function insertFitur(Request $request)
+    {
+        $rules = [
+            'nama_fitur' => 'required'
+        ];
+
+        $isValid = Validator::make($request->all(),$rules);
+
+        if($isValid->fails()){
+            return response([
+                'status' => 401,
+                'errors' => $isValid->errors()
+            ]);
+        }else{
+            $data = [
+                'nama_fitur' => $request->input('nama_fitur')
+            ];
+
+            $act = Fitur::insert($data);
+
+            if($act){
+                return response([
+                    'status' => 200,
+                    'result' => 'Berhasil menambahkan Fitur baru!'
+                ]);
+            }else{
+                return response([
+                    'status' => 500,
+                    'result' => 'Gagal menambahkan Fitur baru!'
+                ]);
+            }
+        }
+    }
+
+    public function editFitur($id)
+    {
+        $data = Fitur::find($id);
+        return response($data);
+    }
+
+    public function updateFitur(Request $request, $id)
+    {
+        $rules = [
+            'nama_fitur' => 'required'
+        ];
+
+        $isValid = Validator::make($request->all(),$rules);
+
+        if($isValid->fails()){
+            return response([
+                'status' => 401,
+                'errors' => $isValid->errors()
+            ]);
+        }else{
+            $data = [
+                'nama_fitur' => $request->input('nama_fitur')
+            ];
+
+            $act = Fitur::where('id_fitur',$id)->update($data);
+
+            if($act){
+                return response([
+                    'status' => 200,
+                    'result' => 'Berhasil memperbarui Fitur!'
+                ]);
+            }else{
+                return response([
+                    'status' => 500,
+                    'result' => 'Gagal memperbarui Fitur!'
+                ]);
+            }
+        }
+    }
+
+    public function destroyFitur($id)
+    {
+        $delete = Fitur::where('id_fitur',$id)->update([
+            'delete_fitur' => 1
+        ]);
+
+        if($delete){
+            return response([
+                'status' => 200,
+                'result' => 'Berhasil menghapus data Fitur!' 
+            ]);
+        }else{
+            return response([
+                'status' => 500,
+                'result' => 'Gagal menghapus data Fitur!'
+            ]);
+        }
+    }
+    /*
+        FITUR END
+    */
 }
