@@ -72,6 +72,7 @@ class CabutController extends Controller
                 'deposit_penerima_kuasa_transaksi'         => $request->input('deposit_penerima_kuasa_transaksi'),
                 'cp_transaksi'                             => $request->input('cp_transaksi'),
                 'signature_pelanggan_transaksi'            => $request->input('id_signature'),
+                'signature_atasan_transaksi'               => $request->input('signature_atasan_transaksi'),
                 'create_transaksi'                         => date('Y-m-d H:i:s'),
                 'update_transaksi'                         => date('Y-m-d H:i:s'),
             ];

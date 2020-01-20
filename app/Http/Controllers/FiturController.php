@@ -60,7 +60,7 @@ class FiturController extends Controller
                 'id_login'                                 => session('id'),
                 'produk_transaksi'                         => $request->input('produk_transaksi'),
                 'id_jenis_transaksi'                       => $request->input('id_jenis_transaksi'),
-                'id_layanan'                               => $request->input('id_layanan'),
+                'layanan_fitur_transaksi'                  => $request->input('id_layanan'),
                 'nama_transaksi'                           => $request->input('nama_transaksi'),
                 'alamat_identitas_transaksi'               => $request->input('alamat_identitas_transaksi'),
                 'alamat_instalasi_transaksi'               => $request->input('alamat_instalasi_transaksi'),
@@ -97,6 +97,14 @@ class FiturController extends Controller
                             'id_fitur'     => $f
                         ]);
                     }
+                }
+
+                $getFitur = FiturIndihome::where(['id_transaksi' => $insert->id_transaksi,'id_fitur' => 9])->first();
+                if($getFitur){
+                    Transaksi::where('id_transaksi',$insert->id_transaksi)->update([
+                        'induk_hunting_fitur_transaksi' => $request->input('induk_hunting_fitur_transaksi'),
+                        'anak_hunting_fitur_transaksi'  => $request->input('anak_hunting_fitur_transaksi')
+                    ]);
                 }
                 return redirect()->back()->with('success','Berhasil menambahkan Berkas Fitur baru!');
             }else{

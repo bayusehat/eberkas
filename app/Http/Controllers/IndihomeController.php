@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Validator;
+use Str;
 use App\NewIndihome;
 use App\PaketTambahanIndihome;
 use App\Pembayaran;
 use App\Layanan;
 use App\PaketTambahan;
 use App\JenisOnt;
+use App\Lampiran;
 
 class IndihomeController extends Controller
 {
@@ -61,13 +63,6 @@ class IndihomeController extends Controller
         if($isValid->fails()){
             return redirect()->back()->withInput()->withErrors($isValid->errors());
         }else{
-            if($request->has('lampiran_indihome')){
-                $img = $request->file('lampiran_indihome');
-                $lampiran_indihome = Str::random(10).$img->getClientOriginalName();
-                $img->move(public_path('data/lampiran'),$lampiran_indihome);
-            }else{
-                $lampiran_indihome = null;
-            }
 
             $p1 = $request->input('pl1');
             $p2 = $request->input('pl2');
@@ -107,7 +102,6 @@ class IndihomeController extends Controller
                 'jenis_pembayaran_indihome'          => $request->input('jenis_pembayaran_indihome'),
                 'alamat_penagihan_indihome'          => $request->input('alamat_penagihan_indihome'),
                 'kodepos_penagihan_indihome'         => $request->input('kodepos_penagihan_indihome'),
-                'lampiran_indihome'                  => $lampiran_indihome,
                 'signature_pelanggan_indihome'       => 'test',
                 'persetujuan_indihome'               => $p1.';'.$p2.';'.$p3.';'.$p4.';'.$p5.';'.$p6.';'.$p7,
                 'signature_pelanggan_transaksi'      => $request->input('id_signature'),
@@ -125,6 +119,18 @@ class IndihomeController extends Controller
                             'id_paket_tambahan' =>  $v
                         ]);
                     }
+                }
+
+                if($request->has('lampiran_indihome')){
+                    $img = $request->file('lampiran_indihome');
+                    $lampiran_indihome = Str::random(10).$img->getClientOriginalName();
+                    $img->move(public_path('lampiranfile'),$lampiran_indihome);
+                    Lampiran::insert([
+                        'id_jenis_transaksi' => 7,
+                        'id_berkas' => $act->id_indihome,
+                        'keterangan_lampiran' => 'New Indihome',
+                        'lampiran' => $lampiran_indihome
+                    ]);
                 }
 
                 Pembayaran::insert([

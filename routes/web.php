@@ -13,11 +13,12 @@
 Route::get('/','AuthController@login');
 Route::post('/login','AuthController@doLogin');
 Route::get('/logout','AuthController@doLogout');
+Route::post('berkas/all/search','EditController@doCariBerkas');
 
 Route::group(['middleware' => ['authLogin','web']], function () {
     Route::get('/home','DashboardController@index');
     Route::post('signature/save','DashboardController@signature');
-
+    Route::post('signature/atasan/save','DashboardController@signature');
     //Menu
     Route::get('menu','MenuController@index');
     Route::get('menu/load','MenuController@loadData');
@@ -114,6 +115,7 @@ Route::group(['middleware' => ['authLogin','web']], function () {
     //BNA
     Route::get('bna/1','BnaController@index');
     Route::post('bna/insert','BnaController@insert');
+    Route::post('bna/update/{id}','BnaController@update');
 
     //GNO
     Route::get('gno/2','GnoController@index');
@@ -150,4 +152,20 @@ Route::group(['middleware' => ['authLogin','web']], function () {
      //CICILAN
      Route::get('cicilan/11','CicilanController@index');
      Route::post('cicilan/insert','CicilanController@insert');
+
+
+     //Seacrh Berkas
+     Route::get('edit/berkas','EditController@index');
+     Route::post('berkas/search','EditController@searchBerkas');
+     Route::get('cari/berkas','EditController@cariBerkas');
+
+     //To Halaman masing2 edit
+     Route::get('edit/{jenis_transaksi}/{id_transaksi}','EditController@edit');
+
+     //Lampiran
+     Route::get('lampiran','ManajemenController@indexTambahLampiran');
+     Route::post('lampiran/search','ManajemenController@doCariBerkas');
+     Route::get('lampiran/create/{id_jenis}/{id_transaksi}','ManajemenController@tambahLampiranPage');
+     Route::post('lampiran/insert/{id_jenis}/{id_transaksi}','ManajemenController@insertLampiran');
+     Route::get('lampiran/view/{id_jenis}/{id_transaksi}','ManajemenController@lihatLampiran');
 });

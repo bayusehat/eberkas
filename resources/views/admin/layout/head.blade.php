@@ -23,6 +23,7 @@
   <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet"> --}}
   <link href="{{ asset('assets/select2.css') }}" rel="stylesheet">
   <link href="{{ asset('assets/jquery-ui.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/loading.css') }}" rel="stylesheet">
   {{-- <link href="/resources/demos/style.css" rel="stylesheet"> --}}
 
   <script src="{{ asset('assets/admin/vendor/jquery/jquery.min.js') }}"></script>
@@ -39,6 +40,7 @@
   <script src="{{ asset('assets/select2.min.js') }}"></script>
   <script src="{{ asset('assets/jquery-ui.js') }}"></script>
   <script src="{{ asset('assets/signature.min.js') }}"></script>
+  <script src="{{ asset('assets/jquery.loading.js') }}"></script>
   {{-- <script src="{{ asset('assets/tinymce.min.js') }}"></script> --}}
   {{-- <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/select2@4.0.12/dist/js/select2.min.js"></script>
@@ -105,6 +107,9 @@
         text-align: -webkit-center;
     }
     #signature-pad{
+        display: none;
+    }
+    #signature-pad-atasan{
         display: none;
     }
   </style>

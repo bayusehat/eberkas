@@ -175,6 +175,31 @@
                                     </div>
                                 </div>
                             </div>
+                            {{-- <div class="form-group">
+                                <a href="javascript:void(0)" class="btn btn-danger btn-sm btn-block" id="signature-atasan"><i class="fas fa-sign"></i> Tanda Tangan Atasan</a>
+                                <input type="hidden" name="id_signature_atasan" id="id_signature_atasan" value="{{ old('id_signature_atasan') }}">
+                                @error('id_signature_atasan') <small class="text-danger">{{ $message }}</small>@enderror
+                                <br>
+                                <div id="signature-pad-atasan" class="jay-signature-pad">
+                                    <div class="jay-signature-pad--body">
+                                        <canvas id="jay-signature-pad-atasan" height="100px"></canvas>
+                                    </div>
+                                    <div class="signature-pad--footer txt-center">
+                                        <small class="description">Tanda Tangan Diatas</small>
+                                        <div class="signature-pad--actions txt-center">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <button type="button" class="button clear" data-actionatasan="clear">Clear</button>
+                                                    <button type="button" class="button" data-actionatasan="change-color">Change color</button>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <button type="button" class="button save" data-actionatasan="save-png">Save as PNG</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

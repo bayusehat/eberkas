@@ -50,7 +50,7 @@ class Transaksi extends Model
         'create_transaksi',
         'update_transaksi',
         'delete_transaksi',
-        'id_layanan',
+        'jenis_layanan_fitur_transaksi',
         'jenis_claim_transaksi',
         'jumlah_claim_transaksi',
         'bulan_mulai',

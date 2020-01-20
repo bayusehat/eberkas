@@ -59,9 +59,8 @@
                             <label for="id_layanan">Layanan :</label>
                             <select name="id_layanan" id="id_layanan" class="form-control form-control-sm">
                                 <option value="">-- Pilih Layanan --</option>
-                                @foreach ($layanan as $l)
-                                    <option value="{{ $l->id_layanan }}">{{ $l->nama_layanan }}</option>
-                                @endforeach
+                                <option value="PEMASANGAN">PEMASANGAN</option>
+                                <option value="PENCABUTAN">PENCABUTAN</option>
                             </select>
                         </div>
                         <div class="form-group">

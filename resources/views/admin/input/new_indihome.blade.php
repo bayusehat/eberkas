@@ -1,7 +1,5 @@
 <style>
-    #no_layanan{
-        display: none;
-    }
+    
 </style>
 <section>
     <div class="card">
@@ -76,15 +74,15 @@
                         <label for="paket_lain_indihome">Lain-lain : </label>
                         <input type="text" class="form-control form-control-sm" name="paket_tambahan_lain" id="paket_tambahan_lain" value="{{ old('paket_lain_indihome') }}">
                     </div>
-                    <div id="no_layanan"> <!-- Khusuh untuk Jenis Permohonan Upgrade Layanan -->
-                        <label for=""><strong>Nomor Layanan (Khusus bagi pelanggan yang upgrade Layanan)</strong></label>
+                    <div id="">
+                        <label for=""><strong>Nomor Layanan</strong></label>
                         <div class="form-group">
                             <label for="telepon_indihome">Nomor Telepon Rumah :</label>
                             <input type="text" class="form-control form-control-sm" name="telepon_indihome" id="telepon_indihome" value="{{ old('telepon_indihome') }}">
                         </div>
                         <div class="form-group">
                             <label for="no_internet_indihome">Nomor Internet / Indihome :</label>
-                            <input type="text" class="form-control form-control-sm" name="no_internet_indihome" id="no_internet_indihome" value="{{ old('no_internet_indihome') }}">
+                            <input type="text" class="form-control form-control-sm" name="no_internet_indihome" id="no_internet_indihome" value="{{ old('no_internet_indihome') }}" required>
                         </div>
                     </div>
                     <div class="form-group">
@@ -425,14 +423,14 @@
         getPembayaran();
     });
 
-    function getPermohonan(){
-        var permohonan = $('#jenis_permohonan_indihome').val();
-        if(permohonan == 'UPGRADE LAYANAN'){
-            $('#no_layanan').show();
-        }else{
-            $('#no_layanan').hide();
-        }
-    }
+    // function getPermohonan(){
+    //     var permohonan = $('#jenis_permohonan_indihome').val();
+    //     if(permohonan == 'UPGRADE LAYANAN'){
+    //         $('#no_layanan').show();
+    //     }else{
+    //         $('#no_layanan').hide();
+    //     }
+    // }
 
     function getPembayaran(){
         var pembayaran = $('#jenis_pembayaran_indihome').val();
