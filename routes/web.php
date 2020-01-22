@@ -14,8 +14,8 @@ Route::get('/','AuthController@login');
 Route::post('/login','AuthController@doLogin');
 Route::get('/logout','AuthController@doLogout');
 Route::post('berkas/all/search','EditController@doCariBerkas');
-Route::get('data/witel','LaporanController@getLaporan');
-Route::get('data/plasa/{witel}','LaporanController@plasa');
+Route::get('data/witel','LaporanController@plasaWitelFormLama');
+// Route::get('data/detail/{jml}/{witel}','LaporanController@transaksi');
 
 Route::group(['middleware' => ['authLogin','web']], function () {
     Route::get('/home','DashboardController@index');
@@ -135,6 +135,7 @@ Route::group(['middleware' => ['authLogin','web']], function () {
      //PDA
      Route::get('pda/4','PdaController@index');
      Route::post('pda/insert','PdaController@insert');
+     Route::post('pda/update/{id}','PdaController@update');
 
      //ISOLIR 
      Route::get('isolir/5','IsolirController@index');
@@ -183,4 +184,14 @@ Route::group(['middleware' => ['authLogin','web']], function () {
      Route::post('lampiran/insert/{id_jenis}/{id_transaksi}','ManajemenController@insertLampiran');
      Route::get('lampiran/view/{id_jenis}/{id_transaksi}','ManajemenController@lihatLampiran');
      Route::get('lampiran/download/{id}','ManajemenController@downloadLampiran');
+
+     //Laporan
+     Route::get('laporan/lama','LaporanController@laporanFormLama');
+     Route::post('laporan/lama/search','LaporanController@getLaporanFormLama');
+     Route::get('laporan/lama/plasa/{witel}/{bulprod}','LaporanController@plasaFormLama');
+     Route::get('laporan/lama/plasa/search/{witel}/{bulprod}','LaporanController@plasaWitelFormLama');
+     Route::get('laporan/indihome','LaporanController@laporanIndihome');
+     Route::post('laporan/indihome/search','LaporanController@getLaporanIndihome');
+     Route::get('laporan/indihome/plasa/{witel}/{bulprod}','LaporanController@plasaFormIndihome');
+     Route::get('laporan/indihome/plasa/search/{witel}/{bulprod}','LaporanController@plasaWitelIndihome');
 });

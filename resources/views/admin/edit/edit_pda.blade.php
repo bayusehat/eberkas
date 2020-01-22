@@ -28,7 +28,7 @@
                     </button>
                 </div>
             @endif
-            <form action="{{ url('pda/insert') }}" method="POST" id="formBna">
+            <form action="{{ url('pda/update/'.$transaksi->id_transaksi) }}" method="POST" id="formBna">
                 @csrf
                 <div class="row">
                     <input type="hidden" name="id_jenis_transaksi" value="{{ request()->segment(2) }}">
