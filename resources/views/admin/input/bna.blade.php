@@ -154,7 +154,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xl-12">
-                        <button type="submit" class="btn btn-success btn-block"><i class="fas fa-save"></i> Simpan Berkas</button>
+                        <button type="submit" id="submit" class="btn btn-success btn-block disabled"><i class="fas fa-save"></i> Simpan Berkas</button>
                     </div>
                 </div>
             </form>
@@ -175,5 +175,7 @@
         $("#table_nomor_jastel").on("click", ".deleteBtn", function() {
             $(this).closest("tr").remove();
         }); 
+
+        checkValSignature();
     });
 </script>

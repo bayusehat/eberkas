@@ -53,6 +53,7 @@ class Transaksi extends Model
         'jenis_layanan_fitur_transaksi',
         'jenis_claim_transaksi',
         'jumlah_claim_transaksi',
+        'alasan_claim_transaksi',
         'bulan_mulai',
         'tahun_mulai',
         'bulan_sampai',
@@ -67,6 +68,12 @@ class Transaksi extends Model
         'tahun_periode_sampai',
         'sambungan_digunakan_transaksi',
         'tagihan_beban_transaksi',
-        'no_isolir_lain_transaksi'
+        'no_isolir_lain_transaksi',
+        'nama_atasan_transaksi',
+        'jabatan_atasan_transaksi',
+        'isi_pengaduan_transaksi',
+        'witel_transaksi',
+        'plasa_transaksi',
+        'kota_transaksi'
     ];
 }

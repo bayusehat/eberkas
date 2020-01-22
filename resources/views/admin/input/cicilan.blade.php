@@ -85,6 +85,16 @@
                             @error('no_identitas_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                         <div class="form-group">
+                            <label for="no_hp_transaksi">Nomor HP</label>
+                            <input type="text" class="form-control form-control-sm" name="no_hp_transaksi" id="no_hp_transaksi" value="{{ old('no_hp_transaksi') }}">
+                            @error('no_hp_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="cp_transaksi">Nomor Telepon</label>
+                            <input type="text" class="form-control form-control-sm" name="cp_transaksi" id="cp_transaksi" value="{{ old('cp_transaksi') }}">
+                            @error('cp_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
+                        <div class="form-group">
                             <label for="tunggakan">Tunggakan :</label> 
                             <button type="button" class="btn btn-success btn-sm float-right" id="addRowTunggakan"><i class="fas fa-plus"></i> Tambah Tunggakan</button>
                             <table style="width:100%" id="table_tunggakan" cellpadding="5">
@@ -199,7 +209,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xl-12">
-                        <button type="submit" class="btn btn-success btn-block"><i class="fas fa-save"></i> Simpan Berkas</button>
+                        <button type="submit" id="submit" class="btn btn-success btn-block disabled"><i class="fas fa-save"></i> Simpan Berkas</button>
                     </div>
                 </div>
             </form>

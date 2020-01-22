@@ -14,11 +14,13 @@ Route::get('/','AuthController@login');
 Route::post('/login','AuthController@doLogin');
 Route::get('/logout','AuthController@doLogout');
 Route::post('berkas/all/search','EditController@doCariBerkas');
+Route::get('data/witel','LaporanController@getLaporan');
+Route::get('data/plasa/{witel}','LaporanController@plasa');
 
 Route::group(['middleware' => ['authLogin','web']], function () {
     Route::get('/home','DashboardController@index');
     Route::post('signature/save','DashboardController@signature');
-    Route::post('signature/atasan/save','DashboardController@signature');
+    Route::post('signature/atasan/save','DashboardController@signatureAtasan');
     //Menu
     Route::get('menu','MenuController@index');
     Route::get('menu/load','MenuController@loadData');
@@ -48,6 +50,8 @@ Route::group(['middleware' => ['authLogin','web']], function () {
     Route::get('user/change/password','UserController@changePassword');
     Route::post('user/change/password/do','UserController@doChangePassword');
     Route::get('user/change/password/reset/{id}','UserController@resetPassword');
+    Route::get('user/signature','UserController@signatureLogin');
+    Route::post('user/signature/insert','UserController@insertSignaturelogin');
     //Master
         //Layanan
         Route::get('layanan','MasterController@indexLayanan');
@@ -111,6 +115,7 @@ Route::group(['middleware' => ['authLogin','web']], function () {
     //New Indihome Form
     Route::get('indihome','IndihomeController@index');
     Route::post('indihome/insert','IndihomeController@insert');
+    Route::post('indihome/update/{id}','IndihomeController@update');
 
     //BNA
     Route::get('bna/1','BnaController@index');
@@ -120,10 +125,12 @@ Route::group(['middleware' => ['authLogin','web']], function () {
     //GNO
     Route::get('gno/2','GnoController@index');
     Route::post('gno/insert','GnoController@insert');
+    Route::post('gno/update/{id}','GnoController@update');
 
      //Cabut
      Route::get('cabut/3','CabutController@index');
      Route::post('cabut/insert','CabutController@insert');
+     Route::post('cabut/update/{id}','CabutController@update');
 
      //PDA
      Route::get('pda/4','PdaController@index');
@@ -132,26 +139,32 @@ Route::group(['middleware' => ['authLogin','web']], function () {
      //ISOLIR 
      Route::get('isolir/5','IsolirController@index');
      Route::post('isolir/insert','IsolirController@insert');
+     Route::post('isolir/update/{id}','IsolirController@update');
 
      //FITUR
      Route::get('fitur/6','FiturController@index');
      Route::post('fitur/6/insert','FiturController@insert');
+     Route::post('fitur/6/update/{id}','FiturController@update');
 
      //PENGADUAN
      Route::get('pengaduan/8','PengaduanController@index');
      Route::post('pengaduan/insert','PengaduanController@insert');
+     Route::post('pengaduan/update/{id}','PengaduanController@update');
 
      //ALIH PAKET
      Route::get('alih/9','AlihPaketController@index');
      Route::post('alih/insert','AlihPaketController@insert');
+     Route::post('alih/update/{id}','AlihPaketController@update');
 
      //KALIM TAGIHAN
      Route::get('claim/10','ClaimController@index');
      Route::post('claim/insert','ClaimController@insert');
+     Route::post('claim/update/{id}','ClaimController@update');
 
      //CICILAN
      Route::get('cicilan/11','CicilanController@index');
      Route::post('cicilan/insert','CicilanController@insert');
+     Route::post('cicilan/update/{id}','CicilanController@update');
 
 
      //Seacrh Berkas
@@ -159,8 +172,9 @@ Route::group(['middleware' => ['authLogin','web']], function () {
      Route::post('berkas/search','EditController@searchBerkas');
      Route::get('cari/berkas','EditController@cariBerkas');
 
-     //To Halaman masing2 edit
+     //To Halaman masing2 edit & Detail
      Route::get('edit/{jenis_transaksi}/{id_transaksi}','EditController@edit');
+     Route::get('detail/{jenis_transaksi}/{id_transaksi}','EditController@detailBerkas');
 
      //Lampiran
      Route::get('lampiran','ManajemenController@indexTambahLampiran');
@@ -168,4 +182,5 @@ Route::group(['middleware' => ['authLogin','web']], function () {
      Route::get('lampiran/create/{id_jenis}/{id_transaksi}','ManajemenController@tambahLampiranPage');
      Route::post('lampiran/insert/{id_jenis}/{id_transaksi}','ManajemenController@insertLampiran');
      Route::get('lampiran/view/{id_jenis}/{id_transaksi}','ManajemenController@lihatLampiran');
+     Route::get('lampiran/download/{id}','ManajemenController@downloadLampiran');
 });

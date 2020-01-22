@@ -170,7 +170,12 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xl-12">
-                        <button type="submit" class="btn btn-warning btn-block"><i class="fas fa-edit"></i> Update Berkas</button>
+                        <button type="submit" id="submit" class="btn btn-warning btn-block  
+                        @if ($transaksi->signature_pelanggan_transaksi)
+                            {{ '' }}
+                        @else
+                            {{ 'disabled' }}
+                        @endif"><i class="fas fa-edit"></i> Update Berkas</button>
                     </div>
                 </div>
             </form>
@@ -187,6 +192,8 @@
                     '</tr>';
             $(row).insertBefore('#last');
         });
+
+        checkValSignature();
 
         $("#table_nomor_jastel").on("click", ".deleteBtn", function() {
             $(this).closest("tr").remove();

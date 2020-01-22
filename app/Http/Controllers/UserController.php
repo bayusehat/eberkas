@@ -229,4 +229,28 @@ class UserController extends Controller
             return redirect()->back()->with('error','Password gagal direset');
         }
     }
+
+    public function signatureLogin()
+    {
+        $data = [
+            'title' => 'Tanda Tangan Petugas '.session('nama'),
+            'content' => 'admin.pengaturan.tanda_tangan',
+            'parentActive' => '',
+            'urlActive' => ''
+        ];
+        return view('admin.layout.index',['data' => $data]);
+    }
+
+    public function insertSignatureLogin(Request $request)
+    {
+        $user = Login::where('id',session('id'))->update([
+            'signature_login' => $request->input('id_signature')
+        ]);
+
+        if($user){
+            return redirect()->back()->with('success','Berhasil menyimpan Tanda Tangan pada database!');
+        }else{
+            return redirect()->back()->with('error','Gagal menyimpan Tanda Tangan pada database!');
+        }
+    }
 }

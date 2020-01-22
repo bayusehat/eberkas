@@ -107,6 +107,11 @@
                             @error('status_pemohon_transaksi') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                         <div class="form-group">
+                            <label for="isi_pengaduan_transaks">Isi Pengaduan</label>
+                            <textarea name="isi_pengaduan_transaksi" id="isi_pengaduan_transaksu" class="form-control form-control-sm">{{ old('isi_pengaduan_transaksi') }}</textarea>
+                            @error('isi_pengaduan_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
+                        <div class="form-group">
                             <label for="keadaan_sambungan_telepon_transaksi">Keadaan Sambungan Telepon :</label><br>
                             <input type="radio" name="keadaan_sambungan_telepon_transaksi" id="keadaan_sambungan_telepon_transaksi" value="ADA PARALEL"> ADA PARALEL<br>
                             <input type="radio" name="keadaan_sambungan_telepon_transaksi" id="keadaan_sambungan_telepon_transaksi" value="ADA ALAT ANTI INTERLOKAL"> ADA ALAT ANTI INTERLOKAL<br>
@@ -162,7 +167,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 col-sm-12 col-xl-12">
-                        <button type="submit" class="btn btn-success btn-block"><i class="fas fa-save"></i> Simpan Berkas</button>
+                        <button type="submit" id="submit" class="btn btn-success btn-block disabled"><i class="fas fa-save"></i> Simpan Berkas</button>
                     </div>
                 </div>
             </form>

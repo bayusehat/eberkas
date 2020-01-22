@@ -17,7 +17,7 @@ class AuthLogin
     {
         if(!session('token') || empty(session('token'))){
             return redirect('/');
-        }
+        };
         return $next($request);
     }
 }

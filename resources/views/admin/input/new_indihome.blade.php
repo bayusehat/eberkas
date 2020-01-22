@@ -72,7 +72,7 @@
                         @error('id_paket_tambahan') <small class="text-danger">{{ $message }}</small> @enderror
                         <br>
                         <label for="paket_lain_indihome">Lain-lain : </label>
-                        <input type="text" class="form-control form-control-sm" name="paket_tambahan_lain" id="paket_tambahan_lain" value="{{ old('paket_lain_indihome') }}">
+                        <input type="text" class="form-control form-control-sm" name="paket_lain_indihome" id="paket_lain_indihome" value="{{ old('paket_lain_indihome') }}">
                     </div>
                     <div id="">
                         <label for=""><strong>Nomor Layanan</strong></label>
@@ -410,7 +410,7 @@
                     
                 </div>
                 <div class="col-md-6 col-sm-6 col-xl-6">
-                    <button type="submit" class="btn btn-success btn-block"><i class="fas fa-save"></i> Simpan</button>
+                    <button type="submit" id="submit" class="btn btn-success btn-block disabled"><i class="fas fa-save"></i> Simpan</button>
                 </div>
             </div>
         </form>

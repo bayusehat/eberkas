@@ -39,7 +39,7 @@
                     <div class="col-md-4 col-sm-12 col-xl-4">
                         <div class="form-group">
                             <label for="tanggal">Masukan Keyword :</label> 
-                            <input type="text" class="form-control form-control-sm" name="searchVal" id="searchVal" placeholder="Masukan keyword" required>
+                            <input type="text" class="form-control form-control-sm" name="searchVal" id="searchVal" placeholder="Masukan keyword" value="{{ old('searchVal') }}" required>
                             @error('searchVal') <small class="text-danger"> {{ $message }} </small> @enderror
                         </div>
                     </div>
@@ -63,6 +63,7 @@
                                         <th>Nama</th>
                                         <th>Alamat</th>
                                         <th>Tanggal Berkas</th>
+                                        <th>Nomor HP</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -70,12 +71,13 @@
                                     @if (count($resultIndihome) > 0)
                                         @foreach ($resultIndihome as $ri)
                                             <tr>
-                                                <td>{{ $ri->no_internet_indihome }}</td>
+                                                <td><a href="{{ url('detail/7/'.$ri->id_indihome) }}">{{ $ri->no_internet_indihome }}</a></td>
                                                 <td>{{ $ri->jenis_permohonan_indihome }}</td>
                                                 <td>{{ $ri->nama_pelanggan_indihome }}</td>
                                                 <td>{{ $ri->alamat_pelanggan_indihome }}</td>
                                                 <td>{{ date('d F H:i',strtotime($ri->create_indihome)) }}</td>
                                                 <td>{{ $ri->kontak_hp_indihome }}</td>
+                                                <td><a href="{{ url('edit/7/'.$ri->id_indihome) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a></td>
                                             </tr>
                                         @endforeach
                                     @endif
@@ -96,6 +98,7 @@
                                         <th>Nama</th>
                                         <th>Alamat Instalasi</th>
                                         <th>Tanggal Berkas</th>
+                                        <th>Nomor HP</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -103,12 +106,13 @@
                                     @if (count($resultTransaksi) > 0)
                                          @foreach ($resultTransaksi as $rt)
                                             <tr>
-                                                <td>{{ $rt->nomor_jastel }}</td>
+                                                <td><a href="{{ url('detail/'.$rt->id_jenis_transaksi.'/'.$rt->id_transaksi) }}">{{ $rt->nomor_jastel }}</a></td>
                                                 <td>{{ $rt->nama_jenis_transaksi }}</td>
                                                 <td>{{ $rt->nama_transaksi }}</td>
                                                 <td>{{ $rt->alamat_instalasi_transaksi }}</td>
                                                 <td>{{ date('d F H:i',strtotime($rt->create_transaksi)) }}</td>
                                                 <td>{{ $rt->no_hp_transaksi }}</td>
+                                                <td><a href="{{ url('edit/'.$rt->id_jenis_transaksi.'/'.$rt->id_transaksi) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a></td>
                                             </tr>
                                         @endforeach
                                     @endif

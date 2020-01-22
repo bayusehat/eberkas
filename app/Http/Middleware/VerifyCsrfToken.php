@@ -20,6 +20,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         '/',
-        'berkas/all/search'
+        'berkas/all/search',
+        'data/witel'
     ];
 }

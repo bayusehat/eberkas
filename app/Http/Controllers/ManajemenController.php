@@ -28,7 +28,7 @@ class ManajemenController extends Controller
                                     ->get();
         
         $data = [
-            'title'           => 'Cari Berkas',
+            'title'           => 'Hasil pencarian berkas "'.$searchVal.'"',
             'content'         => 'admin.arsip.tambah_lampiran_cari',
             'parentActive'    => 'arsip',
             'urlActive'       => 'tambah-lampiran',
@@ -134,11 +134,11 @@ class ManajemenController extends Controller
         return view('admin.layout.index',['data' => $data]);
     }
 
-    // public function downloadLampiran($id)
-    // {
-    //     $lampiran = Lampiran::where('id_lampiran',$id)->first();
-
-    //     $file = public_path().'/lampiranfile/'.$lampiran->lampiran;
-
-    // }
+    public function downloadLampiran($id)
+    {
+        $lampiran = Lampiran::where('id_lampiran',$id)->first();
+        $file = public_path().'/lampiranfile/'.$lampiran->lampiran;
+        $name = basename($file);
+        return response()->download($file, $name);
+    }
 }

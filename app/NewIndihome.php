@@ -44,6 +44,9 @@ class NewIndihome extends Model
         'persetujuan_indihome',
         'create_indihome',
         'update_indihome',
-        'delete_indihome'
+        'delete_indihome',
+        'witel_indihome',
+        'plasa_indihome',
+        'kota_indihome'
     ];
 }

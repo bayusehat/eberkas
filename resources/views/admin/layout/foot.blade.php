@@ -122,6 +122,15 @@
         signaturePad.penColor = color;
     });
 
+    function checkValSignature(){
+        var signatureVal = $('#id_signature').val();
+        if(signatureVal != ''){
+            $('#submit').removeClass('disabled');
+          }else{
+            $('#submit').addClass('disabled');
+          }
+      }
+    
     function simpanFile(dataURL) {
       $.ajax({
         url : '{{ url("signature/save") }}',
@@ -135,6 +144,7 @@
         success:function(res){
           alert('Tanda tangan berhasil disimpan!');
           $('#id_signature').val(res.name);
+          checkValSignature();
         }
       })
     }
@@ -148,16 +158,16 @@
         }
     });
 </script>
-{{-- <script>
+<script>
   var wrapper = document.getElementById("signature-pad-atasan");
-  var clearButton = wrapper.querySelector("[data-action=clear]");
-  var changeColorButton = wrapper.querySelector("[data-action=change-color]");
-  var savePNGButton = wrapper.querySelector("[data-action=save-png]");
-  var canvas = wrapper.querySelector("canvas");
+  var clearButton = wrapper.querySelector("[data-action=clear2]");
+  var changeColorButton = wrapper.querySelector("[data-action=change-color2]");
+  var savePNGButton = wrapper.querySelector("[data-action=save-png2]");
+  var canvas = wrapper.querySelector("canvas#jay-signature-pad-atasan");
   var signaturePad = new SignaturePad(canvas, {
       backgroundColor: 'rgb(255, 255, 255)'
   });
-  function makeid(length) {
+  function makeid2(length) {
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var charactersLength = characters.length;
@@ -166,7 +176,7 @@
     }
     return result;
   }
-  function resizeCanvas() {
+  function resizeCanvas2() {
       var ratio =  Math.max(window.devicePixelRatio || 1, 1);
       canvas.width = canvas.offsetWidth * ratio;
       canvas.height = canvas.offsetHeight * ratio;
@@ -176,8 +186,8 @@
   }
 
   window.onresize = resizeCanvas;
-  resizeCanvas();
-  function download(dataURL, filename) {
+  resizeCanvas2();
+  function download2(dataURL, filename) {
       var blob = dataURLToBlob(dataURL);
       var url = window.URL.createObjectURL(blob);
       var a = document.createElement("a");
@@ -190,7 +200,7 @@
   }
   // One could simply use Canvas#toBlob method instead, but it's just to show
   // that it can be done using result of SignaturePad#toDataURL.
-  function dataURLToBlob(dataURL) {
+  function dataURLToBlob2(dataURL) {
       var parts = dataURL.split(';base64,');
       var contentType = parts[0].split(":")[1];
       var raw = window.atob(parts[1]);
@@ -237,7 +247,7 @@
       simpanFileAtasan(dataURL);
       }
   });
-</script> --}}
+</script>
 </body>
 
 </html>

@@ -40,6 +40,7 @@ class AuthController extends Controller
                                 'username' => $data->username,
                                 'id'       => $data->id,
                                 'witel'    => $data->witel,
+                                'plasa'    => $data->loker,
                                 'nama'     => $data->nama,
                                 'kota'     => $data->kota,
                                 'id_role'  => $data->id_role,

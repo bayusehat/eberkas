@@ -31,20 +31,31 @@
         <li class="nav-item dropdown no-arrow mx-1">
           <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-bell fa-fw"></i>
-            {{-- <span class="badge badge-danger">9+</span> --}}
+              @php
+                  use App\Login;
+                  
+                  $login = Login::where('id',session('id'))->first();
+                  if($login->signature_login != ''){
+                    $notif = '<span class="badge badge-success">Sudah Tanda Tangan</span>';
+                    $badge = '<span class="badge badge-success">V</span>';
+                  }else{
+                    $notif = '<span class="badge badge-danger">Belum Tanda Tangan!</span>';
+                    $badge = '<span class="badge badge-danger">!</span>';
+                  }
+              @endphp
+              {!! $badge !!}
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">{!! $notif !!}</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Something else here</a>
+            <a class="dropdown-item" href="{{ url('user/signature') }}">Tanda Tangan</a>
           </div>
         </li>
-        <li class="nav-item dropdown no-arrow mx-1">
+        {{-- <li class="nav-item dropdown no-arrow mx-1">
           <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-envelope fa-fw"></i>
             {{-- <span class="badge badge-danger">7</span> --}}
-          </a>
+          {{-- </a> --}}
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
             <a class="dropdown-item" href="#">Action</a>
             <a class="dropdown-item" href="#">Another action</a>

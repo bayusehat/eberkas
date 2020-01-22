@@ -44,7 +44,7 @@
                     <div class="col-md-12 col-sm-12 col-xl-12">
                         <div class="table-responsive">
                             <h3 class="text-center">Hasil Pencarian Berkas</h3>
-                            <table class="table table-hover table-bordered table-striped">
+                            <table class="table table-hover table-bordered table-striped" style="width:100%" id="tableData">
                                 <thead>
                                     <tr>
                                         <th>No. Jastel</th>
@@ -55,12 +55,12 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody id="resultBerkas">
-                                    <tr>
+                                <tbody>
+                                    {{-- <tr>
                                         <td class="text-center" colspan="6">
                                             <h6 class="text-danger"><i>Cari berkas</i></h6>
                                         </td>
-                                    </tr>
+                                    </tr> --}}
                                 </tbody>
                             </table>
                         </div>
@@ -71,29 +71,57 @@
 </section>
 
 <script>
+    $(document).ready(function(){
+        $('#tableData').DataTable();
+    })
     function cariBerkas(){
         var tanggal = $('#tanggal').val();
 
         if(tanggal){
-            $.ajax({
-                url : '{{ url("berkas/search") }}',
-                headers : {
-                    'X-CSRF-TOKEN' : $('meta[name=csrf-token]').attr('content')
+            $('#tableData').DataTable({
+            asynchronous: true,
+            processing: true, 
+            destroy: true,
+            ajax: {
+                url: "{{ url('berkas/search') }}",
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                method : 'POST',
+                method: 'POST',
                 data : {
                     'tanggal' : tanggal
-                },
-                beforeSend:function(){
-                    $('#resultBerkas').loading();
-                },
-                complete:function(){
-                    $('#resultBerkas').loading('stop');
-                },
-                success:function(res){
-                    $('#resultBerkas').html(res).fadeIn();
                 }
-            })
+            },
+            columns: [
+                { name: 'id_transaksi', searchable: false, orderable: true, className: 'text-center' },
+                { name: 'jenis_transaksi' },
+                { name: 'nama_transaksi'},
+                { name: 'alamat_pelanggan_transaksi'},
+                { name: 'create_transaksi'},
+                { name: 'action', searchable: false, orderable: false, className: 'text-center' }
+            ],
+            order: [[0, 'asc']],
+            iDisplayInLength: 10 
+        });
+            // $.ajax({
+            //     url : '{{ url("berkas/search") }}',
+            //     headers : {
+            //         'X-CSRF-TOKEN' : $('meta[name=csrf-token]').attr('content')
+            //     },
+            //     method : 'POST',
+            //     data : {
+            //         'tanggal' : tanggal
+            //     },
+            //     beforeSend:function(){
+            //         $('#resultBerkas').loading();
+            //     },
+            //     complete:function(){
+            //         $('#resultBerkas').loading('stop');
+            //     },
+            //     success:function(res){
+            //         $('#resultBerkas').html(res).fadeIn();
+            //     }
+            // })
         }else{
             alert('Tanggal harus diisi!');
         }

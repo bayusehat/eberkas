@@ -68,6 +68,9 @@ class PdaController extends Controller
                 'no_hp_transaksi'            => $request->input('no_hp_transaksi'),
                 'email_transaksi'            => $request->input('email_transaksi'),
                 'signature_pelanggan_transaksi'=> $request->input('id_signature'),
+                'witel_transaksi'            => session('witel'),
+                'plasa_transaksi'            => session('plasa'),
+                'kota_transaksi'             => session('kota'),
                 'create_transaksi'           => date('Y-m-d H:i:s'),
                 'update_transaksi'           => date('Y-m-d H:i:s'),
             ];
