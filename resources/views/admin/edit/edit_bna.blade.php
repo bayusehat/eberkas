@@ -87,6 +87,7 @@
                                 <option value="">-- Pilih Jenis Identitas --</option>
                                 <option value="KTP" @if($transaksi->jenis_identitas_transaksi == 'KTP') {{ 'selected' }} @else {{ '' }} @endif>KTP</option>
                                 <option value="SIM" @if($transaksi->jenis_identitas_transaksi == 'SIM') {{ 'selected' }} @else {{ '' }} @endif>SIM</option>
+                                <option value="PASSPORT" @if($transaksi->jenis_identitas_transaksi == 'PASSPORT') {{ 'selected' }} @else {{ '' }} @endif>PASSPORT</option>
                             </select>
                             @error('jenis_identitas_transaksi') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>

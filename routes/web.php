@@ -10,11 +10,16 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/','AuthController@login');
-Route::post('/login','AuthController@doLogin');
-Route::get('/logout','AuthController@doLogout');
-Route::post('berkas/all/search','EditController@doCariBerkas');
-Route::get('data/witel','LaporanController@plasaWitelFormLama');
+Route::group(['middleware' => ['ifLogged']], function () {
+    Route::get('/','AuthController@login');
+    Route::post('/login','AuthController@doLogin');
+    Route::get('/logout','AuthController@doLogout');
+});
+// Route::get('/','AuthController@login');
+// Route::post('/login','AuthController@doLogin');
+// Route::get('/logout','AuthController@doLogout');
+// Route::post('berkas/all/search','EditController@doCariBerkas');
+// Route::get('data/witel','LaporanController@plasaWitelFormLama');
 // Route::get('data/detail/{jml}/{witel}','LaporanController@transaksi');
 
 Route::group(['middleware' => ['authLogin','web']], function () {
@@ -194,4 +199,8 @@ Route::group(['middleware' => ['authLogin','web']], function () {
      Route::post('laporan/indihome/search','LaporanController@getLaporanIndihome');
      Route::get('laporan/indihome/plasa/{witel}/{bulprod}','LaporanController@plasaFormIndihome');
      Route::get('laporan/indihome/plasa/search/{witel}/{bulprod}','LaporanController@plasaWitelIndihome');
+     Route::get('laporan/indihome/admin','LaporanController@indexIndihomeAdmin');
+     Route::get('laporan/indihome/admin/load','LaporanController@indihomeAdmin');
+     Route::get('laporan/lama/admin','LaporanController@indexFormLamaAdmin');
+     Route::get('laporan/lama/admin/load','LaporanController@formLamaAdmin');
 });

@@ -55,7 +55,6 @@
                     <div class="form-group">
                         <label for="id_role">Role</label>
                         <select name="id_role" id="id_role" class="form-control">
-                            <option value="0">is Parent!</option>
                             @foreach ($role as $r)
                                 <option value="{{ $r->id_role }}">{{ $r->nama_role }}</option>
                             @endforeach
@@ -118,16 +117,29 @@
 <script>
     $(function(){
         loadData();
+        
         $('#btnAddUser').click(function(){
             $('#modalUser').modal('show');
             $('#update').hide();
             $('#cancel').hide();
+            $('#insert').show();
             $('#modalTitle').text('Tambah User');
             $('small').text('');
             $('#password').attr('disabled',false);
             $('#formUser').trigger('reset');
+            setPlasa();
         })
     });
+
+    function setPlasa(){
+        var sess = '{{ session("id_role") }}';
+        if(sess != 1){
+            var plasa = '{{ session("plasa") }}';
+            var valPlasa = $('#loker').val(plasa).trigger('change');
+            getPlasa();
+
+        }
+    }
 
     function batal(){
         $('#cancel').hide();

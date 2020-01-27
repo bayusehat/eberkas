@@ -156,7 +156,7 @@
                             </div>
                             <div class="form-group">
                                 <a href="javascript:void(0)" class="btn btn-primary btn-sm btn-block" id="signature"><i class="fas fa-sign"></i> Tanda Tangan Pelanggan</a>
-                                <input type="hidden" name="id_signature" id="id_signature" value="{{ $transaksi->suignature_pelanggan_transaksi }}">
+                                <input type="hidden" name="id_signature" id="id_signature" value="{{ $transaksi->signature_pelanggan_transaksi }}">
                                 @if ($transaksi->signature_pelanggan_transaksi)
                                     {!! '<i class="text-success"> Sudah ada tanda tangan</i>' !!}
                                 @else

@@ -13,12 +13,17 @@ class UserController extends Controller
 {
     public function index()
     {
+        if(session('id_role') != 1){
+            $role = Role::where('id_role','>',session('id_role'))->where('id_role','!=',5)->where('delete_role',0)->get();
+        }else{
+            $role = Role::all();
+        }
         $data = [
             'title'        => 'Data User',
             'content'      => 'admin.pengaturan.user',
             'parentActive' => 'pengaturan',
             'urlActive'    => 'user',
-            'role'         => Role::where('delete_role',0)->get(),
+            'role'         => $role,
             'loker'        => Plasa::where('delete_plasa',0)->get()
         ];
 
@@ -28,8 +33,19 @@ class UserController extends Controller
     public function loadData()
     {
         $response['data'] = [];
-        $user = Login::all();
-
+        if(session('id_role') == 1){  
+            $user = Login::all();
+        }else{
+            $user = Login::where('id_role','>',session('id_role'))
+                        ->where(function($query){
+                            $query->where('loker',session('plasa'));
+                            $query->where('witel',session('witel'));
+                            $query->where('id_role','!=',5);
+                        })
+                        ->get();
+        }
+      
+        
         foreach($user as $i => $v){
             if($v->status == 'ACTIVE'){
                 $status = 0;

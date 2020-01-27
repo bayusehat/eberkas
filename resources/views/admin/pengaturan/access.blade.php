@@ -25,6 +25,7 @@
             </div> --}}
         @php
             use App\Access;
+            use App\Menu;
         @endphp
         <hr>
             <div class="table-responsive">
@@ -39,11 +40,17 @@
                     <tbody>
                         @foreach ($menu as $i => $v)
                             @php
+                                $check = Menu::where('parent_menu',$v->id_menu)->first();
+                                if($check){
+                                   $parent = '<b> - is Parent!</b>'; 
+                                }else{
+                                    $parent = '';
+                                }
                                 $access = Access::where(['id_menu'=>$v->id_menu,'id_role'=> $role->id_role])->first();
                             @endphp
                             <tr>
                                 <td>{{ ++$i }}</td>
-                                <td>{{ $v->nama_menu }}</td>
+                                <td>{{ $v->nama_menu }}{!! $parent !!}</td>
                                 <td class="text-center">
                                     <input type="checkbox" id="check_{{$v->id_menu}}" onclick="change_access({{ $v->id_menu}} ,{{ $role->id_role }})" @if ($access) {{ 'checked' }} @else {{ '' }} @endif>
                                 </td>
