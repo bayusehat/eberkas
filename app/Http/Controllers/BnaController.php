@@ -41,7 +41,6 @@ class BnaController extends Controller
             'keterangan_transaksi'       => 'required',
             'tanggal_lahir_transaksi'    => 'required',
             'no_hp_transaksi'            => 'required',
-            'email_transaksi'            => 'required'
         ];
 
         $isValid = Validator::make($request->all(),$rules);
@@ -106,7 +105,6 @@ class BnaController extends Controller
             'keterangan_transaksi'       => 'required',
             'tanggal_lahir_transaksi'    => 'required',
             'no_hp_transaksi'            => 'required',
-            'email_transaksi'            => 'required'
         ];
 
         $isValid = Validator::make($request->all(),$rules);

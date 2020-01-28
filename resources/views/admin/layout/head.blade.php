@@ -69,14 +69,14 @@
         changeMonth: true,
         changeYear: true,
         showButtonPanel: true,
-        yearRange:"-50:+50",
+        yearRange:"-100:+50",
         dateFormat: 'yy-mm-dd' 
       })
 
       $('.datemonth').datepicker({ 
         changeMonth: true,
         changeYear: true,
-        yearRange:"-50:+50",
+        yearRange:"-100:+50",
         showButtonPanel: true,
         dateFormat: 'yy-mm' 
       });
@@ -111,6 +111,9 @@
     }
     #signature-pad-atasan{
         display: none;
+    }
+    .form-control,.form-control-sm{
+      text-transform: uppercase;
     }
   </style>
 </head>

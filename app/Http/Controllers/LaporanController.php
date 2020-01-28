@@ -42,11 +42,11 @@ class LaporanController extends Controller
     public function laporanFormLama()
     {
         $load = [
-            'title' => 'Laporan Form Lama',
-            'content' => 'admin.laporan.laporan_form_lama',
+            'title'        => 'Laporan Form Lama',
+            'content'      => 'admin.laporan.laporan_form_lama',
             'parentActive' => 'laporan',
-            'urlActive' => 'form-lama',
-            'result' => []
+            'urlActive'    => 'form-lama',
+            'result'       => []
         ];
 
         return view('admin.layout.index',['data' => $load]);
@@ -367,7 +367,7 @@ class LaporanController extends Controller
     {
         $columns = [
             'eberkas_transaksi.id_transaksi', 
-            'id_jenis_transaksi',
+            'nama_jenis_transaksi',
             'nomor_jastel',
             'nama_tanda_indihome',
             'create_indihome',
@@ -413,9 +413,9 @@ class LaporanController extends Controller
                                 ->leftJoin('eberkas_nomor_jastel','eberkas_nomor_jastel.id_transaksi','=','eberkas_transaksi.id_transaksi')
                                 ->where('eberkas_transaksi.delete_transaksi',0)
                                 ->where(function($query) use ($search){
-                                    $query->orWhere('eberkas_transaksi.nama_transaksi','LIKE',"%{$search}%");
+                                    $query->where('nama_transaksi','LIKE',"%{$search}%");
                                     $query->orWhere('eberkas_nomor_jastel.nomor_jastel','LIKE',"%{$search}%");
-                                    $query->orWhere('eberkas_jenis_transaksi.nama_jenis_transaksi','LIKE',"%{$search}%");        
+                                    $query->orWhere('nama_jenis_transaksi','LIKE',"%{$search}%");        
                                 })
                                 ->offset($start)
                                 ->limit($limit)
@@ -426,9 +426,9 @@ class LaporanController extends Controller
                                     ->leftJoin('eberkas_nomor_jastel','eberkas_nomor_jastel.id_transaksi','=','eberkas_transaksi.id_transaksi')
                                     ->where('eberkas_transaksi.delete_transaksi',0)
                                     ->where(function($query) use ($search){
-                                        $query->orWhere('eberkas_transaksi.nama_transaksi','LIKE',"%{$search}%");
+                                        $query->where('nama_transaksi','LIKE',"%{$search}%");
                                         $query->orWhere('eberkas_nomor_jastel.nomor_jastel','LIKE',"%{$search}%");    
-                                        $query->orWhere('eberkas_jenis_transaksi.nama_jenis_transaksi','LIKE',"%{$search}%");    
+                                        $query->orWhere('nama_jenis_transaksi','LIKE',"%{$search}%");    
                                     })
                                     ->orderBy($order,$dir)
                                     ->count();

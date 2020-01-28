@@ -213,7 +213,7 @@ class UserController extends Controller
     public function doChangePassword(Request $request)
     {
         $rules = [
-            'password' => 'required',
+            'password' => 'required|min:8',
         ];
 
         $isValid = Validator::make($request->all(),$rules);

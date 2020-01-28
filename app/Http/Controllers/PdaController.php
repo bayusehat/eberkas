@@ -41,8 +41,7 @@ class PdaController extends Controller
             'biaya_transaksi'            => 'required',
             'keterangan_transaksi'       => 'required',
             'tanggal_lahir_transaksi'    => 'required',
-            'no_hp_transaksi'            => 'required',
-            'email_transaksi'            => 'required'
+            'no_hp_transaksi'            => 'required'
         ];
 
         $isValid = Validator::make($request->all(),$rules);
@@ -110,7 +109,6 @@ class PdaController extends Controller
             'keterangan_transaksi'       => 'required',
             'tanggal_lahir_transaksi'    => 'required',
             'no_hp_transaksi'            => 'required',
-            'email_transaksi'            => 'required'
         ];
 
         $isValid = Validator::make($request->all(),$rules);

@@ -34,7 +34,7 @@
                     <input type="hidden" name="id_jenis_transaksi" value="{{ request()->segment(2) }}">
                     <div class="col-md-6 col-sm-12 col-xl-6">
                         <div class="form-group">
-                            <label for="produk_transaksi">Produk Transaksi :</label>
+                            <label for="produk_transaksi">Produk Transaksi<span class="text-danger">*</span> :</label>
                             <select name="produk_transaksi" id="produk_transaksi" class="form-control form-control-sm">
                                 <option value="">-- Pilih Produk --</option>
                                 @foreach ($produk as $p)
@@ -56,27 +56,27 @@
                             </table>
                         </div>
                         <div class="form-group">
-                            <label for="nama_transaksi">Nama :</label>
+                            <label for="nama_transaksi">Nama<span class="text-danger">*</span> :</label>
                             <input type="text" class="form-control form-control-sm" name="nama_transaksi" id="nama_transaksi" value="{{ old('nama_transaksi') }}">
                             @error('nama_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                         <div class="form-group">
-                            <label for="alamat_identitas_transaksi">Alamat Identitas :</label>
+                            <label for="alamat_identitas_transaksi">Alamat Identitas<span class="text-danger">*</span> :</label>
                             <input type="text" class="form-control form-control-sm" name="alamat_identitas_transaksi" id="alamat_identitas_transaksi" value="{{ old('alamat_identitas_transaksi') }}">
                             @error('alamat_identitas_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                         <div class="form-group">
-                            <label for="alamat_instalasi_transaksi">Alamat Instalasi Lama :</label>
+                            <label for="alamat_instalasi_transaksi">Alamat Instalasi Lama<span class="text-danger">*</span> :</label>
                             <input type="text" class="form-control form-control-sm" name="alamat_instalasi_transaksi" id="alamat_instalasi_transaksi" value="{{ old('alamat_instalasi_transaksi') }}">
                             @error('alamat_instalasi_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                         <div class="form-group">
-                            <label for="alamat_instalasi_baru">Alamat Instalasi Baru :</label>
+                            <label for="alamat_instalasi_baru">Alamat Instalasi Baru<span class="text-danger">*</span> :</label>
                             <input type="text" class="form-control form-control-sm" name="alamat_instalasi_baru" id="alamat_instalasi_baru" value="{{ old('alamat_instalasi_baru') }}">
                             @error('alamat_instalasi_baru') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                         <div class="form-group">
-                            <label for="jenis_identitas_transaksi">Jenis Identitas :</label>
+                            <label for="jenis_identitas_transaksi">Jenis Identitas<span class="text-danger">*</span> :</label>
                             <select name="jenis_identitas_transaksi" id="jenis_identitas_transaksi" class="form-control form-control-sm">
                                 <option value="">-- Pilih Jenis Identitas --</option>
                                 <option value="KTP">KTP</option>
@@ -85,14 +85,14 @@
                             @error('jenis_identitas_transaksi') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                         <div class="form-group">
-                            <label for="no_identitas_transaksi">Nomor Identitas :</label>
+                            <label for="no_identitas_transaksi">Nomor Identitas<span class="text-danger">*</span> :</label>
                             <input type="text" class="form-control form-control-sm" name="no_identitas_transaksi" id="no_identitas_transaksi" value="{{ old('no_identitas_transaksi') }}">
                             @error('no_identitas_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-12 col-xl-6">
                         <div class="form-group">
-                            <label for="segment_transaksi">Segment :</label>
+                            <label for="segment_transaksi">Segment<span class="text-danger">*</span> :</label>
                             <select name="segment_transaksi" id="segment_transaksi" class="form-control form-control-sm">
                                 <option value="">-- Pilih Segment --</option>
                                 <option value="RESIDENSIAL">RESIDENSIAL</option>
@@ -101,7 +101,7 @@
                             @error('segment_transaksi') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                         <div class="form-group">
-                            <label for="jenis_layanan_transaksi">Jenis Layanan :</label>
+                            <label for="jenis_layanan_transaksi">Jenis Layanan<span class="text-danger">*</span> :</label>
                             <input type="text" class="form-control form-control-sm" name="jenis_layanan_transaksi" id="jenis_layanan_transaksi" value="PENGGUNA STANDARD">
                             @error('jenis_layanan_transaksi') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
@@ -111,17 +111,17 @@
                             @error('keterangan_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                         <div class="form-group">
-                            <label for="biaya_transaksi">Biaya :</label>
+                            <label for="biaya_transaksi">Biaya<span class="text-danger">*</span> :</label>
                             <input type="text" class="form-control form-control-sm" name="biaya_transaksi" id="biaya_transaksi" value="{{ old('biaya_transaksi') }}">
                             @error('biaya_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                         <div class="form-group">
-                            <label for="tanggal_lahir_transaksi">Tanggal Lahir :</label>
+                            <label for="tanggal_lahir_transaksi">Tanggal Lahir<span class="text-danger">*</span> :</label>
                             <input type="text" class="form-control form-control-sm datepicker" name="tanggal_lahir_transaksi" id="tanggal_lahir_transaksi" value="{{ old('tanggal_lahir_transaksi') }}">
                             @error('tanggal_lahir_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                         <div class="form-group">
-                            <label for="no_hp_transaksi">Nomor HP :</label>
+                            <label for="no_hp_transaksi">Nomor HP<span class="text-danger">*</span> :</label>
                             <input type="text" class="form-control form-control-sm" name="no_hp_transaksi" id="no_hp_transaksi" value="{{ old('no_hp_transaksi') }}">
                             @error('no_hp_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
