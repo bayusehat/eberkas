@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Transaksi;
 use App\Plasa;
 use App\NewIndihome;
+use App\Lampiran;
+use App\JenisTransaksi;
 use DB;
 
 class LaporanController extends Controller
@@ -250,11 +252,23 @@ class LaporanController extends Controller
 
     public function indexIndihomeAdmin()
     {
+        $query      = NewIndihome::select('eberkas_indihome.*','eberkas_layanan.nama_layanan','eberkas_ont.nama_ont','eberkas_login.*')
+                                ->join('eberkas_layanan','eberkas_layanan.id_layanan','=','eberkas_indihome.id_layanan')
+                                ->join('eberkas_ont','eberkas_ont.id_ont','=','eberkas_indihome.id_ont')
+                                ->join('eberkas_login','eberkas_login.id','=','eberkas_indihome.id_login')
+                                ->orderBy('eberkas_indihome.create_indihome','desc')
+                                ->get();
+        $plasa = Plasa::where('delete_plasa',0)->get();
+        $jenis = JenisTransaksi::where('delete_jenis_transaksi',0)->get();
         $data = [
-            'title' => 'Laporan Indihome for Admin',
-            'content' => 'admin.laporan.indihome_admin',
-            'urlActive' => 'admin-indihome',
-            'parentActive' => 'laporan'
+            'title'        => 'Laporan Indihome for Admin',
+            'search'       => 'Semua data Indihome',
+            'content'      => 'admin.laporan.indihome_admin',
+            'urlActive'    => 'admin-indihome',
+            'parentActive' => 'laporan',
+            'jenis'        => $jenis,
+            'loker'        => $plasa,
+            'data'         => $query
         ];
 
         return view('admin.layout.index',['data' => $data]);
@@ -262,102 +276,93 @@ class LaporanController extends Controller
 
     public function indihomeAdmin(Request $request)
     {
-        
-        $columns = [
-            'eberkas_indihome.id_indihome', 
-            'id_jenis_transaksi',
-            'nama_tanda_pelanggan',
-            'create_indihome',
+        $loker  = $request->input('loker');
+        $dari   = $request->input('dari');
+        $sampai = $request->input('sampai');
+        $query  = NewIndihome::select('eberkas_indihome.*','eberkas_layanan.nama_layanan','eberkas_ont.nama_ont','eberkas_login.*')
+                                    ->join('eberkas_layanan','eberkas_layanan.id_layanan','=','eberkas_indihome.id_layanan')
+                                    ->join('eberkas_ont','eberkas_ont.id_ont','=','eberkas_indihome.id_ont')
+                                    ->join('eberkas_login','eberkas_login.id','=','eberkas_indihome.id_login');
+        if($loker != '' && $dari != '' && $sampai != ''){
+            $res = $query->where(function($query) use ($loker,$dari,$sampai){
+                $query->where('eberkas_indihome.delete_indihome',0);
+                $query->where('eberkas_login.loker',$loker);
+                $query->whereBetween('eberkas_indihome.create_indihome',[date('Y-m-d H:i:s',strtotime($dari)),date('Y-m-d 23:59:59',strtotime($sampai))]);
+            })
+            ->orderBy('eberkas_indihome.id_indihome','desc')
+            ->get();
+        }else if($loker == '' && $dari == ''){
+            $res = $query->where(function($query) use ($loker,$dari,$sampai){
+                $query->where('eberkas_indihome.delete_indihome',0);
+                $query->whereBetween('eberkas_indihome.create_indihome',[date('Y-m-01 H:i:s'),date('Y-m-d H:i:s')]);
+            })
+            ->orderBy('eberkas_indihome.id_indihome','desc')
+            ->get();
+        }else if($loker != '' && $dari == ''){
+            $res = $query->where(function($query) use ($loker,$dari,$sampai){
+                $query->where('eberkas_indihome.delete_indihome',0);
+                $query->where('eberkas_login.loker',$loker);
+                $query->whereBetween('eberkas_indihome.create_indihome',[date('Y-m-01 H:i:s'),date('Y-m-d 23:59:59')]);
+            })
+            ->orderBy('eberkas_indihome.id_indihome','desc')
+            ->get();
+        }else if($loker == '' && $dari != '' && $sampai != ''){
+            $res = $query->where(function($query) use ($loker,$dari,$sampai){
+                $query->where('eberkas_indihome.delete_indihome',0);
+                $query->whereBetween('eberkas_indihome.create_indihome',[date('Y-m-d H:i:s',strtotime($dari)),date('Y-m-d 23:59:59',strtotime($sampai))]);
+            })
+            ->orderBy('eberkas_indihome.id_indihome','desc')
+            ->get();
+        }else{
+            $res = $query->orderBy('eberkas_indihome.id_indihome','desc')
+                        ->where('eberkas_indihome.delete_indihome',0)
+                        ->get();
+        }
+        $plasa = Plasa::where('delete_plasa',0)->get();
+        $jenisT = JenisTransaksi::where('delete_jenis_transaksi',0)->get();
+        if($loker == ''){
+            $nama_loker = 'Semua Loker';
+        }else{
+            $nama_loker = $loker;
+        }
+
+        if($dari == ''){
+            $waktu = date('Y-m-01') .' s/d. '.date('Y-m-d');
+        }else{
+            $waktu = $dari .' s/d. '.$sampai;
+        }
+        $data = [
+            'title'        => 'Laporan Indihome for Admin',
+            'search'       => 'Data Indihome '.$nama_loker.' '.$waktu,
+            'content'      => 'admin.laporan.indihome_admin',
+            'urlActive'    => 'admin-indihome',
+            'parentActive' => 'laporan',
+            'loker'        => $plasa,
+            'jenis'        => $jenisT,
+            'data'         => $res
         ];
-  
-        $totalData = NewIndihome::leftJoin('eberkas_layanan','eberkas_layanan.id_layanan','=','eberkas_indihome.id_layanan')
-                                ->leftJoin('eberkas_ont','eberkas_ont.id_ont','=','eberkas_indihome.id_ont')
-                                ->leftJoin('eberkas_login','eberkas_login.id','=','eberkas_indihome.id_login')
-                                ->leftJoin('eberkas_pembayaran','eberkas_pembayaran.id_indihome','=','eberkas_indihome.id_indihome')
-                                ->count();
-            
-        $totalFiltered = $totalData; 
 
-        $limit = $request->input('length');
-        $start = $request->input('start');
-        $order = $columns[$request->input('order.0.column')];
-        $dir = $request->input('order.0.dir');
-            
-        if(empty($request->input('search.value')))
-        {            
-            $indihome = NewIndihome::leftJoin('eberkas_layanan','eberkas_layanan.id_layanan','=','eberkas_indihome.id_layanan')
-                                ->leftJoin('eberkas_ont','eberkas_ont.id_ont','=','eberkas_indihome.id_ont')
-                                ->leftJoin('eberkas_login','eberkas_login.id','=','eberkas_indihome.id_login')
-                                ->leftJoin('eberkas_pembayaran','eberkas_pembayaran.id_indihome','=','eberkas_indihome.id_indihome')
-                                ->offset($start)
-                                ->limit($limit)
-                                ->orderBy($order,$dir)
-                                ->get();
-            $totalFiltered = NewIndihome::leftJoin('eberkas_layanan','eberkas_layanan.id_layanan','=','eberkas_indihome.id_layanan')
-                                ->leftJoin('eberkas_ont','eberkas_ont.id_ont','=','eberkas_indihome.id_ont')
-                                ->leftJoin('eberkas_login','eberkas_login.id','=','eberkas_indihome.id_login')
-                                ->leftJoin('eberkas_pembayaran','eberkas_pembayaran.id_indihome','=','eberkas_indihome.id_indihome')
-                                ->offset($start)
-                                ->limit($limit)
-                                ->orderBy($order,$dir)
-                                ->count();
-        }
-        else {
-            $search = $request->input('search.value'); 
-
-            $indihome = NewIndihome::leftJoin('eberkas_layanan','eberkas_layanan.id_layanan','=','eberkas_indihome.id_layanan')
-                                ->leftJoin('eberkas_ont','eberkas_ont.id_ont','=','eberkas_indihome.id_ont')
-                                ->leftJoin('eberkas_login','eberkas_login.id','=','eberkas_indihome.id_login')
-                                ->leftJoin('eberkas_pembayaran','eberkas_pembayaran.id_indihome','=','eberkas_indihome.id_indihome')
-                                ->where('nama_pelanggan_indihome','LIKE',"%{$search}%")
-                                ->orWhere('no_internet_indihome','LIKE',"%{$search}%")
-                                ->offset($start)
-                                ->limit($limit)
-                                ->orderBy($order,$dir)
-                                ->get();
-            $totalFiltered = NewIndihome::leftJoin('eberkas_layanan','eberkas_layanan.id_layanan','=','eberkas_indihome.id_layanan')
-                                    ->leftJoin('eberkas_ont','eberkas_ont.id_ont','=','eberkas_indihome.id_ont')
-                                    ->leftJoin('eberkas_login','eberkas_login.id','=','eberkas_indihome.id_login')
-                                    ->leftJoin('eberkas_pembayaran','eberkas_pembayaran.id_indihome','=','eberkas_indihome.id_indihome')
-                                    ->where('nama_pelanggan_indihome','LIKE',"%{$search}%")
-                                    ->orWhere('no_internet_indihome','LIKE',"%{$search}%")
-                                    ->orderBy($order,$dir)
-                                    ->count();
-        }
-
-       $response['data'] = [];
-        if(!empty($indihome))
-        {
-            foreach ($indihome as $n => $i)
-            {
-                $response['data'][] = [
-                    ++$n,
-                    $i->no_internet_indihome,
-                    $i->nama_pelanggan_indihome,
-                    date('d F Y H:i',strtotime($i->create_indihome))
-                ];
-            }
-        }
-        $response['recordsTotal'] = 0;
-        if ($totalData <> FALSE) {
-            $response['recordsTotal'] = $totalData;
-        }
-
-        $response['recordsFiltered'] = 0;
-        if ($totalFiltered <> FALSE) {
-            $response['recordsFiltered'] = $totalFiltered;
-        }
-
-        return response()->json($response);
+        return view('admin.layout.index',['data' => $data]);
     }
 
     public function indexFormLamaAdmin()
     {
+        $plasa = Plasa::where('delete_plasa',0)->get();
+        $jenis = JenisTransaksi::where('delete_jenis_transaksi',0)->where('id_jenis_transaksi','<>',7)->get();
+        $query = Transaksi::join('eberkas_login','eberkas_login.id','=','eberkas_transaksi.id_login')
+                                ->join('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
+                                ->leftJoin('eberkas_nomor_jastel','eberkas_nomor_jastel.id_transaksi','=','eberkas_transaksi.id_transaksi')
+                                ->where('delete_transaksi',0)
+                                ->get();
         $data = [
-            'title' => 'Laporan Form Lama for Admin',
-            'content' => 'admin.laporan.form_lama_admin',
-            'urlActive' => 'admin-form-lama',
-            'parentActive' => 'laporan'
+            'title'        => 'Laporan Form Lama for Admin',
+            'search'       => 'Data Form Lama',
+            'content'      => 'admin.laporan.form_lama_admin',
+            'urlActive'    => 'admin-form-lama',
+            'parentActive' => 'laporan',
+            'loker'        => $plasa,
+            'jenis'        => $jenis,
+            'data'         => $query
         ];
 
         return view('admin.layout.index',['data' => $data]);
@@ -365,101 +370,98 @@ class LaporanController extends Controller
 
     public function formLamaAdmin(Request $request)
     {
-        $columns = [
-            'eberkas_transaksi.id_transaksi', 
-            'nama_jenis_transaksi',
-            'nomor_jastel',
-            'nama_tanda_indihome',
-            'create_indihome',
+        $loker = $request->input('loker');
+        $jenis = $request->input('jenis');
+        $dari  = $request->input('dari');
+        $sampai= $request->input('sampai');
+
+        $query = Transaksi::join('eberkas_login','eberkas_login.id','=','eberkas_transaksi.id_login')
+                            ->join('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
+                            ->leftJoin('eberkas_nomor_jastel','eberkas_nomor_jastel.id_transaksi','=','eberkas_transaksi.id_transaksi');
+                            
+        $plasa = Plasa::where('delete_plasa',0)->get();
+        $jenisT = JenisTransaksi::where('delete_jenis_transaksi',0)->where('id_jenis_transaksi','<>',7)->get();
+
+        if($loker != '' && $jenis != '' && $dari != ''){
+            $res = $query->where(function($query) use ($loker,$jenis,$dari,$sampai){
+                $query->where('eberkas_transaksi.delete_transaksi',0);
+                $query->where('eberkas_login.loker',$loker);
+                $query->where('eberkas_transaksi.id_jenis_transaksi',$jenis);
+                $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-d H:i:s',strtotime($dari)),date('Y-m-d 23:59:59',strtotime($sampai))]);
+            })
+            ->orderBy('eberkas_transaksi.id_transaksi','desc')
+            ->get();
+        }else if($loker != '' && $jenis != '' && $dari == ''){
+            $res = $query->where(function($query) use ($loker,$jenis,$dari,$sampai){
+                $query->where('eberkas_transaksi.delete_transaksi',0);
+                $query->where('eberkas_login.loker',$loker);
+                $query->where('eberkas_transaksi.id_jenis_transaksi',$jenis);
+                $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-01 H:i:s'),date('Y-m-d 23:59:59')]);
+            })
+            ->orderBy('eberkas_transaksi.id_transaksi','desc')
+            ->get();
+        }else if($loker != '' && $jenis == '' && $dari == ''){
+            $res = $query->where(function($query) use ($loker,$jenis,$dari,$sampai){
+                $query->where('eberkas_transaksi.delete_transaksi',0);
+                $query->where('eberkas_login.loker',$loker);
+                $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-01 H:i:s'),date('Y-m-d 23:59:59')]);
+            })
+            ->orderBy('eberkas_transaksi.id_transaksi','desc')
+            ->get();
+        }else if($loker == '' && $jenis != '' && $dari != ''){
+            $res = $query->where(function($query) use ($loker,$jenis,$dari,$sampai){
+                $query->where('eberkas_transaksi.delete_transaksi',0);
+                $query->where('eberkas_transaksi.id_jenis_transaksi',$jenis);
+                $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-d H:i:s',strtotime($dari)),date('Y-m-d 23:59:59',strtotime($sampai))]);
+            })
+            ->orderBy('eberkas_transaksi.id_transaksi','desc')
+            ->get();
+        }else if($loker == '' && $jenis == '' && $dari != ''){
+            $res = $query->where(function($query) use ($loker,$jenis,$dari,$sampai){
+                $query->where('eberkas_transaksi.delete_transaksi',0);
+                $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-d H:i:s',strtotime($dari)),date('Y-m-d 23:59:59',strtotime($sampai))]);
+            })
+            ->orderBy('eberkas_transaksi.id_transaksi','desc')
+            ->get();
+        }else{
+            $res = $query->where(function($query) use ($loker,$jenis,$dari,$sampai){
+                $query->where('eberkas_transaksi.delete_transaksi',0);
+                $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-01 H:i:s'),date('Y-m-d 23:59:59')]);
+            })
+            ->orderBy('eberkas_transaksi.id_transaksi','desc')
+            ->get();
+        }
+
+        if($loker == ''){
+            $nama_loker = 'Loker Semua Loker';
+        }else{
+            $nama_loker = 'Loker '.$loker;
+        }
+
+        if($jenis == ''){
+            $transaksi = 'Semua Transaksi';
+        }else{
+            $j = JenisTransaksi::where('id_jenis_transaksi',$jenis)->first();
+            $transaksi = 'Transaksi '.$j->nama_jenis_transaksi;
+        }
+
+        if($dari == ''){
+            $waktu = date('Y-m-01').' s/d. '.date('Y-m-d');
+        }else{
+            $waktu = $dari .' s/d. '.$sampai;
+        }
+
+        $data = [
+            'title'        => 'Laporan Form Lama for Admin',
+            'search'       => 'Data Form Lama '.$nama_loker.' '.$transaksi.' '.$waktu,
+            'content'      => 'admin.laporan.form_lama_admin',
+            'parentActive' => 'laporan',
+            'urlActive'    => 'admin-form-lama',
+            'jenis'        => $jenisT,
+            'loker'        => $plasa,
+            'data'         => $res
         ];
-  
-        $totalData = Transaksi::leftJoin('eberkas_login','eberkas_login.id','=','eberkas_transaksi.id_login')
-                                ->leftJoin('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
-                                ->leftJoin('eberkas_nomor_jastel','eberkas_nomor_jastel.id_transaksi','=','eberkas_transaksi.id_transaksi')
-                                ->where('eberkas_transaksi.delete_transaksi',0)
-                                ->count();
-            
-        $totalFiltered = $totalData; 
 
-        $limit = $request->input('length');
-        $start = $request->input('start');
-        $order = $columns[$request->input('order.0.column')];
-        $dir = $request->input('order.0.dir');
-            
-        if(empty($request->input('search.value')))
-        {            
-            $indihome = Transaksi::leftJoin('eberkas_login','eberkas_login.id','=','eberkas_transaksi.id_login')
-                                ->leftJoin('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
-                                ->leftJoin('eberkas_nomor_jastel','eberkas_nomor_jastel.id_transaksi','=','eberkas_transaksi.id_transaksi')
-                                ->where('eberkas_transaksi.delete_transaksi',0)
-                                ->offset($start)
-                                ->limit($limit)
-                                ->orderBy($order,$dir)
-                                ->get();
-            $totalFiltered = Transaksi::leftJoin('eberkas_login','eberkas_login.id','=','eberkas_transaksi.id_login')
-                                ->leftJoin('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
-                                ->leftJoin('eberkas_nomor_jastel','eberkas_nomor_jastel.id_transaksi','=','eberkas_transaksi.id_transaksi')
-                                ->where('eberkas_transaksi.delete_transaksi',0)
-                                ->offset($start)
-                                ->limit($limit)
-                                ->orderBy($order,$dir)
-                                ->count();
-        }
-        else {
-            $search = $request->input('search.value'); 
-
-            $indihome = Transaksi::leftJoin('eberkas_login','eberkas_login.id','=','eberkas_transaksi.id_login')
-                                ->leftJoin('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
-                                ->leftJoin('eberkas_nomor_jastel','eberkas_nomor_jastel.id_transaksi','=','eberkas_transaksi.id_transaksi')
-                                ->where('eberkas_transaksi.delete_transaksi',0)
-                                ->where(function($query) use ($search){
-                                    $query->where('nama_transaksi','LIKE',"%{$search}%");
-                                    $query->orWhere('eberkas_nomor_jastel.nomor_jastel','LIKE',"%{$search}%");
-                                    $query->orWhere('nama_jenis_transaksi','LIKE',"%{$search}%");        
-                                })
-                                ->offset($start)
-                                ->limit($limit)
-                                ->orderBy($order,$dir)
-                                ->get();
-            $totalFiltered = Transaksi::leftJoin('eberkas_login','eberkas_login.id','=','eberkas_transaksi.id_login')
-                                    ->leftJoin('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
-                                    ->leftJoin('eberkas_nomor_jastel','eberkas_nomor_jastel.id_transaksi','=','eberkas_transaksi.id_transaksi')
-                                    ->where('eberkas_transaksi.delete_transaksi',0)
-                                    ->where(function($query) use ($search){
-                                        $query->where('nama_transaksi','LIKE',"%{$search}%");
-                                        $query->orWhere('eberkas_nomor_jastel.nomor_jastel','LIKE',"%{$search}%");    
-                                        $query->orWhere('nama_jenis_transaksi','LIKE',"%{$search}%");    
-                                    })
-                                    ->orderBy($order,$dir)
-                                    ->count();
-        }
-
-        $response['data'] = [];
-        if(!empty($indihome))
-        {
-            foreach ($indihome as $n => $i)
-            {
-               $response['data'][] = [
-                    ++$n,
-                    $i->nomor_jastel,
-                    $i->nama_jenis_transaksi,
-                    $i->nama_transaksi,
-                    date('d F Y H:i',strtotime($i->create_transaksi))
-                ];
-            }
-        }
-          
-        $response['recordsTotal'] = 0;
-        if ($totalData <> FALSE) {
-            $response['recordsTotal'] = $totalData;
-        }
-
-        $response['recordsFiltered'] = 0;
-        if ($totalFiltered <> FALSE) {
-            $response['recordsFiltered'] = $totalFiltered;
-        }
-
-        return response()->json($response);
-    
+        return view('admin.layout.index',['data' => $data]);
     }
 }

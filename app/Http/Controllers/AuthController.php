@@ -44,7 +44,7 @@ class AuthController extends Controller
                                 'nama'     => $data->nama,
                                 'kota'     => $data->kota,
                                 'id_role'  => $data->id_role,
-                                'token'    => Str::random(60)
+                                'tokens'    => Str::random(60)
                             ];
                             session($session);
                             return redirect('/home');

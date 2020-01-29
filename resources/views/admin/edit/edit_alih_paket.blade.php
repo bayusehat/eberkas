@@ -119,8 +119,9 @@
                                 <label for="jenis_identitas_penerima_kuasa_transaksi">Jenis Identitas Penerima Kuasa<span class="text-danger">*</span> :</label>
                                 <select name="jenis_identitas_penerima_kuasa_transaksi" id="jenis_identitas_penerima_kuasa_transaksi" class="form-control form-control-sm">
                                     <option value="">-- Pilih Jenis Identitas --</option>
-                                    <option value="KTP">KTP</option>
-                                    <option value="SIM">SIM</option>
+                                    <option value="KTP" @if($transaksi->jenis_identitas_penerima_kuasa_transaksi == 'KTP') {{ 'selected' }} @else {{ '' }} @endif>KTP</option>
+                                    <option value="SIM" @if($transaksi->jenis_identitas_penerima_kuasa_transaksi == 'SIM') {{ 'selected' }} @else {{ '' }} @endif>SIM</option>
+                                    <option value="PASSPORT" @if($transaksi->jenis_identitas_penerima_kuasa_transaksi == 'PASSPORT') {{ 'selected' }} @else {{ '' }} @endif>PASSPORT</option>
                                 </select>
                                 @error('jenis_identitas_penerima_kuasa_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>

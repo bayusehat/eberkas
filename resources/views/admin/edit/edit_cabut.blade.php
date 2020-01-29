@@ -172,6 +172,35 @@
                                 @error('jabatan_atasan_transaksi') <small>{{ $message }}</small>@enderror
                             </div>
                             <div class="form-group">
+                                <a href="javascript:void(0)" class="btn btn-danger btn-sm btn-block" id="signature-atasan"><i class="fas fa-sign"></i> Tanda Tangan Atasan</a>
+                                <input type="hidden" name="id_signature_atasan" id="id_signature_atasan" value="{{ $transaksi->signature_atasan_transaksi }}">
+                                @if ($transaksi->signature_atasan_transaksi)
+                                    {!! '<i class="text-success"> Sudah ada tanda tangan</i>' !!}
+                                @else
+                                    {!! '<i class="text-danger"> Belum ada tanda tangan</i>' !!} 
+                                @endif
+                                <br>
+                                <div id="signature-pad-atasan" class="jay-signature-pad">
+                                    <div class="jay-signature-pad--body">
+                                        <canvas id="jay-signature-pad-atasan" height="100px"></canvas>
+                                    </div>
+                                    <div class="signature-pad--footer txt-center">
+                                        <small class="description">Tanda Tangan Diatas</small>
+                                        <div class="signature-pad--actions txt-center">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <button type="button" class="button clear" data-action="clear2">Clear</button>
+                                                    <button type="button" class="button" data-action="change-color2">Change color</button>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <button type="button" class="button save" data-action="save-png2">Save as PNG</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <a href="javascript:void(0)" class="btn btn-primary btn-sm btn-block" id="signature"><i class="fas fa-sign"></i> Tanda Tangan Pelanggan</a>
                                 <input type="hidden" name="id_signature" id="id_signature" value="{{ $transaksi->signature_pelanggan_transaksi }}">
                                 @if ($transaksi->signature_pelanggan_transaksi)
@@ -195,35 +224,6 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <button type="button" class="button save" data-action="save-png">Save as PNG</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <a href="javascript:void(0)" class="btn btn-danger btn-sm btn-block" id="signature-atasan"><i class="fas fa-sign"></i> Tanda Tangan Atasan</a>
-                                <input type="hidden" name="id_signature_atasan" id="id_signature_atasan" value="{{ $transaksi->signature_atasan_transaksi }}">
-                                @if ($transaksi->signature_atasan_transaksi)
-                                    {!! '<i class="text-success"> Sudah ada tanda tangan</i>' !!}
-                                @else
-                                    {!! '<i class="text-danger"> Belum ada tanda tangan</i>' !!} 
-                                @endif
-                                <br>
-                                <div id="signature-pad-atasan" class="jay-signature-pad">
-                                    <div class="jay-signature-pad--body">
-                                        <canvas id="jay-signature-pad-atasan" height="100px"></canvas>
-                                    </div>
-                                    <div class="signature-pad--footer txt-center">
-                                        <small class="description">Tanda Tangan Diatas</small>
-                                        <div class="signature-pad--actions txt-center">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <button type="button" class="button clear" data-action="clear2">Clear</button>
-                                                    <button type="button" class="button" data-action="change-color2">Change color</button>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <button type="button" class="button save" data-action="save-png2">Save as PNG</button>
                                                 </div>
                                             </div>
                                         </div>

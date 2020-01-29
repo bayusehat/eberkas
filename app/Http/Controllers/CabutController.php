@@ -37,7 +37,6 @@ class CabutController extends Controller
             'no_identitas_transaksi'                   => 'required',
             'tanggal_lahir_transaksi'                  => 'required',
             'no_hp_transaksi'                          => 'required',
-            'email_transaksi'                          => 'required',
             'nama_penerima_kuasa_transaksi'            => 'required',
             'alamat_penerima_kuasa_transaksi'          => 'required',
             'jenis_identitas_penerima_kuasa_transaksi' => 'required',

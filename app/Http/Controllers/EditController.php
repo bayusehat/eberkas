@@ -33,12 +33,35 @@ class EditController extends Controller
     }
     public function searchBerkas(Request $request)
     {
-       $response['data'] = [];
-       $tanggal = $request->input('tanggal');
-       $query = Transaksi::join('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
-                            ->where('create_transaksi','LIKE',"$tanggal%")
-                            ->orderBy('create_transaksi','desc')
-                            ->get();
+        $response['data'] = [];
+        $tanggal = $request->input('tanggal');
+        if(session('id_role') == 4){
+            $query = Transaksi::join('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
+                                ->leftJoin('eberkas_login','eberkas_login.id','=','eberkas_transaksi.id_login')
+                                ->where('create_transaksi','LIKE',"$tanggal%")
+                                ->where(function($query){
+                                    $query->where('id_login',session('id'));
+                                    $query->where('loker',session('plasa'));
+                                })
+                                ->orderBy('create_transaksi','desc')
+                                ->get();
+        }else if(session('id_role') == 3 || session('id_role') == 2){
+            $query = Transaksi::join('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
+                                ->leftJoin('eberkas_login','eberkas_login.id','=','eberkas_transaksi.id_login')
+                                ->where('create_transaksi','LIKE',"$tanggal%")
+                                ->where(function($query){
+                                    $query->where('loker',session('plasa'));
+                                    $query->where('id_role','>=',session('id_role'));
+                                })
+                                ->orderBy('create_transaksi','desc')
+                                ->get();
+        }else {
+            $query = Transaksi::join('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
+                                ->where('create_transaksi','LIKE',"$tanggal%")
+                                ->orderBy('create_transaksi','desc')
+                                ->get();
+        }
+
         if(count($query) > 0){
             foreach ($query as $i => $v) {
                 $response['data'][] = [

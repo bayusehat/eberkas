@@ -63,7 +63,7 @@
     var clearButton = wrapper.querySelector("[data-action=clear]");
     var changeColorButton = wrapper.querySelector("[data-action=change-color]");
     var savePNGButton = wrapper.querySelector("[data-action=save-png]");
-    var canvas = wrapper.querySelector("canvas");
+    var canvas = wrapper.querySelector("#jay-signature-pad");
     var signaturePad = new SignaturePad(canvas, {
         backgroundColor: 'rgb(255, 255, 255)'
     });
@@ -151,7 +151,7 @@
 
     savePNGButton.addEventListener("click", function (event) {
         if (signaturePad.isEmpty()) {
-        alert("Please provide a signature first.");
+        alert("Tolong isi tanda tangan terlebih dahulu!");
         } else {
         var dataURL = signaturePad.toDataURL();
         simpanFile(dataURL);
@@ -163,7 +163,7 @@
   var clearButton = wrapper.querySelector("[data-action=clear2]");
   var changeColorButton = wrapper.querySelector("[data-action=change-color2]");
   var savePNGButton = wrapper.querySelector("[data-action=save-png2]");
-  var canvas = wrapper.querySelector("canvas#jay-signature-pad-atasan");
+  var canvas = wrapper.querySelector("#jay-signature-pad-atasan");
   var signaturePad = new SignaturePad(canvas, {
       backgroundColor: 'rgb(255, 255, 255)'
   });
@@ -241,7 +241,7 @@
 
   savePNGButton.addEventListener("click", function (event) {
       if (signaturePad.isEmpty()) {
-      alert("Please provide a signature first.");
+      alert("Tolong isi tanda tangan terlebih dahulu!");
       } else {
       var dataURL = signaturePad.toDataURL();
       simpanFileAtasan(dataURL);

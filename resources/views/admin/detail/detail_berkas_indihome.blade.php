@@ -424,11 +424,11 @@ Alamat Penagihan*: {{ $indihome->alamat_penagihan_indihome }} &nbsp;&nbsp;&nbsp;
 	</tr>
 	<tr>
 		<td width="10%" align="center">
-			Petugas Telkom
+            Petugas Telkom
 		</td>
 		<td width="80%">&nbsp;</td>
 		<td width="10%" align="center">
-			Pelanggan
+            Pelanggan
 		</td>
 	</tr>
 	<tr>
@@ -437,16 +437,16 @@ Alamat Penagihan*: {{ $indihome->alamat_penagihan_indihome }} &nbsp;&nbsp;&nbsp;
 		</td>
 		<td width="80%">&nbsp;</td>
 		<td width="10%" align="center">
-		<img src="{{ asset('signature/'.$indihome->signature_pelanggan_indihome) }}" align="center"; width="100" />
+		    <img src="{{ asset('signature/'.$indihome->signature_pelanggan_indihome) }}" align="center"; width="100" />
 		</td>
 	</tr>
 	<tr>
 		<td width="10%" align="center">
-			{{ strtoupper($indihome->nama_pelanggan_indihome) }}
+			{{ strtoupper($indihome->nama) }}
 		</td>
 		<td width="80%">&nbsp;</td>
 		<td width="10%" align="center">
-			{{ strtoupper($indihome->nama) }}
+			{{ strtoupper($indihome->nama_pelanggan_indihome) }}
 		</td>
 	</tr>
 </table>

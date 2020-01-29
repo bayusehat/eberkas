@@ -15,6 +15,7 @@ Route::group(['middleware' => ['ifLogged']], function () {
     Route::post('/login','AuthController@doLogin');
     Route::get('/logout','AuthController@doLogout');
 });
+Route::get('lama/berkas/lengkap/{witel}/{bulprod}','LaporanController@berkasLengkap');
 // Route::get('/','AuthController@login');
 // Route::post('/login','AuthController@doLogin');
 // Route::get('/logout','AuthController@doLogout');
@@ -200,7 +201,7 @@ Route::group(['middleware' => ['authLogin','web']], function () {
      Route::get('laporan/indihome/plasa/{witel}/{bulprod}','LaporanController@plasaFormIndihome');
      Route::get('laporan/indihome/plasa/search/{witel}/{bulprod}','LaporanController@plasaWitelIndihome');
      Route::get('laporan/indihome/admin','LaporanController@indexIndihomeAdmin');
-     Route::get('laporan/indihome/admin/load','LaporanController@indihomeAdmin');
+     Route::post('laporan/indihome/admin/search','LaporanController@indihomeAdmin');
      Route::get('laporan/lama/admin','LaporanController@indexFormLamaAdmin');
-     Route::get('laporan/lama/admin/load','LaporanController@formLamaAdmin');
+     Route::post('laporan/lama/admin/search','LaporanController@formLamaAdmin');
 });

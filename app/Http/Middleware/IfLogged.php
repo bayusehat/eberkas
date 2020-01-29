@@ -15,7 +15,7 @@ class IfLogged
      */
     public function handle($request, Closure $next)
     {
-        if(session('token')){
+        if(session('tokens')){
             return redirect('home');
         }
         return $next($request);

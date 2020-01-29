@@ -119,6 +119,7 @@
                                     <option value="">-- Pilih Jenis Identitas --</option>
                                     <option value="KTP">KTP</option>
                                     <option value="SIM">SIM</option>
+                                    <option value="PASSPORT">PASSPORT</option>
                                 </select>
                                 @error('jenis_identitas_penerima_kuasa_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
                             </div>

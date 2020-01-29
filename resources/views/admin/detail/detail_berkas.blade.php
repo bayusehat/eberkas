@@ -105,7 +105,7 @@ use App\Layanan;
         <td width="162"><img src="{{ asset('images/logo.png') }}" alt=""></td>
         <td width="461">&nbsp;</td>
         <td>
-            <div align="right"><img src="{{ asset('images/logo_flexi.jpg') }}" height="70"/></div>
+            {{-- <div align="right"><img src="{{ asset('images/logo_flexi.jpg') }}" height="70"/></div> --}}
         </td>
     </tr>
 </table>
@@ -274,7 +274,7 @@ use App\Layanan;
                         <input type="checkbox" name="checkbox" value="checkbox" @if ($transaksi->alasan_penerima_kuasa_transaksi == 'SUDAH ADA INDIHOME') {{'checked'}} @else {{''}}@endif  > 
                         Sudah Ada Indihome</p>
                       <p>Terhitung Mulai Hari:  {{ hari_ini(date('D',strtotime($transaksi->create_transaksi))) }}, {{ date('d',strtotime($transaksi->create_transaksi)) }} bulan {{ bulan_ini(date('m',strtotime($transaksi->create_transaksi))) }} tahun {{ date('Y',strtotime($transaksi->create_transaksi)) }}.<br />
-                        Untuk Keperluan Berhenti Berlangganan maka saya akan membayar uang deposit sebesar Rp. {{ number_format($transaksi->deposit_penerima_kuasa_transaksi) }}</p>
+                        Untuk Keperluan Berhenti Berlangganan maka saya akan membayar uang deposit sebesar Rp. {{ number_format((int) $transaksi->deposit_penerima_kuasa_transaksi) }}</p>
                       <p>Contact Person: {{ $transaksi->cp_transaksi }}</p>
                       <p>Demikian Surat pernyataan ini di buat untuk dipergunakan seperlunya. </p>
                     <table width="650" border="0" cellspacing="0" cellpadding="0">
@@ -311,7 +311,7 @@ use App\Layanan;
             </div>
         @endif
 
-        @if($transaksi->id_jenis_transaksi == 4){
+        @if($transaksi->id_jenis_transaksi == 4)
           <p><strong>PERMOHONAN DAN PERSETUJUAN PINDAH ALAMAT</strong></p>
           <p>Pelanggan dengan data-data tersebut di bawah ini bertindak untuk dan atas nama Diri Sendiri / Kuasa,<br />Dengan ini mengajukan permohonan berlangganan sambungan telekomunikasi "TELKOM Phone" <br />Kepada PT. Telekomunikasi Indonesia,Tbk. dengan dan spesifikasi berikut:  </p>
           <p><b><u>Data Pelanggan/Kuasa:</u></b> </p>
@@ -363,11 +363,10 @@ use App\Layanan;
                 <td>{{ $transaksi->id_jenis_transaksi }}</td>
                 <td>{{ $transaksi->segment_transaksi }}</td>
                 <td>{{ $transaksi->jenis_layanan_transaksi }}</td>
-                <td>{{ number_formet($transaksi->biaya_transaksi) }}</td>
+                <td>{{ number_format($transaksi->biaya_transaksi) }}</td>
                 <td>{{ $transaksi->keterangan_transaksi }}</td>
               </tr>
             </table>
-        }
         @endif
 
         @if ($transaksi->id_jenis_transaksi == 6) 
@@ -561,7 +560,7 @@ use App\Layanan;
             <tr>
               <td>Jenis Identitas-No.</td>
               <td>:</td>
-              <td>{{ $transaksi->jenis_identitas_penerima_kuasa_transaksi.'/'.$transaksi->no_identitas_penerima_kuasa_transaksi }} }}</td>
+              <td>{{ $transaksi->jenis_identitas_penerima_kuasa_transaksi.'/'.$transaksi->no_identitas_penerima_kuasa_transaksi }}</td>
             </tr>
           </table>
         <p>Dalam hal ini bertindak untuk atas nama diri sendiri, pemberi kuasa Perseorangan / Perusahaan / Badan Usaha atau Lembaga: </p>

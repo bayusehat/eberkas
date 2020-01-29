@@ -71,7 +71,7 @@
                                     @if (count($resultIndihome) > 0)
                                         @foreach ($resultIndihome as $ri)
                                             <tr>
-                                                <td><a href="{{ url('detail/7/'.$ri->id_indihome) }}">{{ $ri->no_internet_indihome }}</a></td>
+                                                <td><a href="{{ url('detail/7/'.$ri->id_indihome) }}" target="_blank">{{ $ri->no_internet_indihome }}</a></td>
                                                 <td>{{ $ri->jenis_permohonan_indihome }}</td>
                                                 <td>{{ $ri->nama_pelanggan_indihome }}</td>
                                                 <td>{{ $ri->alamat_pelanggan_indihome }}</td>
@@ -106,7 +106,7 @@
                                     @if (count($resultTransaksi) > 0)
                                          @foreach ($resultTransaksi as $rt)
                                             <tr>
-                                                <td><a href="{{ url('detail/'.$rt->id_jenis_transaksi.'/'.$rt->id_transaksi) }}">{{ $rt->nomor_jastel }}</a></td>
+                                                <td><a href="{{ url('detail/'.$rt->id_jenis_transaksi.'/'.$rt->id_transaksi) }}" target="_blank">{{ $rt->nomor_jastel }}</a></td>
                                                 <td>{{ $rt->nama_jenis_transaksi }}</td>
                                                 <td>{{ $rt->nama_transaksi }}</td>
                                                 <td>{{ $rt->alamat_instalasi_transaksi }}</td>

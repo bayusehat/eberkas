@@ -146,7 +146,6 @@ class AlihPaketController extends Controller
                 'paket_baru_transaksi'                     => $request->input('paket_baru_transaksi'),
                 'cp_transaksi'                             => $request->input('cp_transaksi'),
                 'signature_pelanggan_transaksi'            => $request->input('id_signature'),
-                'create_transaksi'                         => date('Y-m-d H:i:s'),
                 'update_transaksi'                         => date('Y-m-d H:i:s'),
             ];
             $update = Transaksi::where('id_transaksi',$id)->update($data);
