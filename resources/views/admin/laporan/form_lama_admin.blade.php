@@ -74,6 +74,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>Action</th>
                                         <th>Nomor Jastel</th>
                                         <th>Jenis Transaksi</th>
                                         <th>Loker</th>
@@ -85,6 +86,10 @@
                                     @foreach ($data as $i => $d)
                                         <tr>
                                             <td>{{ ++$i }}</td>
+                                            <td class="text-center">
+                                                <a href="{{ url('detail/'.$d->id_jenis_transaksi.'/'.$d->id_transaksi) }}" class="btn btn-primary btn-sm btn-block" target="_blank"><i class="fas fa-eye"></i> Detail</a>
+                                                <a href="{{ url('edit/'.$d->id_jenis_transaksi.'/'.$d->id_transaksi) }}" class="btn btn-warning btn-sm btn-block" target="_blank"><i class="fas fa-edit"></i> Edit</a>
+                                            </td>
                                             <td>{{ $d->nomor_jastel }}</td>
                                             <td>{{ $d->nama_jenis_transaksi }}</td>
                                             <td>{{ $d->loker }}</td>

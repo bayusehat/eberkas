@@ -99,6 +99,8 @@ function bulan_ini($bulan){
 
 use App\FiturIndihome;
 use App\Layanan;
+use App\NomorJastel;
+use App\Login;
 @endphp
 <table width="849" border="0" cellspacing="0" cellpadding=0>
     <tr>
@@ -220,6 +222,9 @@ use App\Layanan;
         @endif
 
         @if ($transaksi->id_jenis_transaksi == 3)
+        @php
+            $nomorJastel = NomorJastel::where('id_transaksi',$transaksi->id_transaksi)->get();
+        @endphp
         <p><strong><U>SURAT PERNYATAAN</U></strong><BR />
             Berhenti Berlangganan {{ $transaksi->produk_transaksi }}</p>
                   <p>Yang bertanda tangan di bawah ini: </p>
@@ -258,7 +263,11 @@ use App\Layanan;
                       <td>{{ $transaksi->jenis_identitas_transaksi.'/'.$transaksi->no_identitas_transaksi }}</td>
                     </tr>
             </table>
-                  <p>Menyatakan berhenti berlangganan {{ $transaksi->produk_transaksi }} Nomor: <b><?php echo $nojastel[0]->nomor_jastel; ?></b>, karena:</p>
+                  <p>Menyatakan berhenti berlangganan {{ $transaksi->produk_transaksi }} Nomor: <b>
+                      @foreach ($nomorJastel as $nj)
+                          {{ $nj->nomor_jastel.',' }}
+                      @endforeach
+                    </b>, karena:</p>
             
                       <p>
                         <input type="checkbox" name="checkbox" value="checkbox" @if ($transaksi->alasan_penerima_kuasa_transaksi == 'PINDAH ALAMAT') {{'checked'}} @else {{''}}@endif> 
@@ -300,10 +309,14 @@ use App\Layanan;
                       <tr>
                         <td width="253">&nbsp;</td>
                         <td width="205" align="center">Mengetahui,<br />
-                          {{ $transaksi->jabatan_atasan_transaksi }}
+                          @php
+                            $atasan = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
+                                            ->where('loker',$transaksi->loker)->where('eberkas_login.id_role',3)->first();    
+                          @endphp
+                          {{ $atasan->nama_role }}
                           <br>
-                          <img src="{{ asset('signature/'.$transaksi->signature_atasan_transaksi) }}"width="100" /><br /> 
-                          {{ strtoupper($transaksi->nama_atasan_transaksi) }}
+                          <img src="{{ asset('signature/'.$atasan->signature_login) }}"width="100" /><br /> 
+                          {{ strtoupper($atasan->nama) }}
                           </td>
                         <td width="161"><br /></td>
                       </tr>
@@ -329,12 +342,12 @@ use App\Layanan;
               <tr>
                 <td>Alamat Instalasi&nbsp;Lama</td>
                 <td>:</td>
-                <td>{{ $transaksi->alamat_instalasi_lama_transaksi }}</td>
+                <td>{{ $transaksi->alamat_instalasi_transaksi }}</td>
               </tr>
               <tr>
                 <td>Alamat Instalasi&nbsp;Baru</td>
                 <td>:</td>
-                <td>{{ $transaksi->alamat_instalasi_baru_transaksi }}</td>
+                <td>{{ $transaksi->alamat_instalasi_baru }}</td> 
               </tr>
               <tr>
                 <td>Jenis Identitas-No.</td>
@@ -449,7 +462,7 @@ use App\Layanan;
             <p>Demikian Surat pernyataan ini di buat untuk dipergunakan seperlunya. </p>
               <table width="650" border="0" cellspacing="0" cellpadding="0">
                   <tr valign="top">
-                    <td width="250" align="center">{{ $transaksi->kota }}, {{ hari_ini(date('D',strtotime($transaksi->create_transaksi))) .' '.bulan_ini(date('m',strtotime($transaksi->create_transaksi))).' '.date('F',strtotime($transaksi->create_transaksi)) }}</td>
+                    <td width="250" align="center">{{ $transaksi->kota }}, {{ hari_ini(date('D',strtotime($transaksi->create_transaksi))) .' '.bulan_ini(date('m',strtotime($transaksi->create_transaksi))).' '.date('Y',strtotime($transaksi->create_transaksi)) }}</td>
                     <td width="200">&nbsp;</td>
                     <td width="200" align="center">Menyetujui,</td>
                   </tr>
@@ -486,7 +499,7 @@ use App\Layanan;
             <tr>
               <td>No. Telepon &nbsp;&nbsp;&nbsp;</td>
               <td>:</td>
-              <td>{{ $transaksi->no_hp_transaksi }}</td>
+              <td>{{ $transaksi->no_telepon_transaksi }}</td>
             </tr>
             <tr>
               <td>Status Penggunaan</td>
@@ -509,7 +522,7 @@ use App\Layanan;
             </tr>
           </table>
         <p>Mengajukan keberatan atas tagihan PT. TELKOM untuk bulan:<br />Dengan Alasan pengaduan:</p>
-        <p><strong>&quot;{{ $transaksi->isis_pengaduan_transaksi }}&quot;</strong></p>
+        <p><strong>&quot;{{ $transaksi->isi_pengaduan_transaksi }}&quot;</strong></p>
         <p>Keadaan Sambungan Telepon Kami saat ini: </p>
         <p>
             <input type="checkbox" name="checkbox283" value="checkbox" @if($transaksi->keadaan_sambungan_telepon_transaksi == 'ADA PARALEL') {{'checked'}} @else {{''}} @endif />
@@ -523,7 +536,7 @@ use App\Layanan;
             <p>Demikian pengaduan kami. </p>
             <table width="650" border="0" cellspacing="0" cellpadding="0">
               <tr valign="top">
-                <td width="250" align="center">{{ $transaksi->kota }}, {{ hari_ini(date('D',strtotime($transaksi->create_transaksi))) .' '.bulan_ini(date('m',strtotime($transaksi->create_transaksi))).' '.date('F',strtotime($transaksi->create_transaksi)) }}</td>
+                <td width="250" align="center">{{ $transaksi->kota }}, {{ hari_ini(date('D',strtotime($transaksi->create_transaksi))) .' '.bulan_ini(date('m',strtotime($transaksi->create_transaksi))).' '.date('Y',strtotime($transaksi->create_transaksi)) }}</td>
                 <td width="200">&nbsp;</td>
                 <td width="200" align="center"></td>
               </tr>
@@ -591,8 +604,8 @@ use App\Layanan;
             </tr>
           </table>
           @php
-              $lama = Layanan::where(['id_layanan' => $transaksi->paket_lama_transaksi,'role_layanan' => 1])->first();
-              $baru = Layanan::where(['id_layanan' => $transaksi->paket_baru_transaksi,'role_layanan' => 0])->first();
+              $lama = Layanan::where(['id_layanan' => $transaksi->paket_lama_transaksi])->first();
+              $baru = Layanan::where(['id_layanan' => $transaksi->paket_baru_transaksi])->first();
           @endphp
         <p>Bersedia mengganti paket Telkom Speedy :</p>
             <p>Dari Paket: <b>{{ $lama->nama_layanan }}</b><br />

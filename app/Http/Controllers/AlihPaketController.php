@@ -24,8 +24,8 @@ class AlihPaketController extends Controller
             'parentActive' => 'input-berkas',
             'urlActive'    => 'alih',
             'produk'       => Produk::where('delete_produk',0)->get(),
-            'paketlama'    => Layanan::where(['role_layanan' => 1,'delete_layanan' => 0])->get(),
-            'paketbaru'    => Layanan::where(['role_layanan' => 0,'delete_layanan' => 0])->orderBy('nama_layanan','asc')->get()
+            'paketlama'    => Layanan::where('delete_layanan', 0)->get(),
+            'paketbaru'    => Layanan::where('delete_layanan', 0)->orderBy('nama_layanan','asc')->get()
         ];
 
         return view('admin.layout.index',['data' => $data]);

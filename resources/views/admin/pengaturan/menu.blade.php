@@ -1,3 +1,8 @@
+<style>
+    .form-control,.form-control-sm{
+      text-transform: lowercase;
+    }
+</style>
 <section>
     <div class="card">
         <div class="card-header">

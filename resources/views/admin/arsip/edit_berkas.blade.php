@@ -47,7 +47,7 @@
                             <table class="table table-hover table-bordered table-striped" style="width:100%" id="tableData">
                                 <thead>
                                     <tr>
-                                        <th>No. Jastel</th>
+                                        <th>No.</th>
                                         <th>Jenis Transaksi</th>
                                         <th>Nama</th>
                                         <th>Alamat</th>

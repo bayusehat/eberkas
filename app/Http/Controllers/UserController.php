@@ -235,7 +235,7 @@ class UserController extends Controller
 
     public function resetPassword($id)
     {
-        $reset = Login::where('id',$id)->update([
+        $reset = Login::where('username',$id)->update([
             'password' => Hash::make('telkom2020')
         ]);
 

@@ -63,6 +63,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
+                                        <th>Action</th>
                                         <th>Nomor Internet</th>
                                         <th>Loker</th>
                                         <th>Nama Pelanggan</th>
@@ -73,6 +74,10 @@
                                     @foreach ($data as $i => $d)
                                         <tr>
                                             <td>{{ ++$i }}</td>
+                                            <td class="text-center">
+                                                <a href="{{ url('detail/7/'.$d->id_indihome) }}" class="btn btn-primary btn-sm btn-block" target="_blank"><i class="fas fa-eye"></i> Detail</a>
+                                                <a href="{{ url('edit/7/'.$d->id_indihome) }}" class="btn btn-warning btn-sm btn-block" target="_blank"><i class="fas fa-edit"></i> Edit</a>
+                                            </td>
                                             <td>{{ $d->no_internet_indihome }}</td>
                                             <td>{{ $d->loker }}</td>
                                             <td>{{ $d->nama_tanda_indihome }}</td>

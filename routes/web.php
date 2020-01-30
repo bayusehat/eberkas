@@ -178,6 +178,8 @@ Route::group(['middleware' => ['authLogin','web']], function () {
      Route::get('edit/berkas','EditController@index');
      Route::post('berkas/search','EditController@searchBerkas');
      Route::get('cari/berkas','EditController@cariBerkas');
+     Route::get('delete/indihome/{id}','EditController@deleteIndihome');
+     Route::get('delete/lama/{id}','EditController@deleteFormLama');
 
      //To Halaman masing2 edit & Detail
      Route::get('edit/{jenis_transaksi}/{id_transaksi}','EditController@edit');

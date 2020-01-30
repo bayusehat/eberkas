@@ -161,7 +161,7 @@
                                 <input type="text" class="form-control form-control-sm" name="cp_transaksi" id="cp_transaksi" value="{{ $transaksi->cp_transaksi }}">
                                 @error('cp_transaksi') <small>{{ $message }}</small>@enderror
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label for="nama_atasan_transaksi">Nama Atasan :</label>
                                 <input type="text" class="form-control form-control-sm" name="nama_atasan_transaksi" id="nama_atasan_transaksi" value="{{ $transaksi->nama_atasan_transaksi }}">
                                 @error('nama_atasan_transaksi') <small>{{ $message }}</small>@enderror
@@ -199,7 +199,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <a href="javascript:void(0)" class="btn btn-primary btn-sm btn-block" id="signature"><i class="fas fa-sign"></i> Tanda Tangan Pelanggan</a>
                                 <input type="hidden" name="id_signature" id="id_signature" value="{{ $transaksi->signature_pelanggan_transaksi }}">

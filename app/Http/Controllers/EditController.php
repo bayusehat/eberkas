@@ -16,6 +16,7 @@ use App\Produk;
 use App\Paket;
 use App\JenisLayanan;
 use App\JenisOnt;
+use App\JenisTransaksi;
 use App\NewIndihome;
 
 class EditController extends Controller
@@ -42,6 +43,7 @@ class EditController extends Controller
                                 ->where(function($query){
                                     $query->where('id_login',session('id'));
                                     $query->where('loker',session('plasa'));
+                                    $query->where('delete_transaksi',0);
                                 })
                                 ->orderBy('create_transaksi','desc')
                                 ->get();
@@ -52,12 +54,14 @@ class EditController extends Controller
                                 ->where(function($query){
                                     $query->where('loker',session('plasa'));
                                     $query->where('id_role','>=',session('id_role'));
+                                    $query->where('delete_transaksi',0);
                                 })
                                 ->orderBy('create_transaksi','desc')
                                 ->get();
         }else {
             $query = Transaksi::join('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
                                 ->where('create_transaksi','LIKE',"$tanggal%")
+                                ->where('delete_transaksi',0)
                                 ->orderBy('create_transaksi','desc')
                                 ->get();
         }
@@ -96,6 +100,7 @@ class EditController extends Controller
                                     ->where(['id_transaksi'=>$id,'delete_transaksi' => 0])
                                     ->first();
             $nojastel   = NomorJastel::where(['id_transaksi' => $id])->get();
+            $jenis_transaksi = JenisTransaksi::where('id_jenis_transaksi',$id_jenis)->first();
             if($id_jenis == 1){
                 $content = 'admin.edit.edit_bna';
             }else if($id_jenis == 2){
@@ -114,15 +119,15 @@ class EditController extends Controller
                 $content = 'admin.edit.edit_claim';
             }
             $data = [
-                'title'        => 'Edit Berkas '.$query->nama_jenis_transaksi,
+                'title'        => 'Edit Berkas '.$jenis_transaksi->nama_jenis_transaksi,
                 'content'      => $content,
                 'parentActive' => 'arsip',
                 'urlActive'    => 'edit-berkas',
                 'transaksi'    => $query,
                 'nojastel'     => $nojastel,
                 'produk'       => Produk::where('delete_produk',0)->get(),
-                'paketlama'    => Layanan::where(['role_layanan' => 1,'delete_layanan' => 0])->get(),
-                'paketbaru'    => Layanan::where(['role_layanan' => 0,'delete_layanan' => 0])->orderBy('nama_layanan','asc')->get()
+                'paketlama'    => Layanan::where(['delete_layanan' => 0])->get(),
+                'paketbaru'    => Layanan::where(['delete_layanan' => 0])->orderBy('nama_layanan','asc')->get()
             ];
 
         }else if($id_jenis == 6){
@@ -206,7 +211,7 @@ class EditController extends Controller
             'title'           => 'Cari Berkas',
             'content'         => 'admin.arsip.cari_berkas',
             'parentActive'    => 'arsip',
-            'urlActive'       => 'url',
+            'urlActive'       => 'cari',
             'resultIndihome'  => [],
             'resultTransaksi' => []
         ];
@@ -228,14 +233,14 @@ class EditController extends Controller
                                     ->join('eberkas_transaksi','eberkas_transaksi.id_transaksi','=','eberkas_nomor_jastel.id_transaksi')
                                     ->join('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi');
         if($searchBy == 1){
-            $resultIndihome = $query->where('eberkas_indihome.no_internet_indihome','like',"%{$searchVal}%")->orderBy('create_indihome','desc')->get();
-            $resultTransaksi= $query2->where('eberkas_nomor_jastel.nomor_jastel','like',"%{$searchVal}%")->orderBy('create_transaksi','desc')->get();
+            $resultIndihome = $query->where('eberkas_indihome.no_internet_indihome','like',"%{$searchVal}%")->where('delete_indihome',0)->orderBy('create_indihome','desc')->get();
+            $resultTransaksi= $query2->where('eberkas_nomor_jastel.nomor_jastel','like',"%{$searchVal}%")->where('delete_transaksi',0)->orderBy('create_transaksi','desc')->get();
         }else if($searchBy == 2){
-            $resultIndihome = $query->where('eberkas_indihome.nama_pelanggan_indihome','like',"%{$searchVal}%")->orderBy('create_indihome','desc')->get();
-            $resultTransaksi= $query2->where('eberkas_transaksi.nama_transaksi','like',"%{$searchVal}%")->orderBy('create_transaksi','desc')->get();
+            $resultIndihome = $query->where('eberkas_indihome.nama_pelanggan_indihome','like',"%{$searchVal}%")->where('delete_indihome',0)->orderBy('create_indihome','desc')->get();
+            $resultTransaksi= $query2->where('eberkas_transaksi.nama_transaksi','like',"%{$searchVal}%")->where('delete_transaksi',0)->orderBy('create_transaksi','desc')->get();
         }else{
-            $resultIndihome = $query->where('eberkas_indihome.kontak_hp_indihome','like',"%{$searchVal}%")->orderBy('create_indihome','desc')->get();
-            $resultTransaksi= $query2->where('eberkas_transaksi.no_hp_transaksi','like',"%{$searchVal}%")->orderBy('create_transaksi','desc')->get();
+            $resultIndihome = $query->where('eberkas_indihome.kontak_hp_indihome','like',"%{$searchVal}%")->where('delete_indihome',0)->orderBy('create_indihome','desc')->get();
+            $resultTransaksi= $query2->where('eberkas_transaksi.no_hp_transaksi','like',"%{$searchVal}%")->where('delete_transaksi',0)->orderBy('create_transaksi','desc')->get();
         }
 
         $data = [
@@ -258,6 +263,7 @@ class EditController extends Controller
                                     ->join('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
                                     ->where(['id_transaksi'=>$id,'delete_transaksi' => 0])
                                     ->first();
+            $jenis_transaksi = JenisTransaksi::where('id_jenis_transaksi',$id_jenis)->first();
             $nojastel   = NomorJastel::where(['id_transaksi' => $id])->get();
             if($id_jenis == 1){
                 $content = 'admin.edit.edit_bna';
@@ -277,7 +283,7 @@ class EditController extends Controller
                 $content = 'admin.edit.edit_claim';
             }
             $data = [
-                'title'        => 'Edit Berkas '.$query->nama_jenis_transaksi,
+                'title'        => 'Edit Berkas '.$jenis_transaksi->nama_jenis_transaksi,
                 'content'      => 'admin.detail.detail_berkas',
                 'parentActive' => 'arsip',
                 'urlActive'    => 'cari',
@@ -317,6 +323,7 @@ class EditController extends Controller
                                                 ->join('eberkas_login','eberkas_login.id','=','eberkas_indihome.id_login')
                                                 ->leftJoin('eberkas_pembayaran','eberkas_pembayaran.id_indihome','=','eberkas_indihome.id_indihome')
                                                 ->where('eberkas_indihome.id_indihome',$id)
+                                                ->where('delete_indihome',0)
                                                 ->first();
             $jenisOnt               = JenisOnt::where('delete_ont',0)->get();
             $paketTambahan          = PaketTambahan::where('delete_paket_tambahan',0)->get();
@@ -360,5 +367,31 @@ class EditController extends Controller
         }
 
         return view('admin.detail.detail_berkas',$data);
+    }
+
+    public function deleteIndihome($id)
+    {
+        $delete = NewIndihome::where('id_indihome',$id)->update([
+            'delete_indihome' => 1
+        ]);
+
+        if($delete){
+            return redirect('cari/berkas')->with('success','Hapus berkas berhasil');
+        }else{
+            return redirect('cari/berkas')->with('error','Hapus berkas gagal');
+        }
+    }
+
+    public function deleteFormLama($id)
+    {
+        $delete = Transaksi::where('id_transaksi',$id)->update([
+            'delete_transaksi' => 1
+        ]);
+
+        if($delete){
+            return redirect('cari/berkas')->with('success','Hapus berkas berhasil');
+        }else{
+            return redirect('cari/berkas')->back()->with('error','Hapus berkas gagal');
+        }
     }
 }

@@ -150,7 +150,7 @@
                                 <input type="text" class="form-control form-control-sm" name="cp_transaksi" id="cp_transaksi" value="{{ old('cp_transaksi') }}">
                                 @error('cp_transaksi') <small>{{ $message }}</small>@enderror
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label for="nama_atasan_transaksi">Nama Atasan :</label>
                                 <input type="text" class="form-control form-control-sm" name="nama_atasan_transaksi" id="nama_atasan_transaksi" value="{{ old('nama_atasan_transaksi') }}">
                                 @error('nama_atasan_transaksi') <small>{{ $message }}</small>@enderror
@@ -159,8 +159,8 @@
                                 <label for="jabatan_atasan_transaksi">Jabatan Atasan :</label>
                                 <input type="text" class="form-control form-control-sm" name="jabatan_atasan_transaksi" id="jabatan_atasan_transaksi" value="{{ old('jabatan_atasan_transaksi') }}">
                                 @error('jabatan_atasan_transaksi') <small>{{ $message }}</small>@enderror
-                            </div>
-                            <div class="form-group">
+                            </div> --}}
+                            {{-- <div class="form-group">
                                 <a href="javascript:void(0)" class="btn btn-danger btn-sm btn-block" id="signature-atasan"><i class="fas fa-sign"></i> Tanda Tangan Atasan</a>
                                 <input type="hidden" name="id_signature_atasan" id="id_signature_atasan" value="{{ old('id_signature_atasan') }}">
                                 @error('id_signature_atasan') <small class="text-danger">{{ $message }}</small>@enderror
@@ -184,7 +184,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <a href="javascript:void(0)" class="btn btn-primary btn-sm btn-block" id="signature"><i class="fas fa-sign"></i> Tanda Tangan Pelanggan</a>
                                 <input type="hidden" name="id_signature" id="id_signature" value="{{ old('id_signature') }}">

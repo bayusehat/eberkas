@@ -11,6 +11,14 @@
                     <a href="javascript:void(0)" id="btnAddUser" class="btn btn-success"><i class="fas fa-plus"></i> Tambah</a>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-4 col-sm-4 col-xl-4">
+                    <input type="text" class="form-control" name="prener" id="prener" placeholder="ID User">
+                </div>
+                <div class="col-md-4 col-sm-4 col-xl-4">
+                    <button type="button" class="btn btn-primary" onclick="resetPass()" id="reset"><i class="fas fa-sync"></i> Reset Password</button>
+                </div>
+            </div>
         <hr>
             <div class="table-responsive">
                 <table class="table table-hover table-bordered table-striped nowrap" style="width:100%" id="tableData">
@@ -139,6 +147,19 @@
             getPlasa();
 
         }
+    }
+
+    function resetPass(){
+        var username = $('#prener').val();
+        $.ajax({
+            url : '{{ url("user/change/password/reset") }}/'+username,
+            headers : {
+                'X-CSRF-TOKEN' : $('meta[name=csrf-token]').attr('content')
+            },
+            success:function(res){
+                location.reload();
+            }
+        })
     }
 
     function batal(){
