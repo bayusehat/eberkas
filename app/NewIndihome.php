@@ -47,6 +47,8 @@ class NewIndihome extends Model
         'delete_indihome',
         'witel_indihome',
         'plasa_indihome',
-        'kota_indihome'
+        'kota_indihome',
+        'tanggal_lahir_pelanggan_indihome',
+        'jenis_kelamin_pelanggan_indihome'
     ];
 }

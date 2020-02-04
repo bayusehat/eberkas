@@ -28,7 +28,7 @@
                     </button>
                 </div>
             @endif
-            <form action="{{ url('alih/update/'.$transaksi->id_transaksi) }}" method="POST" id="formBna">
+            <form action="{{ url('alih/update/'.$transaksi->id_transaksi) }}" method="POST" id="formBna" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <input type="hidden" name="id_jenis_transaksi" value="{{ request()->segment(2) }}">
@@ -132,7 +132,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="paket_lama_transaksi">Paket Lama<span class="text-danger">*</span> :</label>
-                                <select name="paket_lama_transaksi" id="paket_lama_transaksi" class="form-control form-control-sm">
+                                <select name="paket_lama_transaksi" id="paket_lama_transaksi" class="form-control form-control-sm select2">
                                     <option value="">-- Pilih Paket Lama --</option>
                                     @foreach ($paketlama as $pl)
                                         <option value="{{ $pl->id_layanan }}" @if($transaksi->paket_lama_transaksi == $pl->id_layanan) {{'selected'}} @else {{''}} @endif>{{ $pl->nama_layanan }}</option>
@@ -142,7 +142,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="paket_baru_transaksi">Paket Baru<span class="text-danger">*</span> :</label>
-                                <select name="paket_baru_transaksi" id="paket_baru_transaksi" class="form-control form-control-sm">
+                                <select name="paket_baru_transaksi" id="paket_baru_transaksi" class="form-control form-control-sm select2">
                                     <option value="">-- Pilih Paket Baru --</option>
                                     @foreach ($paketbaru as $pb)
                                         <option value="{{ $pb->id_layanan }}" @if($transaksi->paket_baru_transaksi == $pb->id_layanan) {{'selected'}} @else {{''}} @endif>{{ $pb->nama_layanan }}</option>

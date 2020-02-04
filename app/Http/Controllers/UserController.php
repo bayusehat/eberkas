@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        if(session('id_role') != 1){
+        if(session('id_role') != 1 || session('role') != 5){
             $role = Role::where('id_role','>',session('id_role'))->where('id_role','!=',5)->where('delete_role',0)->get();
         }else{
             $role = Role::all();
@@ -35,6 +35,12 @@ class UserController extends Controller
         $response['data'] = [];
         if(session('id_role') == 1){  
             $user = Login::all();
+        }else if(session('id_role') == 5){
+            $user = Login::whereBetween('id_role',[2,5])
+                        ->where(function($query){
+                            $query->where('witel',session('witel'));
+                        })
+                        ->get();
         }else{
             $user = Login::where('id_role','>',session('id_role'))
                         ->where(function($query){

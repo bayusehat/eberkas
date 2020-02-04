@@ -310,10 +310,27 @@ use App\Login;
                         <td width="253">&nbsp;</td>
                         <td width="205" align="center">Mengetahui,<br />
                           @php
-                            $atasan = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
-                                            ->where('loker',$transaksi->loker)->where('eberkas_login.id_role',3)->first();    
+                            if($transaksi->witel == 'SINGARAJA'){
+                              $atasan = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
+                                            ->where('loker','PLASA GIANYAR')->where('eberkas_login.id_role',3)->first();
+                              if($atasan){
+                                $atasan = $atasan;
+                              }else{
+                                $atasan = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
+                                            ->where('loker','PLASA GIANYAR')->where('eberkas_login.id_role',4)->first();
+                              }
+                            }else{
+                              $atasan = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
+                                            ->where('loker',$transaksi->loker)->where('eberkas_login.id_role',3)->first();
+                              if($atasan){
+                                $atasan = $atasan;
+                              }else{
+                                $atasan = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
+                                            ->where('loker',$transaksi->loker)->where('eberkas_login.id_role',4)->first();
+                              }
+                            }
                           @endphp
-                          {{ $atasan->nama_role }}
+                          {{$atasan->nama_role}}
                           <br>
                           <img src="{{ asset('signature/'.$atasan->signature_login) }}"width="100" /><br /> 
                           {{ strtoupper($atasan->nama) }}
@@ -499,7 +516,7 @@ use App\Login;
             <tr>
               <td>No. Telepon &nbsp;&nbsp;&nbsp;</td>
               <td>:</td>
-              <td>{{ $transaksi->no_telepon_transaksi }}</td>
+              <td>{{ $nojastel[0]->nomor_jastel }}</td>
             </tr>
             <tr>
               <td>Status Penggunaan</td>

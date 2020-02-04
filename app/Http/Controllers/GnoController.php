@@ -8,6 +8,7 @@ use Str;
 use App\Transaksi;
 use App\NomorJastel;
 use App\Produk;
+use App\Lampiran;
 
 class GnoController extends Controller
 {
@@ -19,7 +20,12 @@ class GnoController extends Controller
             'content'      => 'admin.input.gno',
             'parentActive' => 'input-berkas',
             'urlActive'    => 'gno',
-            'produk'       => Produk::where('delete_produk',0)->get()
+            'produk'       => Produk::where(function($query){
+                                $query->where('delete_produk',0);
+                                $query->where('id_produk','<>',5);
+                                $query->where('id_produk','<>',6);
+                                $query->where('id_produk','<>',7);
+                            })->get(),
         ];
 
         return view('admin.layout.index',['data' => $data]);
@@ -81,6 +87,19 @@ class GnoController extends Controller
                             'id_transaksi' => $insert->id_transaksi,
                             'nomor_jastel' => $v
                         ]);
+                    }
+                }
+                if($request->has('lampiran')){
+                    foreach ($request->file('lampiran') as $i => $f) {
+                       $name = Str::random(10).$f->getClientOriginalName();
+                       $f->move(public_path('/lampiranfile/'),$name);
+                       
+                       Lampiran::insert([
+                           'id_jenis_transaksi' => $request->input('id_jenis_transaksi'),
+                           'id_berkas'          => $insert->id_transaksi,
+                           'lampiran'           => $name,
+                           'keterangan_lampiran'=> 'Input berkas'
+                       ]);
                     }
                 }
                 return redirect()->back()->with('success','Berhasil menambahkan Berkas Ganti Nomor baru!');

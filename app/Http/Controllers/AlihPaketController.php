@@ -12,6 +12,7 @@ use App\Layanan;
 use App\Fitur;
 use App\FiturIndihome;
 use App\Paket;
+use App\Lampiran;
 
 class AlihPaketController extends Controller
 {
@@ -23,7 +24,12 @@ class AlihPaketController extends Controller
             'content'      => 'admin.input.alih_paket',
             'parentActive' => 'input-berkas',
             'urlActive'    => 'alih',
-            'produk'       => Produk::where('delete_produk',0)->get(),
+            'produk'       => Produk::where(function($query){
+                                        $query->where('delete_produk',0);
+                                        $query->where('id_produk','<>',5);
+                                        $query->where('id_produk','<>',6);
+                                        $query->where('id_produk','<>',7);
+                            })->get(),
             'paketlama'    => Layanan::where('delete_layanan', 0)->get(),
             'paketbaru'    => Layanan::where('delete_layanan', 0)->orderBy('nama_layanan','asc')->get()
         ];
@@ -49,7 +55,8 @@ class AlihPaketController extends Controller
             'no_identitas_penerima_kuasa_transaksi'    => 'required',
             'paket_lama_transaksi'                     => 'required',
             'paket_baru_transaksi'                     => 'required',
-            'cp_transaksi'                             => 'required'
+            'cp_transaksi'                             => 'required',
+            'lampiran'                                 => 'required|max:2048'
         ];
 
         $isValid = Validator::make($request->all(),$rules);
@@ -92,6 +99,20 @@ class AlihPaketController extends Controller
                             'id_transaksi' => $insert->id_transaksi,
                             'nomor_jastel' => $v
                         ]);
+                    }
+                }
+
+                if($request->has('lampiran')){
+                    foreach ($request->file('lampiran') as $i => $f) {
+                       $name = Str::random(10).$f->getClientOriginalName();
+                       $f->move(public_path('/lampiranfile/'),$name);
+                       
+                       Lampiran::insert([
+                           'id_jenis_transaksi' => $request->input('id_jenis_transaksi'),
+                           'id_berkas'          => $insert->id_transaksi,
+                           'lampiran'           => $name,
+                           'keterangan_lampiran'=> 'Input berkas'
+                       ]);
                     }
                 }
                 return redirect()->back()->with('success','Berhasil menambahkan Berkas Alih Paket baru!');

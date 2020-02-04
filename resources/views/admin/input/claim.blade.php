@@ -28,7 +28,7 @@
                     </button>
                 </div>
             @endif
-            <form action="{{ url('claim/insert') }}" method="POST" id="formBna">
+            <form action="{{ url('claim/insert') }}" method="POST" id="formBna" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <input type="hidden" name="id_jenis_transaksi" value="{{ request()->segment(2) }}">
@@ -168,6 +168,12 @@
                                 <label for="identifikasi_claim_transaksi">Identifikasi Awal atas Claim<span class="text-danger">*</span> :</label>
                                 <input type="text" class="form-control form-control-sm" name="identifikasi_claim_transaksi" id="identifikasi_claim_transaksi" value="{{ old('identifikasi_claim_transaksi') }}">
                                 @error('identifikasi_claim_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
+                            </div>
+                            <div class="form-group">
+                                <small class="text-danger">* Lampiran hanya diperbolehkan berukuran kurang dari 1 MB!</small><br>
+                                <label for="lampiran">Lampiran<span class="text-danger">*</span> :</label>
+                                <input type="file" class="form-control" name="lampiran[]" id="lampiran" multiple required>
+                                @error('lampiran') <small>{{ $message }}</small>@enderror
                             </div>
                             <div class="form-group">
                                 <a href="javascript:void(0)" class="btn btn-primary btn-sm btn-block" id="signature"><i class="fas fa-sign"></i> Tanda Tangan Pelanggan</a>

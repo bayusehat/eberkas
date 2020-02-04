@@ -19,7 +19,7 @@ Route::get('lama/berkas/lengkap/{witel}/{bulprod}','LaporanController@berkasLeng
 // Route::get('/','AuthController@login');
 // Route::post('/login','AuthController@doLogin');
 // Route::get('/logout','AuthController@doLogout');
-// Route::post('berkas/all/search','EditController@doCariBerkas');
+Route::post('berkas/all/search','EditController@doCariBerkas');
 // Route::get('data/witel','LaporanController@plasaWitelFormLama');
 // Route::get('data/detail/{jml}/{witel}','LaporanController@transaksi');
 

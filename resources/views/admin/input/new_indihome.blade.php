@@ -41,13 +41,13 @@
                         <select name="jenis_permohonan_indihome" id="jenis_permohonan_indihome" class="form-control form-control-sm" onchange="getPermohonan()">
                             <option value="">-- Pilih Jenis Permohonan --</option>
                             <option value="KONTRAK BARU">KONTRAK BARU</option>
-                            <option value="UPGRADE LAYANAN">UPGRADE LAYANAN</option>
+                            <option value="UPGRADE LAYANAN/DOWNGRADE LAYANAN">UPGRADE LAYANAN/DOWNGRADE LAYANAN</option>
                         </select>
                         @error('jenis_permohonan_indihome') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>
                     <div class="form-group">
                         <label for="id_layanan">Paket Layanan Indihome : </label>
-                        <select name="id_layanan" id="id_layayan" class="form-control form-control-sm">
+                        <select name="id_layanan" id="id_layayan" class="form-control form-control-sm select2">
                             <option value="">-- Pilih Jenis Layanan --</option>
                             @foreach ($layanan as $l)
                                 <option value="{{ $l->id_layanan }}">{{ $l->nama_layanan }}</option>
@@ -95,7 +95,7 @@
                     <label for=""><strong>II. Detail Pelanggan</strong></label>
                     <label for="">Yang bertanda tangan di bawah ini :</label>
                     <div class="form-group">
-                        <label for="nama_tanda_indihome">Nama<span class="text-danger">*</span> : </label>
+                        <label for="nama_tanda_indihome">Nama Pengunjung<span class="text-danger">*</span> : </label>
                         <input type="text" class="form-control form-control-sm" name="nama_tanda_indihome" id="nama_tanda_indihome" value="{{ old('nama_tanda_indihome') }}">
                         @error('nama_tanda_indihome') <small class="text-danger">{{ $message }}</small>@enderror
                     </div>
@@ -104,7 +104,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="">Jenis<span class="text-danger">*</span> : </label>
+                                    <label for="">Jenis Identitas Pengunjung<span class="text-danger">*</span> : </label>
                                     <select name="jenis_identitas_tanda_indihome" id="jenis_identitas_tanda_indihome" class="form-control form-control-sm">
                                         <option value="">-- Pilih Jenis Identitas --</option>
                                         <option>KTP</option>
@@ -116,7 +116,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="">No. Identitas<span class="text-danger">*</span> :</label>
+                                    <label for="">No. Identitas Pengunjung<span class="text-danger">*</span> :</label>
                                     <input type="text" class="form-control form-control-sm" name="no_identitas_tanda_indihome" id="no_identitas_tanda_indihome" placeholder="Nomor Identitas" value="{{ old('no_identitas_tanda_indihome') }}">
                                     @error('no_identitas_tanda_indihome') <small class="text-danger">{{ $message }}</small>@enderror
                                 </div>
@@ -126,14 +126,14 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="">Alamat<span class="text-danger">*</span> :</label> 
+                                    <label for="">Alamat Pengunjung<span class="text-danger">*</span> :</label> 
                                     <textarea name="alamat_tanda_indihome" id="alamat_tanda_indihome" class="form-control form-control-sm" placeholder="Alamat">{{ old('alamat_tanda_indihome') }}</textarea>
                                     @error('alamat_tanda_indihome') <small class="text-danger">{{ $message }}</small>@enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="">Kode Pos<span class="text-danger">*</span> </label>
+                                    <label for="">Kode Pos Pengunjung<span class="text-danger">*</span> </label>
                                     <input type="text" class="form-control form-control-sm" name="kodepos_tanda_indihome" id="kodepos_tanda_indihome" placeholder="Kodepos" value="{{ old('kodepos_tanda_indihome') }}">
                                     @error('kodepos_tanda_indihome') <small class="text-danger">{{ $message }}</small>@enderror
                                 </div>
@@ -182,16 +182,37 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="">Alamat<span class="text-danger">*</span> :</label> 
+                                    <label for="">Alamat Pelanggan<span class="text-danger">*</span> :</label> 
                                     <textarea name="alamat_pelanggan_indihome" id="alamat_pelanggan_indihome" class="form-control form-control-sm" placeholder="Alamat Pelanggan">{{ old('alamat_pelanggan_indihome') }}</textarea>
                                     @error('alamat_pelanggan_indihome') <small class="text-danger">{{ $message }}</small>@enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="">Kode Pos<span class="text-danger">*</span> </label>
+                                    <label for="">Kode Pos Pelanggan<span class="text-danger">*</span> </label>
                                     <input type="text" class="form-control form-control-sm" name="kodepos_pelanggan_indihome" id="kodepos_pelanggan_indihome" placeholder="Kodepos Pelanggan" value="{{ old('kodepos_pelanggan_indihome') }}">
                                     @error('kodepos_pelanggan_indihome') <small class="text-danger">{{ $message }}</small>@enderror
+                                </div>
+                            </div>
+                        </div>
+                    <br>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Tanggal Lahir Pelanggan<span class="text-danger">*</span> :</label> 
+                                    <input type="text" class="form-control form-control-sm datepicker" name="tanggal_lahir_pelanggan_indihome" id="tanggal_lahir_pelanggan_indihome" value="{{ old('tanggal_lahir_pelanggan_indihome') }}">
+                                    @error('tanggal_lahir_pelanggan_indihome') <small class="text-danger">{{ $message }}</small>@enderror
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Jenis Kelamin Pelanggan<span class="text-danger">*</span> </label>
+                                    <select name="jenis_kelamin_pelanggan_indihome" id="jenis_kelamin_pelanggan_indihome" class="form-control form-control-sm">
+                                        <option value="">-- Pilih Jenis Kelamin --</option>
+                                        <option>LAKI-LAKI</option>
+                                        <option>PEREMPUAN</option>
+                                    </select>
+                                    @error('jenis_kelamin_pelanggan_indihome') <small class="text-danger">{{ $message }}</small>@enderror
                                 </div>
                             </div>
                         </div>
@@ -375,8 +396,10 @@
                         </table>
                     </div>
                     <div class="form-group">
-                        <label for="lampiran_indihome">Lampiran :</label>
-                        <input type="file" class="form-control" name="lampiran_indihome" id="lampiran_indihome">
+                        <small class="text-danger">* Lampiran hanya diperbolehkan berukuran kurang dari 1 MB!</small><br>
+                        <label for="lampiran_indihome">Lampiran<span class="text-danger">*</span> :</label>
+                        <input type="file" class="form-control" name="lampiran_indihome[]" id="lampiran_indihome" multiple required>
+                        @error('lampiran') <small>{{ $message }}</small>@enderror
                     </div>
                     <div class="form-group">
                         <a href="javascript:void(0)" class="btn btn-primary btn-sm btn-block" id="signature"><i class="fas fa-sign"></i> Tanda Tangan Pelanggan</a>

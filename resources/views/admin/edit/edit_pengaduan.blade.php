@@ -28,7 +28,7 @@
                     </button>
                 </div>
             @endif
-            <form action="{{ url('pengaduan/update/'.$transaksi->id_transaksi) }}" method="POST" id="formBna">
+            <form action="{{ url('pengaduan/update/'.$transaksi->id_transaksi) }}" method="POST" id="formBna" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <input type="hidden" name="id_jenis_transaksi" value="{{ request()->segment(2) }}">
@@ -73,11 +73,26 @@
                             @error('alamat_instalasi_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                         <div class="form-group">
+                            @php
+                                if($transaksi->jenis_identitas_transaksi == 'KTP'){
+                                    $kosong = '';
+                                    $ktp = 'selected';
+                                    $sim = '';
+                                }else if($transaksi->jenis_identitas_transaksi == 'SIM'){
+                                    $kosong = '';
+                                    $ktp = '';
+                                    $sim = 'selected';
+                                }else{
+                                    $kosong = 'selected';
+                                    $ktp = '';
+                                    $sim = '';
+                                }
+                            @endphp
                             <label for="jenis_identitas_transaksi">Jenis Identitas<span class="text-danger">*</span> :</label>
                             <select name="jenis_identitas_transaksi" id="jenis_identitas_transaksi" class="form-control form-control-sm">
-                                <option value="">-- Pilih Jenis Identitas --</option>
-                                <option value="KTP" @if($transaksi->id_jenis_transaksi == 'KTP') {{'selected'}} @else {{''}} @endif>KTP</option>
-                                <option value="SIM" @if($transaksi->id_jenis_transaksi == 'SIM') {{'selected'}} @else {{''}} @endif>SIM</option>
+                                <option value="" {{$kosong}}>-- Pilih Jenis Identitas --</option>
+                                <option value="KTP" {{$ktp}}>KTP</option>
+                                <option value="SIM" {{$sim}}>SIM</option>
                             </select>
                             @error('jenis_identitas_transaksi') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
@@ -110,7 +125,7 @@
                         </div>
                         <div class="form-group">
                             <label for="isi_pengaduan_transaks">Isi Pengaduan<span class="text-danger">*</span> :</label>
-                            <textarea name="isi_pengaduan_transaksi" id="isi_pengaduan_transaksu" class="form-control form-control-sm">{{ $transaksi->isi_pengaduan_transaksi }}</textarea>
+                            <textarea name="isi_pengduan_transaksi" id="isi_pengduan_transaksi" class="form-control form-control-sm">{{ $transaksi->isi_pengaduan_transaksi }}</textarea>
                             @error('isi_pengaduan_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                         <div class="form-group">

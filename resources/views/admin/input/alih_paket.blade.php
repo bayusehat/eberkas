@@ -28,7 +28,7 @@
                     </button>
                 </div>
             @endif
-            <form action="{{ url('alih/insert') }}" method="POST" id="formBna">
+            <form action="{{ url('alih/insert') }}" method="POST" id="formBna" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <input type="hidden" name="id_jenis_transaksi" value="{{ request()->segment(2) }}">
@@ -102,7 +102,8 @@
                     </div>
                     <div class="col-md-6 col-sm-12 col-xl-6">
                         <div class="form-group">
-                            <label for=""><strong>Penerima Kuasa</strong></label>
+                            Apakah data sama dengan data Pengunjung? <button type="button" class="btn btn-primary btn-sm" onclick="sama()"><i class="fas fa-sync"></i> Samakan</button>
+                            <label for=""><strong>Penerima Kuasa</strong></label> 
                             <div class="form-group">
                                 <label for="nama_penerima_kuasa_transaksi">Nama Penerima<span class="text-danger">*</span> :</label>
                                 <input type="text" class="form-control form-control-sm" name="nama_penerima_kuasa_transaksi" id="nama_penerima_kuasa_transaksi" value="{{ old('nama_penerima_kuasa_transaksi') }}">
@@ -130,7 +131,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="paket_lama_transaksi">Paket Lama<span class="text-danger">*</span> :</label>
-                                <select name="paket_lama_transaksi" id="paket_lama_transaksi" class="form-control form-control-sm">
+                                <select name="paket_lama_transaksi" id="paket_lama_transaksi" class="form-control form-control-sm select2">
                                     <option value="">-- Pilih Paket Lama --</option>
                                     @foreach ($paketlama as $pl)
                                         <option value="{{ $pl->id_layanan }}">{{ $pl->nama_layanan }}</option>
@@ -140,7 +141,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="paket_baru_transaksi">Paket Baru<span class="text-danger">*</span> :</label>
-                                <select name="paket_baru_transaksi" id="paket_baru_transaksi" class="form-control form-control-sm">
+                                <select name="paket_baru_transaksi" id="paket_baru_transaksi" class="form-control form-control-sm select2">
                                     <option value="">-- Pilih Paket Baru --</option>
                                     @foreach ($paketbaru as $pb)
                                         <option value="{{ $pb->id_layanan }}">{{ $pb->nama_layanan }}</option>
@@ -164,6 +165,12 @@
                                 <label for="cp_transaksi">Contact Person<span class="text-danger">*</span> :</label>
                                 <input type="text" class="form-control form-control-sm" name="cp_transaksi" id="cp_transaksi" value="{{ old('cp_transaksi') }}">
                                 @error('cp_transaksi') <small>{{ $message }}</small>@enderror
+                            </div>
+                            <div class="form-group">
+                                <small class="text-danger">* Lampiran hanya diperbolehkan berukuran kurang dari 1 MB!</small><br>
+                                <label for="lampiran">Lampiran<span class="text-danger">*</span> :</label>
+                                <input type="file" class="form-control" name="lampiran[]" id="lampiran" multiple required>
+                                @error('lampiran') <small>{{ $message }}</small>@enderror
                             </div>
                             <div class="form-group">
                                 <a href="javascript:void(0)" class="btn btn-primary btn-sm btn-block" id="signature"><i class="fas fa-sign"></i> Tanda Tangan Pelanggan</a>

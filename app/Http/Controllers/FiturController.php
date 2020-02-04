@@ -11,6 +11,7 @@ use App\Produk;
 use App\Layanan;
 use App\Fitur;
 use App\FiturIndihome;
+use App\Lampiran;
 
 class FiturController extends Controller
 {
@@ -22,7 +23,12 @@ class FiturController extends Controller
             'content'      => 'admin.input.fitur',
             'parentActive' => 'input-berkas',
             'urlActive'    => 'fitur',
-            'produk'       => Produk::where('delete_produk',0)->get(),
+            'produk'       => Produk::where(function($query){
+                                $query->where('delete_produk',0);
+                                $query->where('id_produk','<>',5);
+                                $query->where('id_produk','<>',6);
+                                $query->where('id_produk','<>',7);
+                            })->get(),
             'layanan'      => Layanan::where('delete_layanan',0)->get(),
             'fitur'        => Fitur::where('delete_fitur',0)->get()
         ];
@@ -98,6 +104,20 @@ class FiturController extends Controller
                             'id_transaksi' => $insert->id_transaksi,
                             'id_fitur'     => $f
                         ]);
+                    }
+                }
+
+                if($request->has('lampiran')){
+                    foreach ($request->file('lampiran') as $i => $f) {
+                       $name = Str::random(10).$f->getClientOriginalName();
+                       $f->move(public_path('/lampiranfile/'),$name);
+                       
+                       Lampiran::insert([
+                           'id_jenis_transaksi' => $request->input('id_jenis_transaksi'),
+                           'id_berkas'          => $insert->id_transaksi,
+                           'lampiran'           => $name,
+                           'keterangan_lampiran'=> 'Input berkas'
+                       ]);
                     }
                 }
 

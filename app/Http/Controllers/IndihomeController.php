@@ -56,6 +56,8 @@ class IndihomeController extends Controller
             'jenis_pembayaran_indihome'          => 'required',
             'alamat_penagihan_indihome'          => 'required',
             'kodepos_penagihan_indihome'         => 'required',
+            'jenis_kelamin_pelanggan_indihome'   => 'required',
+            'tanggal_lahir_pelanggan_indihome'   => 'required'
         ];
 
         $isValid = Validator::make($request->all(),$rules);
@@ -109,6 +111,8 @@ class IndihomeController extends Controller
                 'kota_indihome'                      => session('kota'),
                 'create_indihome'                    => date('Y-m-d H:i:s'),
                 'update_indihome'                    => date('Y-m-d H:i:s'),
+                'tanggal_lahir_pelanggan_indihome'   => $request->input('tanggal_lahir_pelanggan_indihome'),
+                'jenis_kelamin_pelanggan_indihome'   => $request->input('jenis_kelamin_pelanggan_indihome')
             ];
 
             $act = NewIndihome::create($data);
@@ -124,15 +128,16 @@ class IndihomeController extends Controller
                 }
 
                 if($request->has('lampiran_indihome')){
-                    $img = $request->file('lampiran_indihome');
-                    $lampiran_indihome = Str::random(10).$img->getClientOriginalName();
-                    $img->move(public_path('lampiranfile'),$lampiran_indihome);
-                    Lampiran::insert([
-                        'id_jenis_transaksi' => 7,
-                        'id_berkas' => $act->id_indihome,
-                        'keterangan_lampiran' => 'New Indihome',
-                        'lampiran' => $lampiran_indihome
-                    ]);
+                    foreach ($request->file('lampiran_indihome') as $a => $f) {
+                        $lampiran_indihome = Str::random(10).$f->getClientOriginalName();
+                        $f->move(public_path('lampiranfile'),$lampiran_indihome);
+                        Lampiran::insert([
+                            'id_jenis_transaksi'  => 7,
+                            'id_berkas'           => $act->id_indihome,
+                            'keterangan_lampiran' => 'New Indihome',
+                            'lampiran'            => $lampiran_indihome
+                        ]);
+                    }
                 }
 
                 Pembayaran::insert([
@@ -180,6 +185,8 @@ class IndihomeController extends Controller
             'jenis_pembayaran_indihome'          => 'required',
             'alamat_penagihan_indihome'          => 'required',
             'kodepos_penagihan_indihome'         => 'required',
+            'jenis_kelamin_pelanggan_indihome'   => 'required',
+            'tanggal_lahir_pelanggan_indihome'   => 'required'
         ];
 
         $isValid = Validator::make($request->all(),$rules);
@@ -228,6 +235,8 @@ class IndihomeController extends Controller
                 'persetujuan_indihome'               => $p1.';'.$p2.';'.$p3.';'.$p4.';'.$p5.';'.$p6.';'.$p7,
                 'signature_pelanggan_indihome'       => $request->input('id_signature'),
                 'update_indihome'                    => date('Y-m-d H:i:s'),
+                'tanggal_lahir_pelanggan_indihome'   => $request->input('tanggal_lahir_pelanggan_indihome'),
+                'jenis_kelamin_pelanggan_indihome'   => $request->input('jenis_kelamin_pelanggan_indihome')
             ];
 
             $act = NewIndihome::where('id_indihome',$id)->update($data);

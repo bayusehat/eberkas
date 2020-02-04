@@ -28,7 +28,7 @@
                     </button>
                 </div>
             @endif
-            <form action="{{ url('cabut/update/'.$transaksi->id_transaksi) }}" method="POST" id="formBna">
+            <form action="{{ url('cabut/update/'.$transaksi->id_transaksi) }}" method="POST" id="formBna" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <input type="hidden" name="id_jenis_transaksi" value="{{ request()->segment(2) }}">

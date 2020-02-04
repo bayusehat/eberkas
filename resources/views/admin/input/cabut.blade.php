@@ -28,7 +28,7 @@
                     </button>
                 </div>
             @endif
-            <form action="{{ url('cabut/insert') }}" method="POST" id="formBna">
+            <form action="{{ url('cabut/insert') }}" method="POST" id="formBna" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <input type="hidden" name="id_jenis_transaksi" value="{{ request()->segment(2) }}">
@@ -149,6 +149,12 @@
                                 <label for="cp_transaksi">Contact Person<span class="text-danger">*</span> :</label>
                                 <input type="text" class="form-control form-control-sm" name="cp_transaksi" id="cp_transaksi" value="{{ old('cp_transaksi') }}">
                                 @error('cp_transaksi') <small>{{ $message }}</small>@enderror
+                            </div>
+                            <div class="form-group">
+                                <small class="text-danger">* Lampiran hanya diperbolehkan berukuran kurang dari 1 MB!</small><br>
+                                <label for="lampiran">Lampiran<span class="text-danger">*</span> :</label>
+                                <input type="file" class="form-control" name="lampiran[]" id="lampiran" multiple required>
+                                @error('lampiran') <small>{{ $message }}</small>@enderror
                             </div>
                             {{-- <div class="form-group">
                                 <label for="nama_atasan_transaksi">Nama Atasan :</label>

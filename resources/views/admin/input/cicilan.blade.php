@@ -28,7 +28,7 @@
                     </button>
                 </div>
             @endif
-            <form action="{{ url('cicilan/insert') }}" method="POST" id="formBna">
+            <form action="{{ url('cicilan/insert') }}" method="POST" id="formBna" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <input type="hidden" name="id_jenis_transaksi" value="{{ request()->segment(2) }}">
@@ -178,6 +178,12 @@
                             <div class="form-group">
                                 <label for="no_isolir_lain_transaksi">No. Lain yang diisolir<span class="text-danger">*</span> :</label>
                                 <input type="text" class="form-control form-control-sm" name="no_isolir_lain_transaksi" id="no_isolir_lain_transaksi" value="{{ old('no_isolir_transaksi') }}">
+                            </div>
+                            <div class="form-group">
+                                <small class="text-danger">* Lampiran hanya diperbolehkan berukuran kurang dari 1 MB!</small><br>
+                                <label for="lampiran">Lampiran<span class="text-danger">*</span> :</label>
+                                <input type="file" class="form-control" name="lampiran[]" id="lampiran" multiple required>
+                                @error('lampiran') <small>{{ $message }}</small>@enderror
                             </div>
                             <div class="form-group">
                                 <a href="javascript:void(0)" class="btn btn-primary btn-sm btn-block" id="signature"><i class="fas fa-sign"></i> Tanda Tangan Pelanggan</a>

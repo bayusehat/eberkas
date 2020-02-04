@@ -224,7 +224,7 @@ class EditController extends Controller
         $responseIndihome['data']  = [];
         $responseTransaksi['data'] = [];
         $searchBy   = $request->input('searchBy');
-        $searchVal  = $request->input('searchVal');
+        $searchVal  = strtoupper($request->input('searchVal'));
         $query      = NewIndihome::select('eberkas_indihome.*','eberkas_layanan.nama_layanan','eberkas_ont.nama_ont','eberkas_login.nama')
                                     ->join('eberkas_layanan','eberkas_layanan.id_layanan','=','eberkas_indihome.id_layanan')
                                     ->join('eberkas_ont','eberkas_ont.id_ont','=','eberkas_indihome.id_ont')
