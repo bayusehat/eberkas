@@ -83,7 +83,7 @@
                 <div class="row mt-5">
                     <div class="col-md-12 col-sm-12 col-xl-12">
                         <div class="table-responsive">
-                            <h3 class="text-center">Hasil Transaksi Non-Indihome</h3>
+                            <h3 class="text-center">Hasil Transaksi Form Existing</h3>
                             <table class="table table-hover table-bordered table-striped display" id="">
                                 <thead>
                                     <tr>

@@ -1,6 +1,6 @@
 <style>
     .form-control,.form-control-sm{
-      text-transform: lowercase;
+      text-transform: capitalize;
     }
 </style>
 <section>
