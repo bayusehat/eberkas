@@ -104,6 +104,7 @@
                     </div>
                     <div class="col-md-6 col-sm-12 col-xl-6">
                         <div class="form-group">
+                            Apakah data sama dengan data Pengunjung? <button type="button" class="btn btn-primary btn-sm" onclick="sama()"><i class="fas fa-sync"></i> Samakan</button>
                             <label for=""><strong>Penerima Kuasa</strong></label>
                             <div class="form-group">
                                 <label for="nama_penerima_kuasa_transaksi">Nama Penerima<span class="text-danger">*</span> :</label>

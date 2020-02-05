@@ -247,6 +247,18 @@
       simpanFileAtasan(dataURL);
       }
   });
+
+  function sama(){
+    var nama   = $('#nama_transaksi').val();
+    var alamat = $('#alamat_identitas_transaksi').val();
+    var jenis  = $('#jenis_identitas_transaksi').val();
+    var no_id  = $('#no_identitas_transaksi').val();
+
+    $('#nama_penerima_kuasa_transaksi').val(nama);
+    $('#alamat_penerima_kuasa_transaksi').val(alamat);
+    $('#jenis_identitas_penerima_kuasa_transaksi').val(jenis).trigger('change');
+    $('#no_identitas_penerima_kuasa_transaksi').val(no_id);
+  }
 </script>
 </body>
 

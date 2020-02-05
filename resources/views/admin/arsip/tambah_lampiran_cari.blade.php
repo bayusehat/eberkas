@@ -29,7 +29,7 @@
                 <div class="row">
                     <div class="col-md-8 col-sm-12 col-xl-8">
                         <div class="form-group">
-                            <label for="tanggal">Masukan Nomor Jastel :</label> 
+                            <label for="tanggal">Masukan Nomor Jastel / Nomor HP :</label> 
                             <input type="text" class="form-control" name="searchVal" id="searchVal" placeholder="Masukan keyword" required>
                             @error('tanggal') <small class="text-danger"> {{ $message }} </small> @enderror
                         </div>

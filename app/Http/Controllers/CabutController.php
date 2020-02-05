@@ -85,6 +85,7 @@ class CabutController extends Controller
                 'kota_transaksi'                           => session('kota'),
                 'create_transaksi'                         => date('Y-m-d H:i:s'),
                 'update_transaksi'                         => date('Y-m-d H:i:s'),
+                'bertindak_transaksi'                      => $request->input('bertindak_transaksi')
             ];
             $insert = Transaksi::create($data);
 
@@ -166,6 +167,7 @@ class CabutController extends Controller
                 'nama_atasan_transaksi'                    => $request->input('nama_atasan_transaksi'),
                 'jabatan_atasan_transaksi'                 => $request->input('jabatan_atasan_transaksi'),
                 'update_transaksi'                         => date('Y-m-d H:i:s'),
+                'bertindak_transaksi'                      => $request->input('bertindak_transaksi')
             ];
             $update = Transaksi::where('id_transaksi',$id)->update($data);
 

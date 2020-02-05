@@ -13,10 +13,12 @@ class UserController extends Controller
 {
     public function index()
     {
-        if(session('id_role') != 1 || session('role') != 5){
-            $role = Role::where('id_role','>',session('id_role'))->where('id_role','!=',5)->where('delete_role',0)->get();
-        }else{
+        if(session('id_role') == 1){
             $role = Role::all();
+        }else if(session('id_role') == 5){
+            $role = Role::whereBetween('id_role',[2,5])->where('delete_role',0)->get();
+        }else{
+            $role = Role::where('id_role','>=',session('id_role'))->where('id_role','!=',5)->where('delete_role',0)->get();
         }
         $data = [
             'title'        => 'Data User',
@@ -96,33 +98,41 @@ class UserController extends Controller
                 'errors' => $isValid->errors()
             ]);
         }else{
-            $data = [
-                'username' => $request->input('username'),
-                'password' => Hash::make('telkom2020'),
-                'nama'     => $request->input('nama'),
-                'loker'    => $request->input('loker'),
-                'kota'     => $request->input('kota'),
-                'status'   => $request->input('status'),
-                'witel'    => $request->input('witel'),
-                'keterangan' => $request->input('keterangan'),
-                'tgl_create' => date('Y-m-d'),
-                'tgl_delete' => NULL,
-                'id_role'    => $request->input('id_role') 
-            ];
+            $check = Login::where('username',$request->input('username'))->first();
+            if(!$check){
+                $data = [
+                    'username' => $request->input('username'),
+                    'password' => Hash::make('telkom2020'),
+                    'nama'     => $request->input('nama'),
+                    'loker'    => $request->input('loker'),
+                    'kota'     => $request->input('kota'),
+                    'status'   => $request->input('status'),
+                    'witel'    => $request->input('witel'),
+                    'keterangan' => $request->input('keterangan'),
+                    'tgl_create' => date('Y-m-d'),
+                    'tgl_delete' => NULL,
+                    'id_role'    => $request->input('id_role') 
+                ];
 
-            $login = Login::insert($data);
+                $login = Login::insert($data);
 
-            if($login){
-                return response([
-                    'status' => 200,
-                    'result' => 'Berhasil menambahkan User baru!'
-                ]);
+                if($login){
+                    return response([
+                        'status' => 200,
+                        'result' => 'Berhasil menambahkan User baru!'
+                    ]);
+                }else{
+                    return response([
+                        'status' => 500,
+                        'result' => 'Gagal menambahkan User baru!'
+                    ]);
+                }
             }else{
                 return response([
                     'status' => 500,
-                    'result' => 'Gagal menambahkan User baru!'
+                    'result' => 'Username sudah terdaftar!'
                 ]);
-            }
+            }  
         }
     }
 

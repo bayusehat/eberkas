@@ -1,3 +1,8 @@
+<style>
+    #jenis_transaksi{
+        display: none;
+    }
+</style>
 <section>
     <div class="card">
         <div class="card-header">
@@ -30,17 +35,27 @@
                     <div class="col-md-4 col-sm-12 col-xl-4">
                         <div class="form-group">
                             <label for="searchBy">Cari berdasarkan :</label>
-                            <select name="searchBy" id="searchBy" class="form-control form-control-sm">
+                            <select name="searchBy" id="searchBy" onchange="search_by()" class="form-control form-control-sm">
                                 <option value="1">Nomor Internet Indihome</option>
                                 <option value="2">Nama Pelanggan</option>
+                                <option value="3">Nomor HP Pelanggan</option>
+                                <option value="4">Jenis Transaksi</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-12 col-xl-4">
-                        <div class="form-group">
+                        <div class="form-group" id="keyword">
                             <label for="tanggal">Masukan Keyword :</label> 
                             <input type="text" class="form-control form-control-sm" name="searchVal" id="searchVal" placeholder="Masukan keyword" value="{{ old('searchVal') }}" required>
                             @error('searchVal') <small class="text-danger"> {{ $message }} </small> @enderror
+                        </div>
+                        <div class="form-group" id="jenis_transaksi">
+                            <label for="jenis_transaksi">Jenis Transaksi :</label>
+                            <select name="searchValJ" id="searchValJ" class="form-control form-control-sm">
+                                @foreach ($jenis_transaksi as $jt)
+                                    <option value="{{ $jt->id_jenis_transaksi }}">{{ $jt->nama_jenis_transaksi }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-12 col-xl-4">
@@ -134,4 +149,20 @@
     $(document).ready(function(){
         $('table.display').DataTable();
     });
+
+        function search_by() {
+            var search_by = $('#searchBy').val();
+
+            if(search_by == 4){
+                $('#jenis_transaksi').show();
+                $('#keyword').hide();
+                $('#searchVal').attr('disabled',true);
+                $('#searchValJ').attr('disabled',false);
+            }else{
+                $('#jenis_transaksi').hide();
+                $('#keyword').show();
+                $('#searchVal').attr('disabled',false);
+                $('#searchValJ').attr('disabled',true);
+            }
+        }
 </script>

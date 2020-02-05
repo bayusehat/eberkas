@@ -20,12 +20,14 @@ class ManajemenController extends Controller
                                     ->join('eberkas_ont','eberkas_ont.id_ont','=','eberkas_indihome.id_ont')
                                     ->join('eberkas_login','eberkas_login.id','=','eberkas_indihome.id_login')
                                     ->where('no_internet_indihome','like',"%{$searchVal}%")
+                                    ->orWhere('kontak_hp_indihome','like',"%{$searchVal}%")
                                     ->where('delete_indihome',0)
                                     ->get();
         $query2     = NomorJastel::select('eberkas_nomor_jastel.*','eberkas_transaksi.*','eberkas_jenis_transaksi.*')
                                     ->join('eberkas_transaksi','eberkas_transaksi.id_transaksi','=','eberkas_nomor_jastel.id_transaksi')
                                     ->join('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
                                     ->where('nomor_jastel','like',"%{$searchVal}%")
+                                    ->orWhere('no_hp_transaksi','like',"%{$searchVal}%")
                                     ->where('delete_transaksi',0)
                                     ->get();
         
@@ -43,11 +45,11 @@ class ManajemenController extends Controller
     public function indexTambahLampiran()
     {
         $data = [
-            'title'        => 'Lampiran',
-            'content'      => 'admin.arsip.tambah_lampiran_cari',
-            'parentActive' => 'arsip',
-            'urlActive'     => 'tambah-lampiran',
-            'resultIndihome' => [],
+            'title'           => 'Lampiran',
+            'content'         => 'admin.arsip.tambah_lampiran_cari',
+            'parentActive'    => 'arsip',
+            'urlActive'       => 'tambah-lampiran',
+            'resultIndihome'  => [],
             'resultTransaksi' => []
         ];
 

@@ -101,6 +101,9 @@ use App\FiturIndihome;
 use App\Layanan;
 use App\NomorJastel;
 use App\Login;
+
+$input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
+                                        ->where('id',$transaksi->id_login)->first();
 @endphp
 <table width="849" border="0" cellspacing="0" cellpadding=0>
     <tr>
@@ -244,8 +247,36 @@ use App\Login;
                       <td>:</td>
                       <td>{{ $transaksi->jenis_identitas_penerima_kuasa_transaksi .'/'.$transaksi->no_identitas_penerima_kuasa_transaksi }}</td>
                     </tr>
-            </table>
-                  <p>Dalam hal ini bertindak untuk atas nama diri sendiri, pemberi kuasa Perseorangan / Perusahaan / Badan Usaha atau Lembaga: </p>
+                  </table>
+                  @php
+                    if($transaksi->bertindak_transaksi === "DIRI SENDIRI"){
+                      $sendiri      = 'diri sendiri';
+                      $perseorangan = '<strike>Perseorangan</strike>';
+                      $perusahaan   = '<strike>Perusahaan</strike>';
+                      $lembaga      = '<strike>Badan Usaha atau Lembaga</strike>';
+                    }else if($transaksi->bertindak_transaksi === "PERSEORANGAN"){
+                      $sendiri      = '<strike>diri sendiri</strike>';
+                      $perseorangan = 'Perseorangan';
+                      $perusahaan   = '<strike>Perusahaan</strike>';
+                      $lembaga      = '<strike>Badan Usaha atau Lembaga</strike>';
+                    }else if($transaksi->bertindak_transaksi === "PERUSAHAAN"){
+                      $sendiri      = '<strike>diri sendiri</strike>';
+                      $perseorangan = '<strike>Perseorangan</strike>';
+                      $perusahaan   = 'Perusahaan';
+                      $lembaga      = '<strike>Badan Usaha atau Lembaga</strike>';
+                    }else if($transaksi->bertindak_transaksi === "LEMBAGA"){
+                      $sendiri      = '<strike>diri sendiri</strike>';
+                      $perseorangan = '<strike>Perseorangan</strike>';
+                      $perusahaan   = '<strike>Perusahaan</strike>';
+                      $lembaga      = 'Badan Usaha atau Lembaga';
+                    }else{
+                      $sendiri      = 'diri sendiri';
+                      $perseorangan = 'Perseorangan';
+                      $perusahaan   = 'Perusahaan';
+                      $lembaga      = 'Badan Usaha atau Lembaga';
+                    }
+                @endphp
+                <p>Dalam hal ini bertindak untuk atas nama {!! $sendiri !!}, pemberi kuasa {!! $perseorangan !!} / {!! $perusahaan !!} / {!! $lembaga !!}: </p>
                   <table width="536" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="161">Nama Pelanggan</td>
@@ -298,7 +329,7 @@ use App\Login;
                           {{ strtoupper($transaksi->nama_transaksi) }}
                         </td>
                         <td width="200">&nbsp;</td>
-                        <td width="200" align="center">Petugas Telkom<br />
+                        <td width="200" align="center">{{$input->nama_role}}<br />
                           <img src="{{ asset('signature/'.$transaksi->signature_login) }}" width="130" /> <br />
                           {{ strtoupper($transaksi->nama) }}
                         </td>
@@ -317,7 +348,7 @@ use App\Login;
                                 $atasan = $atasan;
                               }else{
                                 $atasan = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
-                                            ->where('loker','PLASA GIANYAR')->where('eberkas_login.id_role',4)->first();
+                                            ->where('loker','PLASA GIANYAR')->where('eberkas_login.id_role',2)->first();
                               }
                             }else{
                               $atasan = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
@@ -326,14 +357,22 @@ use App\Login;
                                 $atasan = $atasan;
                               }else{
                                 $atasan = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
-                                            ->where('loker',$transaksi->loker)->where('eberkas_login.id_role',4)->first();
+                                            ->where('loker',$transaksi->loker)->where('eberkas_login.id_role',2)->first();
                               }
                             }
                           @endphp
-                          {{$atasan->nama_role}}
+                          @if($atasan)
+                            {{$atasan->nama_role}}
+                          @else
+                            {{''}}
+                          @endif
                           <br>
+                          @if($atasan)
                           <img src="{{ asset('signature/'.$atasan->signature_login) }}"width="100" /><br /> 
                           {{ strtoupper($atasan->nama) }}
+                          @else 
+                          {{''}}
+                          @endif
                           </td>
                         <td width="161"><br /></td>
                       </tr>
@@ -456,7 +495,35 @@ use App\Login;
             <td>{{ $transaksi->jenis_identitas_penerima_kuasa_transaksi.'/'.$transaksi->no_identitas_penerima_kuasa_transaksi }}</td>
           </tr>
         </table>
-        <p>Dalam hal ini bertindak untuk atas nama diri sendiri, pemberi kuasa Perseorangan / Perusahaan / Badan Usaha atau Lembaga: </p>
+        @php
+            if($transaksi->bertindak_transaksi === "DIRI SENDIRI"){
+              $sendiri      = 'diri sendiri';
+              $perseorangan = '<strike>Perseorangan</strike>';
+              $perusahaan   = '<strike>Perusahaan</strike>';
+              $lembaga      = '<strike>Badan Usaha atau Lembaga</strike>';
+            }else if($transaksi->bertindak_transaksi === "PERSEORANGAN"){
+              $sendiri      = '<strike>diri sendiri</strike>';
+              $perseorangan = 'Perseorangan';
+              $perusahaan   = '<strike>Perusahaan</strike>';
+              $lembaga      = '<strike>Badan Usaha atau Lembaga</strike>';
+            }else if($transaksi->bertindak_transaksi === "PERUSAHAAN"){
+              $sendiri      = '<strike>diri sendiri</strike>';
+              $perseorangan = '<strike>Perseorangan</strike>';
+              $perusahaan   = 'Perusahaan';
+              $lembaga      = '<strike>Badan Usaha atau Lembaga</strike>';
+            }else if($transaksi->bertindak_transaksi === "LEMBAGA"){
+              $sendiri      = '<strike>diri sendiri</strike>';
+              $perseorangan = '<strike>Perseorangan</strike>';
+              $perusahaan   = '<strike>Perusahaan</strike>';
+              $lembaga      = 'Badan Usaha atau Lembaga';
+            }else{
+              $sendiri      = 'diri sendiri';
+              $perseorangan = 'Perseorangan';
+              $perusahaan   = 'Perusahaan';
+              $lembaga      = 'Badan Usaha atau Lembaga';
+            }
+        @endphp
+        <p>Dalam hal ini bertindak untuk atas nama {!! $sendiri !!}, pemberi kuasa {!! $perseorangan !!} / {!! $perusahaan !!} / {!! $lembaga !!}: </p>
         <table width="421" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="164">Nama Pelanggan</td>
@@ -489,7 +556,7 @@ use App\Login;
                       {{ strtoupper($transaksi->nama_penerima_kuasa_transaksi) }}
                     </td>
                     <td width="200">&nbsp;</td>
-                    <td width="200" align="center">Petugas Telkom<br />
+                    <td width="200" align="center">{{ $input->nama_role }}<br />
                       <img src="{{ asset('signature/'.$transaksi->signature_login) }}" width="130" /> <br />
                        {{ strtoupper($transaksi->nama) }}
                     </td>
@@ -563,7 +630,7 @@ use App\Login;
                   <?php echo strtoupper($transaksi->nama_transaksi); ?>
                 </td>
                 <td width="200">&nbsp;</td>
-                <td width="200" align="center">Petugas Telkom<br />
+                <td width="200" align="center">{{ $input->nama_role}}<br />
                   <img src="{{ asset('signature/'.$transaksi->signature_login) }}" width="130" /> <br />
                   <?php echo strtoupper($transaksi->nama); ?>
                 </td>
@@ -593,7 +660,35 @@ use App\Login;
               <td>{{ $transaksi->jenis_identitas_penerima_kuasa_transaksi.'/'.$transaksi->no_identitas_penerima_kuasa_transaksi }}</td>
             </tr>
           </table>
-        <p>Dalam hal ini bertindak untuk atas nama diri sendiri, pemberi kuasa Perseorangan / Perusahaan / Badan Usaha atau Lembaga: </p>
+          @php
+          if($transaksi->bertindak_transaksi === "DIRI SENDIRI"){
+            $sendiri      = 'diri sendiri';
+            $perseorangan = '<strike>Perseorangan</strike>';
+            $perusahaan   = '<strike>Perusahaan</strike>';
+            $lembaga      = '<strike>Badan Usaha atau Lembaga</strike>';
+          }else if($transaksi->bertindak_transaksi === "PERSEORANGAN"){
+            $sendiri      = '<strike>diri sendiri</strike>';
+            $perseorangan = 'Perseorangan';
+            $perusahaan   = '<strike>Perusahaan</strike>';
+            $lembaga      = '<strike>Badan Usaha atau Lembaga</strike>';
+          }else if($transaksi->bertindak_transaksi === "PERUSAHAAN"){
+            $sendiri      = '<strike>diri sendiri</strike>';
+            $perseorangan = '<strike>Perseorangan</strike>';
+            $perusahaan   = 'Perusahaan';
+            $lembaga      = '<strike>Badan Usaha atau Lembaga</strike>';
+          }else if($transaksi->bertindak_transaksi === "LEMBAGA"){
+            $sendiri      = '<strike>diri sendiri</strike>';
+            $perseorangan = '<strike>Perseorangan</strike>';
+            $perusahaan   = '<strike>Perusahaan</strike>';
+            $lembaga      = 'Badan Usaha atau Lembaga';
+          }else{
+            $sendiri      = 'diri sendiri';
+            $perseorangan = 'Perseorangan';
+            $perusahaan   = 'Perusahaan';
+            $lembaga      = 'Badan Usaha atau Lembaga';
+          }
+      @endphp
+      <p>Dalam hal ini bertindak untuk atas nama {!! $sendiri !!}, pemberi kuasa {!! $perseorangan !!} / {!! $perusahaan !!} / {!! $lembaga !!}: </p>
         <table width="421" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <td width="164">Nama Pelanggan</td>
@@ -642,7 +737,7 @@ use App\Login;
                   {{ strtoupper($transaksi->nama_penerima_kuasa_transaksi) }}
                 </td>
                 <td width="200">&nbsp;</td>
-                <td width="200" align="center">Petugas Telkom<br />
+                <td width="200" align="center">{{ $input->nama_role }}<br />
                   <img src="{{ asset('signature/'.$transaksi->signature_login) }}" width="130" /> <br />
                   {{ strtoupper($transaksi->nama)}}
                 </td>
@@ -739,7 +834,7 @@ use App\Login;
           <td width="230" align="center">{{ $transaksi->kota }}, {{ date('d',strtotime($transaksi->create_transaksi)) .' '.bulan_ini(date('m',strtotime($transaksi->create_transaksi))).' '.date('Y',strtotime($transaksi->create_transaksi)) }}</td>
         </tr>
         <tr valign="top">
-          <td width="200" align="center">Petugas Telkom,<br />
+          <td width="200" align="center">{{ $input->nama_role }}<br />
             <img src="{{ asset('signture/'.$transaksi->signature_login) }}" width="130" /> <br />
             {{ strtoupper($transaksi->nama)}}
           </td>
@@ -852,7 +947,7 @@ use App\Login;
               <td width="230" align="center">{{ $transaksi->kota.', '.date('d',strtotime($transaksi->create_transaksi)).' '.bulan_ini(date('m',strtotime($transaksi->create_transaksi))).' '.date('Y',strtotime($transaksi->create_transaksi)) }}</td>
             </tr>
             <tr valign="top">
-              <td width="200" align="center">Petugas Telkom,<br />
+              <td width="200" align="center">{{ $input->nama_role }},<br />
                 <img src="{{ asset('signature/'.$transaksi->signature_login) }}" width="130" /> <br />
                 {{ strtoupper($transaksi->nama) }}
               </td>
@@ -882,7 +977,7 @@ use App\Login;
           <td width="230" align="center">{{ $transaksi->kota.', '.date('d',strtotime($transaksi->create_transaksi)).' '.bulan_ini(date('m',strtotime($transaksi->create_transaksi))).' '.date('Y',strtotime($transaksi->create_transaksi)) }}</td>
         </tr>
         <tr valign="top">
-          <td width="200" align="center">Petugas Telkom,<br />
+          <td width="200" align="center">{{ $input->nama_role }},<br />
             <img src="{{ asset('signature/'.$transaksi->signature_login ) }}" width="130" /> <br />
             {{ strtoupper($transaksi->nama)}} </td>
           <td width="200">&nbsp;</td>

@@ -85,6 +85,7 @@ class FiturController extends Controller
                 'kota_transaksi'                           => session('kota'),
                 'create_transaksi'                         => date('Y-m-d H:i:s'),
                 'update_transaksi'                         => date('Y-m-d H:i:s'),
+                'bertindak_transaksi'                      => $request->input('bertindak_transaksi')
             ];
             $insert = Transaksi::create($data);
 
@@ -179,6 +180,7 @@ class FiturController extends Controller
                 'cp_transaksi'                             => $request->input('cp_transaksi'),
                 'signature_pelanggan_transaksi'            => $request->input('id_signature'),
                 'update_transaksi'                         => date('Y-m-d H:i:s'),
+                'bertindak_transaksi'                      => $request->input('bertindak_transaksi')
             ];
             $update = Transaksi::where('id_transaksi',$id)->update($data);
 

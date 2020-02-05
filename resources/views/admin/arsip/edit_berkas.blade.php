@@ -25,11 +25,18 @@
             <form method="POST" id="formSearchBerkas">
                 @csrf
                 <div class="row">
-                    <div class="col-md-8 col-sm-12 col-xl-8">
+                    <div class="col-md-4 col-sm-12 col-xl-4">
                         <div class="form-group">
                             <label for="tanggal">Pilih Tanggal :</label> 
                             <input type="text" class="form-control datepicker" name="tanggal" id="tanggal" placeholder="Pilih Tanggal berkas" required>
                             @error('tanggal') <small class="text-danger"> {{ $message }} </small> @enderror
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-12 col-xl-4">
+                        <div class="form-group">
+                            <label for="tanggal">Nomor Jastel / Nomor HP</label> 
+                            <input type="text" class="form-control" name="nomor_search" id="nomor_search" placeholder="Masukan Nomor Jastel / Nomor HP" required>
+                            @error('nomor_search') <small class="text-danger"> {{ $message }} </small> @enderror
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-12 col-xl-4">
@@ -50,6 +57,7 @@
                                         <th>No.</th>
                                         <th>Jenis Transaksi</th>
                                         <th>Nama</th>
+                                        <th>No. HP</th>
                                         <th>Alamat</th>
                                         <th>Tanggal Berkas</th>
                                         <th>Action</th>
@@ -76,6 +84,7 @@
     })
     function cariBerkas(){
         var tanggal = $('#tanggal').val();
+        var nomor_search = $('#nomor_search').val();
 
         if(tanggal){
             $('#tableData').DataTable({
@@ -89,13 +98,15 @@
                 },
                 method: 'POST',
                 data : {
-                    'tanggal' : tanggal
+                    'tanggal' : tanggal,
+                    'nomor_search' : nomor_search
                 }
             },
             columns: [
                 { name: 'id_transaksi', searchable: false, orderable: true, className: 'text-center' },
                 { name: 'jenis_transaksi' },
                 { name: 'nama_transaksi'},
+                { name: 'no_hp_transaksi'},
                 { name: 'alamat_pelanggan_transaksi'},
                 { name: 'create_transaksi'},
                 { name: 'action', searchable: false, orderable: false, className: 'text-center' }

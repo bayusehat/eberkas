@@ -102,6 +102,16 @@
                     </div>
                     <div class="col-md-6 col-sm-12 col-xl-6">
                         <div class="form-group">
+                            <label for="bertindak_transaksi">Bertindak Atas Nama<span class="text-danger">*</span> : </label>
+                            <select name="bertindak_transaksi" id="bertindak_transaksi" class="form-control">
+                                <option value="DIRI SENDIRI">DIRI SENDIRI</option>
+                                <option value="PERSEORANGAN">PERSEORANGAN</option>
+                                <option value="PERUSAHAAN">PERUSAHAAN</option>
+                                <option value="LEMBAGA">LEMBAGA</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            Apakah data sama dengan data Pengunjung? <button type="button" class="btn btn-primary btn-sm" onclick="sama()"><i class="fas fa-sync"></i> Samakan</button>
                             <label for=""><strong>Penerima Kuasa</strong></label>
                             <div class="form-group">
                                 <label for="nama_penerima_kuasa_transaksi">Nama Penerima<span class="text-danger">*</span> :</label>

@@ -74,6 +74,7 @@ class Transaksi extends Model
         'isi_pengaduan_transaksi',
         'witel_transaksi',
         'plasa_transaksi',
-        'kota_transaksi'
+        'kota_transaksi',
+        'bertindak_transaksi'
     ];
 }
