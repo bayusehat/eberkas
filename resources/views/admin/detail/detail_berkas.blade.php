@@ -438,6 +438,107 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
             </table>
         @endif
 
+        @if($transaksi->id_jenis_transaksi == 5)
+        <p><strong><u>SURAT PERMOHONAN ISOLIR</u></strong></p>
+        <p>Yang bertanda tangan di bawah ini :</p>
+        <table width="604" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+        <td width="179">Nama &nbsp;</td>
+        <td width="15">:</td>
+        <td width="410">{{ $transaksi->nama_transaksi }}</td>
+        </tr>
+        <tr>
+        <td>Alamat&nbsp;</td>
+        <td>:</td>
+        <td>{{ $transaksi->alamat_identitas_transaksi }}</td>
+        </tr>
+        <tr>
+          @php
+              $noIsolir = NomorJastel::where(['id_transaksi' => $transaksi->id_transaksi])->get();
+          @endphp
+        <td>Nomor Telepon</td>
+        <td>:</td>
+        <td>
+          @if(count($noIsolir) > 1)
+            @foreach ($noIsolir as $nisolir)
+                {{ $nisolir->nomor_jastel }},
+            @endforeach
+          @else
+                {{ $noIsolir[0]->nomor_jastel }}
+          @endif
+        </td>
+        </tr>
+        <tr>
+        <td>Jenis Identitas-No. </td>
+        <td>:</td>
+        <td>{{ $transaksi->jenis_identitas_transaksi .' / '.$transaksi->no_identitas_transaksi }}</td>
+        </tr>
+        <tr>
+          <td>Status Penggunaan</td>
+          <td>:</td>
+          <td><input type="checkbox" name="checkbox222" value="checkbox" @if($transaksi->status_penggunaan_transaksi == 'RUMAH TANGGA') {{'checked'}} @else {{''}} @endif />
+          Rumah Tangga
+          <input type="checkbox" name="checkbox232" value="checkbox" @if($transaksi->status_penggunaan_transaksi == 'BISNIS') {{'checked'}} @else {{''}} @endif />
+          Bisnis
+          <input type="checkbox" name="checkbox242" value="checkbox" @if($transaksi->status_penggunaan_transaksi == 'PEMERINTAH') {{'checked'}} @else {{''}} @endif />
+          Pemerintah
+          <input type="checkbox" name="checkbox252" value="checkbox" @if($transaksi->status_penggunaan_transaksi == 'SOSIAL') {{'checked'}} @else {{''}} @endif />Sosial </td>
+          </tr>
+        <tr>
+          <td>Status Pemohon </td>
+          <td>:</td>
+          <td>
+            <input type="checkbox" name="checkbox262" value="checkbox" @if($transaksi->status_pemohon_transaksi == 'PEMILIK') {{'checked'}} @else {{''}} @endif/>Pemilik
+            <input type="checkbox" name="checkbox272" value="checkbox" @if($transaksi->status_pemohon_transaksi == 'PEMAKAI') {{'checked'}} @else {{''}} @endif/>Pemakai 
+          </td>
+        </tr>
+        </table>
+        <p>Dengan ini mengajukan permohonan pemutusan sementara / isolir terhadap sambungan telepon saya untuk:</p>
+        <p>
+        <input type="checkbox" name="checkbox2" value="checkbox" @if($transaksi->jenis_isolir_transaksi == 'OUT GOING') {{'checked'}} @else {{''}}@endif>
+        Sambungan Out Going (bisa terima saja) <br />
+        <input type="checkbox" name="checkbox2" value="checkbox" @if($transaksi->jenis_isolir_transaksi == 'SLJJ') {{'checked'}} @else {{''}}@endif>
+        Sambungan Langsung Jarak Jauh <br />
+        <input type="checkbox" name="checkbox2" value="checkbox" @if($transaksi->jenis_isolir_transaksi == 'TOTAL') {{'checked'}} @else {{''}}@endif>
+        Sambungan In Going dan Out Going (total) </p>
+        @php
+            $isolirInput = date('Y-m-d',strtotime($transaksi->create_transaksi));
+            if($transaksi->lama_isolir_transaksi == 'SATU BULAN'){
+              $nextDate = date('Y-m-d', strtotime("+1 months", strtotime($isolirInput)));
+            }else if($transaksi->lama_isolir_transaksi == 'DUA BULAN'){
+              $nextDate = date('Y-m-d', strtotime("+2 months", strtotime($isolirInput)));
+            }else{
+              $nextDate = date('Y-m-d', strtotime("+1 months", strtotime($isolirInput)));
+            }
+            
+        @endphp
+        <p>Selama <strong>{{ $transaksi->lama_isolir_transaksi }} </strong>Terhitung Mulai tanggal<strong> {{ date('d',strtotime($isolirInput))}} </strong><strong> {{bulan_ini(date('m',strtotime($isolirInput)))}} </strong><strong> {{ date('Y',strtotime($isolirInput))}} </strong>s/d<strong> {{ date('d',strtotime($nextDate))}} </strong><strong> {{bulan_ini(date('m',strtotime($nextDate)))}} </strong><strong> {{ date('Y',strtotime($nextDate)) }} </strong></p>
+        <p>Selama proses isolir kami bersedia untuk:</p>
+        <p>1. Menyelesaikan tagihan telepon tiap bulan<br />2. Menanggung segala akibat proses isolir <br />
+        3. Menunjukan kuitansi tel-69 apabila mengajukan pembukaan isolir sebelum batas waktu isolir habis</p>
+        <p>Contact Person: {{ $transaksi->cp_transaksi }}</p>
+        <p>Demikian Surat pernyataan ini di buat untuk dipergunakan seperlunya. </p>
+        <table width="650" border="0" cellspacing="0" cellpadding="0">
+          <tr valign="top">
+            <td width="250" align="center">{{ $transaksi->kota }}, {{ hari_ini(date('D',strtotime($transaksi->create_transaksi))) .' '.bulan_ini(date('m',strtotime($transaksi->create_transaksi))).' '.date('Y',strtotime($transaksi->create_transaksi)) }}</td>
+            <td width="200">&nbsp;</td>
+            <td width="200" align="center">Menyetujui,</td>
+          </tr>
+          <tr valign="top">
+            <td width="250" align="center">Pelanggan<br />
+              <img src="{{ asset('signature/'.$transaksi->signature_pelanggan_transaksi) }}" width="130" /> <br />
+              {{ strtoupper($transaksi->nama_transaksi) }}
+            </td>
+            <td width="200">&nbsp;</td>
+            <td width="200" align="center">{{ $input->nama_role }}<br />
+              <img src="{{ asset('signature/'.$transaksi->signature_login) }}" width="130" /> <br />
+               {{ strtoupper($transaksi->nama) }}
+            </td>
+          </tr>
+        </table>
+        </div>
+        @endif
+
         @if ($transaksi->id_jenis_transaksi == 6) 
         <p><strong><U>FORM PERMINTAAN {{ $transaksi->layanan_fitur_transaksi }} FASILITAS ISTIMEWA (FITUR)</U></strong><BR />
         </p>
@@ -961,7 +1062,7 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
         </div>
         @endif
 
-        @if ($transaksi->id_jenis_transaksi != 3 && $transaksi->id_jenis_transaksi != 6 && $transaksi->id_jenis_transaksi != 8 && $transaksi->id_jenis_transaksi != 9 && $transaksi->id_jenis_transaksi != 10 && $transaksi->id_jenis_transaksi != 11)
+        @if ($transaksi->id_jenis_transaksi != 3 && $transaksi->id_jenis_transaksi != 5 && $transaksi->id_jenis_transaksi != 6 && $transaksi->id_jenis_transaksi != 8 && $transaksi->id_jenis_transaksi != 9 && $transaksi->id_jenis_transaksi != 10 && $transaksi->id_jenis_transaksi != 11)
         <p><b><u>PERSETUJUAN PERMOHONAN </u></b></p>
 	      <p>Pada Hari ini {{ hari_ini(date('D',strtotime($transaksi->create_transaksi)))}}, tanggal {{ date('d',strtotime($transaksi->create_transaksi))}} bulan {{ bulan_ini(date('m',strtotime($transaksi->create_transaksi))) }} tahun {{ date('Y',strtotime($transaksi->create_transaksi))}}, pihak TELKOM 
 	      telah menyetujui permohonan PELANGGAN dimaksud<br />

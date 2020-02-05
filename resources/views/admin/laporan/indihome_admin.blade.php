@@ -30,7 +30,7 @@
                     <div class="col-md-4 col-sm-12 col-xl-4">
                         <div class="form-group">
                             <label for="witel">Witel :</label>
-                            <select name="witel" id="witel" onchange="getPlasa()" class="form-control form-control-sm select2">
+                            <select name="witel" id="witel" onchange="getPlasaSearch()" class="form-control form-control-sm select2">
                                 <option value="">Semua Witel</option>
                                 @foreach ($witel as $w)
                                     <option value="{{ $w->witel_plasa }}">{{ $w->witel_plasa }}</option>
@@ -104,6 +104,6 @@
 <script>
     $(document).ready(function(){
        $('#tableData').DataTable();
-       getPlasa();
+       getPlasaSearch();
     });
 </script>

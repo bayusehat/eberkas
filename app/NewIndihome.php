@@ -49,6 +49,7 @@ class NewIndihome extends Model
         'plasa_indihome',
         'kota_indihome',
         'tanggal_lahir_pelanggan_indihome',
-        'jenis_kelamin_pelanggan_indihome'
+        'jenis_kelamin_pelanggan_indihome',
+        'jenis_paket_indihome'
     ];
 }

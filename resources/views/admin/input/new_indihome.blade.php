@@ -37,7 +37,7 @@
                 <div class="col-md-6 col-sm-6 col-xl-6">
                     <label for="I"><b>I. Detail Layanan</b></label>
                     <div class="form-group">
-                        <label for="jenis_permohonan_indihome">Jenis Permohonan :</label>
+                        <label for="jenis_permohonan_indihome">Jenis Permohonan<span class="text-danger">*</span> :</label>
                         <select name="jenis_permohonan_indihome" id="jenis_permohonan_indihome" class="form-control form-control-sm" onchange="getPermohonan()">
                             <option value="">-- Pilih Jenis Permohonan --</option>
                             <option value="KONTRAK BARU">KONTRAK BARU</option>
@@ -46,7 +46,15 @@
                         @error('jenis_permohonan_indihome') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>
                     <div class="form-group">
-                        <label for="id_layanan">Paket Layanan Indihome : </label>
+                        <label for="jenis_paket_indihome">Paket<span class="text-danger">*</span> :</label>
+                        <br>
+                        <input type="radio" name="jenis_paket_indihome" id="jenis_paket_indihome" value="3 PLAY"> 3 Play<br>
+                        <input type="radio" name="jenis_paket_indihome" id="jenis_paket_indihome" value="2 PLAY"> 2 Play<br>
+                        <input type="radio" name="jenis_paket_indihome" id="jenis_paket_indihome" value="1 PLAY"> 1 Play<br>
+                        @error('jenis_paket_indihome') <small class="text-danger">{{ $message }}</small> @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="id_layanan">Paket Layanan Indihome<span class="text-danger">*</span> : </label>
                         <select name="id_layanan" id="id_layayan" class="form-control form-control-sm select2">
                             <option value="">-- Pilih Jenis Layanan --</option>
                             @foreach ($layanan as $l)
@@ -56,7 +64,7 @@
                         @error('id_layanan') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>
                     <div class="form-group">
-                        <label for="id_ont">Jenis ONT & STB :</label>
+                        <label for="id_ont">Jenis ONT & STB<span class="text-danger">*</span> :</label>
                         <br>
                         @foreach ($jenis_ont as $o)
                             <input type="radio" name="id_ont" value="{{ $o->id_ont }}"> {{ $o->nama_ont }}<br>
@@ -86,7 +94,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="usulan_instalasi_indihome">Usulan Waktu Instalasi :</label>
+                        <label for="usulan_instalasi_indihome">Usulan Waktu Instalasi<span class="text-danger">*</span> :</label>
                         <input type="text" class="form-control form-control-sm datepicker" name="usulan_instalasi_indihome" id="usulan_instalasi_indihome" value="{{ old('usulan_instalasi_indihome') }}">
                         @error('usulan_instalasi_indihome') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>

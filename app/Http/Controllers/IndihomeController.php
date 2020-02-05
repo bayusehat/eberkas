@@ -57,7 +57,8 @@ class IndihomeController extends Controller
             'alamat_penagihan_indihome'          => 'required',
             'kodepos_penagihan_indihome'         => 'required',
             'jenis_kelamin_pelanggan_indihome'   => 'required',
-            'tanggal_lahir_pelanggan_indihome'   => 'required'
+            'tanggal_lahir_pelanggan_indihome'   => 'required',
+            'jenis_paket_indihome'               => 'required'
         ];
 
         $isValid = Validator::make($request->all(),$rules);
@@ -112,7 +113,8 @@ class IndihomeController extends Controller
                 'create_indihome'                    => date('Y-m-d H:i:s'),
                 'update_indihome'                    => date('Y-m-d H:i:s'),
                 'tanggal_lahir_pelanggan_indihome'   => $request->input('tanggal_lahir_pelanggan_indihome'),
-                'jenis_kelamin_pelanggan_indihome'   => $request->input('jenis_kelamin_pelanggan_indihome')
+                'jenis_kelamin_pelanggan_indihome'   => $request->input('jenis_kelamin_pelanggan_indihome'),
+                'jenis_paket_indihome'               => $request->input('jenis_paket_indihome')
             ];
 
             $act = NewIndihome::create($data);
@@ -186,7 +188,8 @@ class IndihomeController extends Controller
             'alamat_penagihan_indihome'          => 'required',
             'kodepos_penagihan_indihome'         => 'required',
             'jenis_kelamin_pelanggan_indihome'   => 'required',
-            'tanggal_lahir_pelanggan_indihome'   => 'required'
+            'tanggal_lahir_pelanggan_indihome'   => 'required',
+            'jenis_paket_indihome'               => 'required'
         ];
 
         $isValid = Validator::make($request->all(),$rules);
@@ -236,7 +239,8 @@ class IndihomeController extends Controller
                 'signature_pelanggan_indihome'       => $request->input('id_signature'),
                 'update_indihome'                    => date('Y-m-d H:i:s'),
                 'tanggal_lahir_pelanggan_indihome'   => $request->input('tanggal_lahir_pelanggan_indihome'),
-                'jenis_kelamin_pelanggan_indihome'   => $request->input('jenis_kelamin_pelanggan_indihome')
+                'jenis_kelamin_pelanggan_indihome'   => $request->input('jenis_kelamin_pelanggan_indihome'),
+                'jenis_paket_indihome'               => $request->input('jenis_paket_indihome')
             ];
 
             $act = NewIndihome::where('id_indihome',$id)->update($data);

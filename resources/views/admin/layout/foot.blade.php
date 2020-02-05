@@ -259,7 +259,7 @@
     $('#jenis_identitas_penerima_kuasa_transaksi').val(jenis).trigger('change');
     $('#no_identitas_penerima_kuasa_transaksi').val(no_id);
   }
-  function getPlasa() {
+  function getPlasaSearch() {
         var witel = $('#witel').val();
         $.ajax({
             url: '{{ url("plasa/get") }}/'+witel,
