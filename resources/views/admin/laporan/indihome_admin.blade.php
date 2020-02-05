@@ -29,6 +29,13 @@
                 <div class="row">
                     <div class="col-md-4 col-sm-12 col-xl-4">
                         <div class="form-group">
+                            <label for="witel">Witel :</label>
+                            <select name="witel" id="witel" onchange="getPlasa()" class="form-control form-control-sm select2">
+                                <option value="">Semua Witel</option>
+                                @foreach ($witel as $w)
+                                    <option value="{{ $w->witel_plasa }}">{{ $w->witel_plasa }}</option>
+                                @endforeach
+                            </select>
                             <label for="tanggal">Loker :</label> 
                             <select name="loker" id="loker" class="form-control form-control-sm select2">
                                 <option value="">Semua Loker</option>
@@ -64,10 +71,11 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Action</th>
+                                        <th>Tgl. Transaksi</th>
+                                        <th>Jenis Transaksi</th>
                                         <th>Nomor Internet</th>
                                         <th>Loker</th>
                                         <th>Nama Pelanggan</th>
-                                        <th>Created</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -78,10 +86,11 @@
                                                 <a href="{{ url('detail/7/'.$d->id_indihome) }}" class="btn btn-primary btn-sm btn-block" target="_blank"><i class="fas fa-eye"></i> Detail</a>
                                                 <a href="{{ url('edit/7/'.$d->id_indihome) }}" class="btn btn-warning btn-sm btn-block" target="_blank"><i class="fas fa-edit"></i> Edit</a>
                                             </td>
+                                            <td>{{ date('d/m/Y H:i',strtotime($d->create_indihome)) }}</td>
+                                            <td>Indihome</td>
                                             <td>{{ $d->no_internet_indihome }}</td>
                                             <td>{{ $d->loker }}</td>
                                             <td>{{ $d->nama_tanda_indihome }}</td>
-                                            <td>{{ date('d/m/Y H:i',strtotime($d->create_indihome)) }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -95,24 +104,6 @@
 <script>
     $(document).ready(function(){
        $('#tableData').DataTable();
+       getPlasa();
     });
-
-    // function loadIndihome(){
-    //     $('#tableData').DataTable({
-    //         processing: true,
-    //         serverSide: true,
-    //         destroy: true,
-    //         ajax: {
-    //             url: '{{ url("laporan/indihome/admin/load") }}'
-    //         },
-    //         columns: [
-    //             { name: 'id_indihome', searchable: false, className: 'text-center' },
-    //             { name: 'no_internet_indihome' },
-    //             { name: 'nama_tanda_indihome'},
-    //             { name: 'action', searchable: false, orderable: false, className: 'text-center' }
-    //         ],
-    //         lengthMenu: [10],
-    //         order: [[0, 'asc']],
-    //     });
-    // }
 </script>

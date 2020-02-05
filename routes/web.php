@@ -206,4 +206,5 @@ Route::group(['middleware' => ['authLogin','web']], function () {
      Route::post('laporan/indihome/admin/search','LaporanController@indihomeAdmin');
      Route::get('laporan/lama/admin','LaporanController@indexFormLamaAdmin');
      Route::post('laporan/lama/admin/search','LaporanController@formLamaAdmin');
+     Route::get('plasa/get/{witel?}','LaporanController@getPlasa');
 });

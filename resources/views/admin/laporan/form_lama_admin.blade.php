@@ -29,6 +29,13 @@
                 <div class="row">
                     <div class="col-md-3 col-sm-12 col-xl-3">
                         <div class="form-group">
+                            <label for="witel">Witel :</label>
+                            <select name="witel" id="witel" onchange="getPlasa()" class="form-control form-control-sm select2">
+                                <option value="">Semua Witel</option>
+                                @foreach ($witel as $w)
+                                    <option value="{{ $w->witel_plasa }}">{{ $w->witel_plasa }}</option>
+                                @endforeach
+                            </select>
                             <label for="tanggal">Loker :</label> 
                             <select name="loker" id="loker" class="form-control form-control-sm select2">
                                 <option value="">Semua Loker</option>
@@ -75,11 +82,11 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Action</th>
-                                        <th>Nomor Jastel</th>
+                                        <th>Tgl. Transaksi</th>
                                         <th>Jenis Transaksi</th>
+                                        <th>Nomor Jastel</th>
                                         <th>Loker</th>
                                         <th>Nama Pelanggan</th>
-                                        <th>Created</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -90,11 +97,11 @@
                                                 <a href="{{ url('detail/'.$d->id_jenis_transaksi.'/'.$d->id_transaksi) }}" class="btn btn-primary btn-sm btn-block" target="_blank"><i class="fas fa-eye"></i> Detail</a>
                                                 <a href="{{ url('edit/'.$d->id_jenis_transaksi.'/'.$d->id_transaksi) }}" class="btn btn-warning btn-sm btn-block" target="_blank"><i class="fas fa-edit"></i> Edit</a>
                                             </td>
-                                            <td>{{ $d->nomor_jastel }}</td>
+                                            <td>{{ date('d/m/Y H:i',strtotime($d->create_transaksi)) }}</td>                                            
                                             <td>{{ $d->nama_jenis_transaksi }}</td>
+                                            <td>{{ $d->nomor_jastel }}</td>
                                             <td>{{ $d->loker }}</td>
                                             <td>{{ $d->nama_transaksi }}</th>
-                                            <td>{{ date('d/m/Y H:i',strtotime($d->create_transaksi)) }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -108,25 +115,6 @@
 <script>
     $(document).ready(function(){
       $("#tableData").DataTable();
+      getPlasa();
     });
-
-    // function loadForm(){
-    //     $('#tableData').DataTable({
-    //         processing: true,
-    //         serverSide: true,
-    //         destroy: true,
-    //         ajax: {
-    //             url: '{{ url("laporan/lama/admin/load") }}'
-    //         },
-    //         columns: [
-    //             { name: 'id_transaksi', searchable: false, className: 'text-center' },
-    //             { name: 'nomor_jastel' },
-    //             { name: 'nama_jenis_transaksi'},
-    //             { name: 'nama_transaksi'},
-    //             { name: 'action', searchable: false, orderable: false, className: 'text-center' }
-    //         ],
-    //         lengthMenu: [10],
-    //         order: [[0, 'asc']],
-    //     });
-    // }
 </script>

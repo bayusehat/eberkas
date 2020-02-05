@@ -259,6 +259,24 @@
     $('#jenis_identitas_penerima_kuasa_transaksi').val(jenis).trigger('change');
     $('#no_identitas_penerima_kuasa_transaksi').val(no_id);
   }
+  function getPlasa() {
+        var witel = $('#witel').val();
+        $.ajax({
+            url: '{{ url("plasa/get") }}/'+witel,
+            headers:{
+                'X-CSRF-TOKEN' : $('meta[name=csrf-token]').attr('content')
+            },
+            dataType : 'JSON',
+            success:function(res){
+                var html = '<option value="">Semua Loker</option>';
+                $.each(res.plasa,function (i,v) { 
+                    html += '<option value="'+v.nama_plasa+'">'+v.nama_plasa+'</option>';
+                });
+
+                $('#loker').html(html);
+            }
+        })
+    }
 </script>
 </body>
 

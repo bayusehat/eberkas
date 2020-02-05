@@ -71,7 +71,7 @@ class LaporanController extends Controller
                                     select a.*, b.witel, c.id_berkas
                                     from eberkas_transaksi a left join eberkas_login b on (a.id_login = b.id) left join 
                                     (select distinct (id_berkas) from eberkas_lampiran) c on (a.id_transaksi = c.id_berkas)
-                                    where witel = '$v->witel_plasa' and a.create_transaksi::text LIKE '$dari%'
+                                    where (witel = '$v->witel_plasa' and a.create_transaksi::text LIKE '$dari%' and a.delete_transaksi::integer = 0)
                                 ) x
                             group by witel
                         ) y;"));
@@ -124,7 +124,7 @@ class LaporanController extends Controller
                                     select a.*, b.witel, c.id_berkas
                                     from eberkas_indihome a left join eberkas_login b on (a.id_login = b.id) left join 
                                     (select distinct (id_berkas) from eberkas_lampiran where id_jenis_transaksi = 7) c on (a.id_indihome = c.id_berkas)
-                                    where witel = '$v->witel_plasa' and a.create_indihome::text LIKE '$dari%'
+                                    where (witel = '$v->witel_plasa' and a.create_indihome::text LIKE '$dari%' and a.delete_indihome::integer = 0)
                                 ) x
                             group by witel
                         ) y;"));
@@ -175,7 +175,7 @@ class LaporanController extends Controller
                                     select a.*, b.loker, c.id_berkas
                                     from eberkas_transaksi a left join eberkas_login b on (a.id_login = b.id) left join 
                                     (select distinct (id_berkas) from eberkas_lampiran) c on (a.id_transaksi = c.id_berkas)
-                                    where loker = '$v->nama_plasa' and a.create_transaksi::text LIKE '$bulprod%'
+                                    where (loker = '$v->nama_plasa' and a.create_transaksi::text LIKE '$bulprod%' and a.delete_transaksi::integer = 0)
                                 ) x
                             group by loker
                         ) y;"));
@@ -226,7 +226,7 @@ class LaporanController extends Controller
                                     select a.*, b.loker, c.id_berkas
                                     from eberkas_indihome a left join eberkas_login b on (a.id_login = b.id) left join 
                                     (select distinct (id_berkas) from eberkas_lampiran where id_jenis_transaksi = 7) c on (a.id_indihome = c.id_berkas)
-                                    where loker = '$v->nama_plasa' and a.create_indihome::text LIKE '$bulprod%'
+                                    where (loker = '$v->nama_plasa' and a.create_indihome::text LIKE '$bulprod%' and a.delete_indihome::integer = 0)
                                 ) x
                             group by loker
                         ) y;"));
@@ -259,6 +259,9 @@ class LaporanController extends Controller
                                 ->orderBy('eberkas_indihome.create_indihome','desc')
                                 ->get();
         $plasa = Plasa::where('delete_plasa',0)->get();
+        $witel = Plasa::select('eberkas_plasa.witel_plasa')
+                    ->distinct('witel_plasa')
+                    ->get();
         $jenis = JenisTransaksi::where('delete_jenis_transaksi',0)->get();
         $data = [
             'title'        => 'Laporan Indihome for Admin',
@@ -268,6 +271,7 @@ class LaporanController extends Controller
             'parentActive' => 'laporan',
             'jenis'        => $jenis,
             'loker'        => $plasa,
+            'witel'        => $witel,
             'data'         => $query
         ];
 
@@ -276,6 +280,7 @@ class LaporanController extends Controller
 
     public function indihomeAdmin(Request $request)
     {
+        $witel  = $request->input('witel');
         $loker  = $request->input('loker');
         $dari   = $request->input('dari');
         $sampai = $request->input('sampai');
@@ -283,31 +288,33 @@ class LaporanController extends Controller
                                     ->join('eberkas_layanan','eberkas_layanan.id_layanan','=','eberkas_indihome.id_layanan')
                                     ->join('eberkas_ont','eberkas_ont.id_ont','=','eberkas_indihome.id_ont')
                                     ->join('eberkas_login','eberkas_login.id','=','eberkas_indihome.id_login');
-        if($loker != '' && $dari != '' && $sampai != ''){
-            $res = $query->where(function($query) use ($loker,$dari,$sampai){
+        if($witel != '' && $loker != '' && $dari != '' && $sampai != ''){
+            $res = $query->where(function($query) use ($witel,$loker,$dari,$sampai){
+                $query->where('eberkas_indihome.witel',$witel);
                 $query->where('eberkas_indihome.delete_indihome',0);
                 $query->where('eberkas_login.loker',$loker);
                 $query->whereBetween('eberkas_indihome.create_indihome',[date('Y-m-d H:i:s',strtotime($dari)),date('Y-m-d 23:59:59',strtotime($sampai))]);
             })
             ->orderBy('eberkas_indihome.id_indihome','desc')
             ->get();
-        }else if($loker == '' && $dari == ''){
-            $res = $query->where(function($query) use ($loker,$dari,$sampai){
+        }else if($witel != '' && $loker == '' && $dari == ''){
+            $res = $query->where(function($query) use ($witel,$loker,$dari,$sampai){
+                $query->where('eberkas_indihome.witel',$witel);
                 $query->where('eberkas_indihome.delete_indihome',0);
                 $query->whereBetween('eberkas_indihome.create_indihome',[date('Y-m-01 H:i:s'),date('Y-m-d H:i:s')]);
             })
             ->orderBy('eberkas_indihome.id_indihome','desc')
             ->get();
-        }else if($loker != '' && $dari == ''){
-            $res = $query->where(function($query) use ($loker,$dari,$sampai){
+        }else if($witel != '' && $loker != '' && $dari == ''){
+            $res = $query->where(function($query) use ($witel,$loker,$dari,$sampai){
                 $query->where('eberkas_indihome.delete_indihome',0);
                 $query->where('eberkas_login.loker',$loker);
                 $query->whereBetween('eberkas_indihome.create_indihome',[date('Y-m-01 H:i:s'),date('Y-m-d 23:59:59')]);
             })
             ->orderBy('eberkas_indihome.id_indihome','desc')
             ->get();
-        }else if($loker == '' && $dari != '' && $sampai != ''){
-            $res = $query->where(function($query) use ($loker,$dari,$sampai){
+        }else if($witel == '' && $loker == '' && $dari != ''){
+            $res = $query->where(function($query) use ($witel,$loker,$dari,$sampai){
                 $query->where('eberkas_indihome.delete_indihome',0);
                 $query->whereBetween('eberkas_indihome.create_indihome',[date('Y-m-d H:i:s',strtotime($dari)),date('Y-m-d 23:59:59',strtotime($sampai))]);
             })
@@ -318,8 +325,17 @@ class LaporanController extends Controller
                         ->where('eberkas_indihome.delete_indihome',0)
                         ->get();
         }
-        $plasa = Plasa::where('delete_plasa',0)->get();
+        $plasa  = Plasa::where('delete_plasa',0)->get();
         $jenisT = JenisTransaksi::where('delete_jenis_transaksi',0)->get();
+        $witelT = Plasa::select('eberkas_plasa.witel_plasa')
+                    ->distinct('witel_plasa')
+                    ->get();
+        if($witel == ''){
+            $nama_witel = 'Witel Semua Witel';
+        }else{
+            $nama_witel = 'Witel '.$witel;
+        }
+
         if($loker == ''){
             $nama_loker = 'Semua Loker';
         }else{
@@ -331,14 +347,16 @@ class LaporanController extends Controller
         }else{
             $waktu = $dari .' s/d. '.$sampai;
         }
+
         $data = [
             'title'        => 'Laporan Indihome for Admin',
-            'search'       => 'Data Indihome '.$nama_loker.' '.$waktu,
+            'search'       => 'Data Indihome '.$nama_witel.' '.$nama_loker.' '.$waktu,
             'content'      => 'admin.laporan.indihome_admin',
             'urlActive'    => 'admin-indihome',
             'parentActive' => 'laporan',
             'loker'        => $plasa,
             'jenis'        => $jenisT,
+            'witel'        => $witelT,
             'data'         => $res
         ];
 
@@ -348,6 +366,9 @@ class LaporanController extends Controller
     public function indexFormLamaAdmin()
     {
         $plasa = Plasa::where('delete_plasa',0)->get();
+        $witel = Plasa::select('eberkas_plasa.witel_plasa')
+                    ->distinct('witel_plasa')
+                    ->get();
         $jenis = JenisTransaksi::where('delete_jenis_transaksi',0)->where('id_jenis_transaksi','<>',7)->get();
         $query = Transaksi::join('eberkas_login','eberkas_login.id','=','eberkas_transaksi.id_login')
                                 ->join('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
@@ -361,6 +382,7 @@ class LaporanController extends Controller
             'urlActive'    => 'admin-form-lama',
             'parentActive' => 'laporan',
             'loker'        => $plasa,
+            'witel'        => $witel,
             'jenis'        => $jenis,
             'data'         => $query
         ];
@@ -370,6 +392,7 @@ class LaporanController extends Controller
 
     public function formLamaAdmin(Request $request)
     {
+        $witel = $request->input('witel');
         $loker = $request->input('loker');
         $jenis = $request->input('jenis');
         $dari  = $request->input('dari');
@@ -381,55 +404,111 @@ class LaporanController extends Controller
                             
         $plasa = Plasa::where('delete_plasa',0)->get();
         $jenisT = JenisTransaksi::where('delete_jenis_transaksi',0)->where('id_jenis_transaksi','<>',7)->get();
+        $witelT = Plasa::select('eberkas_plasa.witel_plasa')
+                    ->distinct('witel_plasa')
+                    ->get();
 
-        if($loker != '' && $jenis != '' && $dari != ''){
-            $res = $query->where(function($query) use ($loker,$jenis,$dari,$sampai){
+        if($witel != '' && $loker != '' && $jenis != '' && $dari != ''){
+            $res = $query->where(function($query) use ($witel,$loker,$jenis,$dari,$sampai){
                 $query->where('eberkas_transaksi.delete_transaksi',0);
+                $query->where('eberkas_login.witel',$witel);
                 $query->where('eberkas_login.loker',$loker);
                 $query->where('eberkas_transaksi.id_jenis_transaksi',$jenis);
                 $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-d H:i:s',strtotime($dari)),date('Y-m-d 23:59:59',strtotime($sampai))]);
             })
             ->orderBy('eberkas_transaksi.id_transaksi','desc')
             ->get();
-        }else if($loker != '' && $jenis != '' && $dari == ''){
-            $res = $query->where(function($query) use ($loker,$jenis,$dari,$sampai){
+        }else if($witel != '' && $loker != '' && $jenis != '' && $dari == ''){
+            $res = $query->where(function($query) use ($witel,$loker,$jenis,$dari,$sampai){
                 $query->where('eberkas_transaksi.delete_transaksi',0);
+                $query->where('eberkas_login.witel',$witel);
                 $query->where('eberkas_login.loker',$loker);
                 $query->where('eberkas_transaksi.id_jenis_transaksi',$jenis);
                 $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-01 H:i:s'),date('Y-m-d 23:59:59')]);
             })
             ->orderBy('eberkas_transaksi.id_transaksi','desc')
             ->get();
-        }else if($loker != '' && $jenis == '' && $dari == ''){
-            $res = $query->where(function($query) use ($loker,$jenis,$dari,$sampai){
+        }else if($witel != '' && $loker != '' && $jenis == '' && $dari == ''){
+            $res = $query->where(function($query) use ($witel,$loker,$jenis,$dari,$sampai){
                 $query->where('eberkas_transaksi.delete_transaksi',0);
+                $query->where('eberkas_login.witel',$witel);
                 $query->where('eberkas_login.loker',$loker);
                 $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-01 H:i:s'),date('Y-m-d 23:59:59')]);
             })
             ->orderBy('eberkas_transaksi.id_transaksi','desc')
             ->get();
-        }else if($loker == '' && $jenis != '' && $dari != ''){
-            $res = $query->where(function($query) use ($loker,$jenis,$dari,$sampai){
+        }else if($witel != '' && $loker == '' && $jenis != '' && $dari != ''){
+            $res = $query->where(function($query) use ($witel,$loker,$jenis,$dari,$sampai){
+                $query->where('eberkas_transaksi.delete_transaksi',0);
+                $query->where('eberkas_login.witel',$witel);
+                $query->where('eberkas_transaksi.id_jenis_transaksi',$jenis);
+                $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-d H:i:s',strtotime($dari)),date('Y-m-d 23:59:59',strtotime($sampai))]);
+            })
+            ->orderBy('eberkas_transaksi.id_transaksi','desc')
+            ->get();
+        }else if($witel == '' && $loker == '' && $jenis == '' && $dari != ''){
+            $res = $query->where(function($query) use ($witel,$loker,$jenis,$dari,$sampai){
+                $query->where('eberkas_transaksi.delete_transaksi',0);
+                $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-d H:i:s',strtotime($dari)),date('Y-m-d 23:59:59',strtotime($sampai))]);
+            })
+            ->orderBy('eberkas_transaksi.id_transaksi','desc')
+            ->get();
+        }else if($witel != '' && $loker != '' && $jenis == '' && $dari != ''){
+            $res = $query->where(function($query) use ($witel,$loker,$jenis,$dari,$sampai){
+                $query->where('eberkas_transaksi.delete_transaksi',0);
+                $query->where('eberkas_login.witel',$witel);
+                $query->where('eberkas_login.loker',$loker);
+                $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-d H:i:s',strtotime($dari)),date('Y-m-d 23:59:59',strtotime($sampai))]);
+            })
+            ->orderBy('eberkas_transaksi.id_transaksi','desc')
+            ->get();
+        }else if($witel == '' && $loker == '' && $jenis != '' && $dari != ''){
+            $res = $query->where(function($query) use ($witel,$loker,$jenis,$dari,$sampai){
                 $query->where('eberkas_transaksi.delete_transaksi',0);
                 $query->where('eberkas_transaksi.id_jenis_transaksi',$jenis);
                 $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-d H:i:s',strtotime($dari)),date('Y-m-d 23:59:59',strtotime($sampai))]);
             })
             ->orderBy('eberkas_transaksi.id_transaksi','desc')
             ->get();
-        }else if($loker == '' && $jenis == '' && $dari != ''){
-            $res = $query->where(function($query) use ($loker,$jenis,$dari,$sampai){
+        }else if($witel == '' && $loker == '' && $jenis != '' && $dari == ''){
+            $res = $query->where(function($query) use ($witel,$loker,$jenis,$dari,$sampai){
                 $query->where('eberkas_transaksi.delete_transaksi',0);
-                $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-d H:i:s',strtotime($dari)),date('Y-m-d 23:59:59',strtotime($sampai))]);
+                $query->where('eberkas_transaksi.id_jenis_transaksi',$jenis);
+                $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-01 H:i:s'),date('Y-m-d 23:59:59')]);
             })
             ->orderBy('eberkas_transaksi.id_transaksi','desc')
             ->get();
+        }else if($witel != '' && $loker == '' && $jenis == '' && $dari == ''){
+            $res = $query->where(function($query) use ($witel,$loker,$jenis,$dari,$sampai){
+                $query->where('eberkas_transaksi.delete_transaksi',0);
+                $query->where('eberkas_login.witel',$witel);
+                $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-01 H:i:s'),date('Y-m-d 23:59:59')]);
+            })
+            ->orderBy('eberkas_transaksi.id_transaksi','desc')
+            ->get();
+        }else if($witel != '' && $loker == '' && $jenis != '' && $dari == ''){
+            $res = $query->where(function($query) use ($witel,$loker,$jenis,$dari,$sampai){
+                $query->where('eberkas_transaksi.delete_transaksi',0);
+                $query->where('eberkas_login.witel',$witel);
+                $query->where('eberkas_transaksi.id_jenis_transaksi',$jenis);
+                $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-01 H:i:s'),date('Y-m-d 23:59:59')]);
+            })
+            ->orderBy('eberkas_transaksi.id_transaksi','desc')
+            ->get();
+        }
+        else{
+            $res = $query->where(function($query) use ($witel,$loker,$jenis,$dari,$sampai){
+                $query->where('eberkas_transaksi.delete_transaksi',0);
+                $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-01 H:i:s'),date('Y-m-d 23:59:59')]);
+            })
+            ->orderBy('eberkas_transaksi.id_transaksi','desc')
+            ->get();
+        }
+
+        if($witel == ''){
+            $nama_witel = 'Witel Semua Witel';
         }else{
-            $res = $query->where(function($query) use ($loker,$jenis,$dari,$sampai){
-                $query->where('eberkas_transaksi.delete_transaksi',0);
-                $query->whereBetween('eberkas_transaksi.create_transaksi',[date('Y-m-01 H:i:s'),date('Y-m-d 23:59:59')]);
-            })
-            ->orderBy('eberkas_transaksi.id_transaksi','desc')
-            ->get();
+            $nama_witel = 'Witel '.$witel;
         }
 
         if($loker == ''){
@@ -453,15 +532,29 @@ class LaporanController extends Controller
 
         $data = [
             'title'        => 'Laporan Form Lama for Admin',
-            'search'       => 'Data Form Lama '.$nama_loker.' '.$transaksi.' '.$waktu,
+            'search'       => 'Data Form Lama '.$nama_witel.' '.$nama_loker.' '.$transaksi.' '.$waktu,
             'content'      => 'admin.laporan.form_lama_admin',
             'parentActive' => 'laporan',
             'urlActive'    => 'admin-form-lama',
             'jenis'        => $jenisT,
             'loker'        => $plasa,
+            'witel'        => $witelT,
             'data'         => $res
         ];
 
         return view('admin.layout.index',['data' => $data]);
+    }
+
+    public function getPlasa($witel = null)
+    {
+        if($witel){
+            $plasa = Plasa::where(['witel_plasa' => $witel, 'delete_plasa' =>  0])->get();
+        }else{
+            $plasa = Plasa::where('delete_plasa',0)->get();
+        }
+        
+        return response([
+            'plasa' => $plasa
+        ]);
     }
 }

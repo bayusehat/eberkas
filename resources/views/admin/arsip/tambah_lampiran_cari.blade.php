@@ -69,8 +69,8 @@
                                                 <td>{{ date('d F H:i',strtotime($ri->create_indihome)) }}</td>
                                                 <td>{{ $ri->kontak_hp_indihome }}</td>
                                                 <td class="text-center">
-                                                    <a href="{{ url('lampiran/create/7/'.$ri->id_indihome) }}" class="btn btn-primary btn-sm btn-block"><i class="fas fa-plus"></i> Tambah Lampiran</a>
-                                                    <a href="{{ url('lampiran/view/7/'.$ri->id_indihome) }}" class="btn btn-warning btn-sm btn-block"><i class="fas fa-eye"></i> Lihat Lampiran</a>
+                                                    <a href="{{ url('lampiran/create/7/'.$ri->id_indihome) }}" target="_blank" class="btn btn-primary btn-sm btn-block"><i class="fas fa-plus"></i> Tambah Lampiran</a>
+                                                    <a href="{{ url('lampiran/view/7/'.$ri->id_indihome) }}" target="_blank" class="btn btn-warning btn-sm btn-block"><i class="fas fa-eye"></i> Lihat Lampiran</a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -107,8 +107,8 @@
                                                 <td>{{ date('d F H:i',strtotime($rt->create_transaksi)) }}</td>
                                                 <td>{{ $rt->no_hp_transaksi }}</td>
                                                 <td class="text-center">
-                                                    <a href="{{ url('lampiran/create/'.$rt->id_jenis_transaksi.'/'.$rt->id_transaksi) }}" class="btn btn-primary btn-sm btn-block"><i class="fas fa-plus"></i> Tambah Lampiran</a>
-                                                    <a href="{{ url('lampiran/view/'.$rt->id_jenis_transaksi.'/'.$rt->id_transaksi) }}" class="btn btn-warning btn-sm btn-block"><i class="fas fa-eye"></i> Lihat Lampiran</a>
+                                                    <a href="{{ url('lampiran/create/'.$rt->id_jenis_transaksi.'/'.$rt->id_transaksi) }}" target="_blank" class="btn btn-primary btn-sm btn-block"><i class="fas fa-plus"></i> Tambah Lampiran</a>
+                                                    <a href="{{ url('lampiran/view/'.$rt->id_jenis_transaksi.'/'.$rt->id_transaksi) }}" target="_blank" class="btn btn-warning btn-sm btn-block"><i class="fas fa-eye"></i> Lihat Lampiran</a>
                                                 </td>
                                             </tr>
                                         @endforeach

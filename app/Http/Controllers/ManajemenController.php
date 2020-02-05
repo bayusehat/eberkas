@@ -14,21 +14,25 @@ class ManajemenController extends Controller
 {
     public function doCariBerkas(Request $request)
     {
-        $searchVal = $request->input('searchVal');
+        $searchVal  = $request->input('searchVal');
         $query      = NewIndihome::select('eberkas_indihome.*','eberkas_layanan.nama_layanan','eberkas_ont.nama_ont','eberkas_login.nama')
                                     ->join('eberkas_layanan','eberkas_layanan.id_layanan','=','eberkas_indihome.id_layanan')
                                     ->join('eberkas_ont','eberkas_ont.id_ont','=','eberkas_indihome.id_ont')
                                     ->join('eberkas_login','eberkas_login.id','=','eberkas_indihome.id_login')
-                                    ->where('no_internet_indihome','like',"%{$searchVal}%")
-                                    ->orWhere('kontak_hp_indihome','like',"%{$searchVal}%")
-                                    ->where('delete_indihome',0)
+                                    ->where('eberkas_indihome.delete_indihome',0)
+                                    ->where(function($query) use ($searchVal){
+                                        $query->where('no_internet_indihome','like',"%{$searchVal}%");
+                                        $query->orWhere('kontak_hp_indihome','like',"%{$searchVal}%");
+                                    })
                                     ->get();
         $query2     = NomorJastel::select('eberkas_nomor_jastel.*','eberkas_transaksi.*','eberkas_jenis_transaksi.*')
                                     ->join('eberkas_transaksi','eberkas_transaksi.id_transaksi','=','eberkas_nomor_jastel.id_transaksi')
                                     ->join('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
-                                    ->where('nomor_jastel','like',"%{$searchVal}%")
-                                    ->orWhere('no_hp_transaksi','like',"%{$searchVal}%")
-                                    ->where('delete_transaksi',0)
+                                    ->where('eberkas_transaksi.delete_transaksi',0)
+                                    ->where(function($query) use ($searchVal){
+                                        $query->where('nomor_jastel','like',"%{$searchVal}%");
+                                        $query->orWhere('no_hp_transaksi','like',"%{$searchVal}%");
+                                    })
                                     ->get();
         
         $data = [
