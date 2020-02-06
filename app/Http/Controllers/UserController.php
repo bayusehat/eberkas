@@ -13,10 +13,11 @@ class UserController extends Controller
 {
     public function index()
     {
+        $listRole = Role::where('delete_role',0)->orderBy('id_role','desc')->first();
         if(session('id_role') == 1){
             $role = Role::all();
         }else if(session('id_role') == 5){
-            $role = Role::whereBetween('id_role',[2,5])->where('delete_role',0)->get();
+            $role = Role::whereBetween('eberkas_role.id_role',[2,$listRole->id_role])->where('delete_role',0)->get();
         }else{
             $role = Role::where('id_role','>=',session('id_role'))->where('id_role','!=',5)->where('delete_role',0)->get();
         }
@@ -34,22 +35,29 @@ class UserController extends Controller
 
     public function loadData()
     {
+        $listRole = Role::where('delete_role',0)->orderBy('id_role','desc')->first();
         $response['data'] = [];
         if(session('id_role') == 1){  
-            $user = Login::all();
+            $user = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
+                        ->orderBy('witel','asc')
+                        ->get();
         }else if(session('id_role') == 5){
-            $user = Login::whereBetween('id_role',[2,5])
+            $user = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
+                        ->whereBetween('eberkas_role.id_role',[2,$listRole->id_role])
                         ->where(function($query){
                             $query->where('witel',session('witel'));
                         })
+                        ->orderBy('witel','asc')
                         ->get();
         }else{
-            $user = Login::where('id_role','>',session('id_role'))
+            $user = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
+                        ->where('id_role','>',session('id_role'))
                         ->where(function($query){
                             $query->where('loker',session('plasa'));
                             $query->where('witel',session('witel'));
                             $query->where('id_role','!=',5);
                         })
+                        ->orderBy('witel','asc')
                         ->get();
         }
       
@@ -69,6 +77,7 @@ class UserController extends Controller
                 $v->loker,
                 $v->witel,
                 $v->kota,
+                $v->nama_role,
                 $statusUser,
                 '
                 <a href="javascript:void(0)" onclick="show('.$v->id.')" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a>

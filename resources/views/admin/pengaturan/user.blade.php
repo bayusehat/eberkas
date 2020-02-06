@@ -30,6 +30,7 @@
                             <th>Loker</th>
                             <th>Witel</th>
                             <th>Kota</th>
+                            <th>Posisi</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr> 
@@ -197,6 +198,7 @@
                 { name: 'loker'},
                 { name: 'witel'},
                 { name: 'kota'},
+                { name: 'role'},
                 { name: 'status', className:'text-center'},
                 { name: 'action', searchable: false, orderable: false, className: 'text-center' }
             ],

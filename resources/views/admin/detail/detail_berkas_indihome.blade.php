@@ -135,11 +135,18 @@ return $bulan_ini;
 
 <tr>
 <td>
-  <strong>Jenis Permohonan* :</strong> {{ $indihome->jenis_permohonan_indihome }}</td>
+  <strong>Jenis Permohonan* :</strong> {{ $indihome->jenis_permohonan_indihome }}
+</td>
 <td>&nbsp;</td>
 <td>&nbsp;</td>
 <td>
-  <strong>Paket Layanan IndiHome*:</strong> {{ $indihome->nama_layanan }} </td>
+    <strong>Jenis Paket* :</strong> {{ $indihome->jenis_paket_indihome }}
+</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>
+  <strong>Paket Layanan IndiHome*:</strong> {{ $indihome->nama_layanan }} 
+</td>
 <td>&nbsp;</td>
 <td>&nbsp;</td>
 </tr>

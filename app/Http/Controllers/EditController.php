@@ -123,7 +123,7 @@ class EditController extends Controller
                     $v->alamat_identitas_transaksi,
                     date('d F Y H:i:s',strtotime($v->create_transaksi)),
                     '
-                        <a href="'.url('edit/'.$v->id_jenis_transaksi.'/'.$v->id_transaksi).'" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                        <a href="'.url('edit/'.$v->id_jenis_transaksi.'/'.$v->id_transaksi).'" target="_blank" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a>
                     '
                 ];
             }

@@ -16,6 +16,7 @@
 
   <!-- Page level plugin CSS-->
   <link href="{{ asset('assets/admin/vendor/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
+  <link href="{{ asset('assets/admin/vendor/datatables/buttons.dataTables.min.css') }}" rel="stylesheet">
 
   <!-- Custom styles for this template-->
   <link href="{{ asset('assets/admin/css/sb-admin.css') }}" rel="stylesheet">
@@ -36,6 +37,12 @@
   <script src="{{ asset('assets/admin/vendor/chart.js/Chart.min.js') }}"></script>
   <script src="{{ asset('assets/admin/vendor/datatables/jquery.dataTables.js') }}"></script>
   <script src="{{ asset('assets/admin/vendor/datatables/dataTables.bootstrap4.js') }}"></script>
+  <script src="{{ asset('assets/admin/vendor/datatables/dataTables.buttons.min.js') }}"></script>
+  <script src="{{ asset('assets/admin/vendor/datatables/jszip.min.js') }}"></script>
+  <script src="{{ asset('assets/admin/vendor/datatables/pdfmake.min.js') }}"></script>
+  <script src="{{ asset('assets/admin/vendor/datatables/vfs_fonts.js') }}"></script>
+  <script src="{{ asset('assets/admin/vendor/datatables/buttons.html5.min.js') }}"></script>
+  <script src="{{ asset('assets/admin/vendor/datatables/buttons.colVis.min.js') }}"></script>
   <script src="{{ asset('assets/tinymce.min.js') }}"></script>
   <script src="{{ asset('assets/select2.min.js') }}"></script>
   <script src="{{ asset('assets/jquery-ui.js') }}"></script>

@@ -9,8 +9,7 @@
         <div class="card-body">
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Sukses!</strong> {!! Session::get('success') !!}
-                    Halaman akan tertutup setelah 3 detik...
+                    <strong>Sukses!</strong> {!! Session::get('success') !!} / <a href="javascript:void(0)" onclick="closeWindow()"><i class="fas fa-arrow-left"></i> Kembali ke Cari Lampiran</a>
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -48,12 +47,6 @@
     </div>
 </section>
 <script type="text/javascript">
-    var sess = '{{ session("success") }}';
-    if(sess){
-        setTimeout(function(){
-            window.close();
-        },3000)
-    }
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -67,4 +60,7 @@
     $("#lampiran").change(function(){
         readURL(this);
     });
+    function closeWindow(){
+        window.close();
+    }
 </script>

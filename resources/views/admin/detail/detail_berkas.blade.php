@@ -103,7 +103,26 @@ use App\NomorJastel;
 use App\Login;
 
 $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
-                                        ->where('id',$transaksi->id_login)->first();
+              ->where('id',$transaksi->id_login)->first();
+if($transaksi->signature_pelanggan_transaksi != null || $transaksi->signature_pelanggan_transaksi != ""){
+  if(file_exists(public_path().'/signature/'.$transaksi->signature_pelanggan_transaksi)){
+    $tandaPelanggan = '<img src="'.asset('signature/'.$transaksi->signature_pelanggan_transaksi).'" width="130" height="130">';
+  }else{
+    $tandaPelanggan = '<div style="width:130px;height:130px"></div>';
+  }
+}else{
+  $tandaPelanggan = '<div style="width:130px;height:130px"></div>';
+}
+
+if($transaksi->signature_login != "" || $transaksi->signature_login != null){
+  if(file_exists(public_path().'/signature/'.$transaksi->signature_login)){
+    $tandaInput = '<img src="'.asset('signature/'.$transaksi->signature_login).'" width="130" height="130">';
+  }else{
+    $tandaInput = '<div style="width:130px;height:130px"></div>';
+  }
+}else{
+  $tandaInput = '<div style="width:130px;height:130px"></div>';
+}
 @endphp
 <table width="849" border="0" cellspacing="0" cellpadding=0>
     <tr>
@@ -145,7 +164,7 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
 
         <p><b><u>Spesifikasi Fasilitas Jasa Telekomunikasi</u></b></p>
 
-        <table width="639" border="1" cellspacing="0" cellpadding="0">
+        <table width="639" border="1" cellspacing="0" cellpadding="2">
             <tr>
               <td width="33"><div align="center">No.</div></td>
               <td width="139"><div align="center">Nomor Telepon </div></td>
@@ -161,14 +180,41 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
               <td>{{ $transaksi->nama_jenis_transaksi }}</td>
               <td>{{ $transaksi->segment_transaksi }}</td>
               <td>{{ $transaksi->jenis_layanan_transaksi }}</td>
-              <td>{{ number_format($transaksi->biaya_transaksi) }}</td>
+              <td>{{ number_format((int)$transaksi->biaya_transaksi) }}</td>
               <td>{{ $transaksi->keterangan_transaksi }}</td>
             </tr>
           </table>
+          <p><b><u>PERSETUJUAN PERMOHONAN </u></b></p>
+          <p>Pada Hari ini {{ hari_ini(date('D',strtotime($transaksi->create_transaksi))) }}, tanggal {{ date('d',strtotime($transaksi->create_transaksi)) }} bulan {{ bulan_ini(date('m',strtotime($transaksi->create_transaksi))) }} tahun {{ date('Y',strtotime($transaksi->create_transaksi)) }}, pihak TELKOM 
+            telah menyetujui permohonan PELANGGAN dimaksud<br />
+            dan dengan ini TELKOM dan PELANGGAN sepakat untuk saling mengikatkan diri dalam kontrak berlangganan<br />
+            sambungan telekomunikasi "<strong>{{ $transaksi->produk_transaksi }}</strong>".</p>
+          <p>&nbsp;Data dan Informasi di atas adalah benar dan ketentuan berlangganan dalam kontrak berlangganan<br />
+            sambungan telekomunikasi tersebut telah di pahami dan berlaku bagi kedua belah pihak sejak di tandatangani <br />
+            oleh PELANGGAN dan PETUGAS TELKOM  yang berwenang.</p>
+          <p>{{ $transaksi->kota }},{{ date('d',strtotime($transaksi->create_transaksi)) }} {{ bulan_ini(date('m',strtotime($transaksi->create_transaksi))) }} {{ date('Y',strtotime($transaksi->create_transaksi)) }}</p>
+          <table width="630" border="0" cellspacing="0" cellpadding="0">
+            <tr valign="top">
+              <td width="200" align="center"></td>
+              <td width="200">&nbsp;</td>
+              <td width="230" align="center">{{ $transaksi->kota }},{{ date('d',strtotime($transaksi->create_transaksi)) }} {{ bulan_ini(date('m',strtotime($transaksi->create_transaksi))) }} {{ date('Y',strtotime($transaksi->create_transaksi)) }}</td>
+            </tr>
+            <tr valign="top">
+              <td width="200" align="center">{{ $input->nama_role }}<br />
+                {!! $tandaInput !!} <br />
+                <?php echo strtoupper($transaksi->nama); ?> </td>
+              <td width="200">&nbsp;</td>
+              <td width="230" align="center">Pelanggan,<br />
+               {!! $tandaPelanggan !!} <br />
+              <?php echo strtoupper($transaksi->nama_transaksi); ?></td>
+            </tr>
+          </table>
+            <p>
+          </div>
         @endif
 
         @if ($transaksi->id_jenis_transaksi == 2)
-        <p><strong>PERMOHONAN DAN PERSETUJUAN BALIK NAMA {{ $transaksi->produk_transaksi }}</strong></p>
+        <p><strong>PERMOHONAN DAN PERSETUJUAN GANTI NOMOR {{ $transaksi->produk_transaksi }}</strong></p>
         <p>Pelanggan dengan data-data tersebut dibawah ini bertindak untuk dan atas nama Diri Sendiri / Kuasa,<br>
         Kepada PT. Telekomunikasi Indonesia, Tbk. dengan dan spesifikasi berikut :</p>
 
@@ -202,7 +248,7 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
 
         <p><b><u>Spesifikasi Fasilitas Jasa Telekomunikasi</u></b></p>
 
-        <table width="639" border="1" cellspacing="0" cellpadding="0">
+        <table width="639" border="1" cellspacing="0" cellpadding="2">
             <tr>
               <td width="33"><div align="center">No.</div></td>
               <td width="139"><div align="center">Nomor Telepon </div></td>
@@ -218,10 +264,37 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
               <td>{{ $transaksi->nama_jenis_transaksi }}</td>
               <td>{{ $transaksi->segment_transaksi }}</td>
               <td>{{ $transaksi->jenis_layanan_transaksi }}</td>
-              <td>{{ number_format($transaksi->biaya_transaksi) }}</td>
+              <td>{{ number_format((int) $transaksi->biaya_transaksi) }}</td>
               <td>{{ $transaksi->keterangan_transaksi }}</td>
             </tr>
           </table>
+          <p><b><u>PERSETUJUAN PERMOHONAN </u></b></p>
+          <p>Pada Hari ini {{ hari_ini(date('D',strtotime($transaksi->create_transaksi))) }}, tanggal {{ date('d',strtotime($transaksi->create_transaksi)) }} bulan {{ bulan_ini(date('m',strtotime($transaksi->create_transaksi))) }} tahun {{ date('Y',strtotime($transaksi->create_transaksi)) }}, pihak TELKOM 
+            telah menyetujui permohonan PELANGGAN dimaksud<br />
+            dan dengan ini TELKOM dan PELANGGAN sepakat untuk saling mengikatkan diri dalam kontrak berlangganan<br />
+            sambungan telekomunikasi "TELKOM PHONE".</p>
+          <p>&nbsp;Data dan Informasi di atas adalah benar dan ketentuan berlangganan dalam kontrak berlangganan<br />
+            sambungan telekomunikasi tersebut telah di pahami dan berlaku bagi kedua belah pihak sejak di tandatangani <br />
+            oleh PELANGGAN dan PETUGAS TELKOM  yang berwenang.</p>
+          <p>{{ $transaksi->kota }},{{ date('d',strtotime($transaksi->create_transaksi)) }} {{ bulan_ini(date('m',strtotime($transaksi->create_transaksi))) }} {{ date('Y',strtotime($transaksi->create_transaksi)) }}</p>
+          <table width="630" border="0" cellspacing="0" cellpadding="0">
+            <tr valign="top">
+              <td width="200" align="center"></td>
+              <td width="200">&nbsp;</td>
+              <td width="230" align="center">{{ $transaksi->kota }},{{ date('d',strtotime($transaksi->create_transaksi)) }} {{ bulan_ini(date('m',strtotime($transaksi->create_transaksi))) }} {{ date('Y',strtotime($transaksi->create_transaksi)) }}</td>
+            </tr>
+            <tr valign="top">
+              <td width="200" align="center">{{ $input->nama_role }}<br />
+                {!! $tandaInput !!} <br />
+                <?php echo strtoupper($transaksi->nama); ?> </td>
+              <td width="200">&nbsp;</td>
+              <td width="230" align="center">Pelanggan,<br />
+               {!! $tandaPelanggan !!} <br />
+              <?php echo strtoupper($transaksi->nama_transaksi); ?></td>
+            </tr>
+          </table>
+            <p>
+          </div>
         @endif
 
         @if ($transaksi->id_jenis_transaksi == 3)
@@ -325,12 +398,12 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
                       </tr>
                       <tr valign="top">
                         <td width="250" align="center">Pelanggan<br />
-                          <img src="{{ asset('signature/'.$transaksi->signature_pelanggan_transaksi) }}" width="130" /> <br />
+                          {!! $tandaPelanggan !!} <br />
                           {{ strtoupper($transaksi->nama_transaksi) }}
                         </td>
                         <td width="200">&nbsp;</td>
                         <td width="200" align="center">{{$input->nama_role}}<br />
-                          <img src="{{ asset('signature/'.$transaksi->signature_login) }}" width="130" /> <br />
+                          {!! $tandaInput !!} <br />
                           {{ strtoupper($transaksi->nama) }}
                         </td>
                       </tr>
@@ -343,21 +416,21 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
                           @php
                             if($transaksi->witel == 'SINGARAJA'){
                               $atasan = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
-                                            ->where('loker','PLASA GIANYAR')->where('eberkas_login.id_role',3)->first();
+                                            ->where('loker','PLASA GIANYAR')->where('eberkas_login.id_role',2)->first();
                               if($atasan){
                                 $atasan = $atasan;
                               }else{
                                 $atasan = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
-                                            ->where('loker','PLASA GIANYAR')->where('eberkas_login.id_role',2)->first();
+                                            ->where('loker','PLASA GIANYAR')->where('eberkas_login.id_role',3)->first();
                               }
                             }else{
                               $atasan = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
-                                            ->where('loker',$transaksi->loker)->where('eberkas_login.id_role',3)->first();
+                                            ->where('loker',$transaksi->loker)->where('eberkas_login.id_role',2)->first();
                               if($atasan){
                                 $atasan = $atasan;
                               }else{
                                 $atasan = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
-                                            ->where('loker',$transaksi->loker)->where('eberkas_login.id_role',2)->first();
+                                            ->where('loker',$transaksi->loker)->where('eberkas_login.id_role',3)->first();
                               }
                             }
                           @endphp
@@ -366,12 +439,12 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
                           @else
                             {{''}}
                           @endif
-                          <br>
+                            <br>
                           @if($atasan)
-                          <img src="{{ asset('signature/'.$atasan->signature_login) }}"width="100" /><br /> 
-                          {{ strtoupper($atasan->nama) }}
+                            <img src="{{ asset('signature/'.$atasan->signature_login) }}"width="100" /><br /> 
+                            {{ strtoupper($atasan->nama) }}
                           @else 
-                          {{''}}
+                            {!! '<div style="width:100px;height:100px"></div>' !!}
                           @endif
                           </td>
                         <td width="161"><br /></td>
@@ -412,7 +485,7 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
               </tr>
             </table>
           <p><b><u>Spesifikasi Fasilitas Jasa telekomunikasi</u></b> </p>
-          <table width="639" border="1" cellspacing="0" cellpadding="0">
+          <table width="639" border="1" cellspacing="0" cellpadding="2">
               <tr>
                 <td width="33"><div align="center">No.</div></td>
                 <td width="139"><div align="center">Nomor Jastel </div></td>
@@ -432,10 +505,36 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
                 <td>{{ $transaksi->id_jenis_transaksi }}</td>
                 <td>{{ $transaksi->segment_transaksi }}</td>
                 <td>{{ $transaksi->jenis_layanan_transaksi }}</td>
-                <td>{{ number_format($transaksi->biaya_transaksi) }}</td>
+                @php
+                    $biaya = (float) $transaksi->biaya_transaksi;
+                @endphp
+                <td>{{ number_format($biaya) }}</td>
                 <td>{{ $transaksi->keterangan_transaksi }}</td>
               </tr>
             </table>
+            <p><b><u>PERSETUJUAN PERMOHONAN </u></b></p>
+          <p>Pada Hari ini {{ hari_ini(date('D',strtotime($transaksi->create_transaksi))) }}, tanggal {{ date('d',strtotime($transaksi->create_transaksi)) }} bulan {{ bulan_ini(date('m',strtotime($transaksi->create_transaksi))) }} tahun {{ date('Y',strtotime($transaksi->create_transaksi)) }}, pihak TELKOM 
+            telah menyetujui permohonan PELANGGAN untuk PINDAH ALAMAT.</p>
+            <p>Demikian Surat pernyataan ini di buat untuk dipergunakan seperlunya.</p>
+          <p>{{ $transaksi->kota }},{{ date('d',strtotime($transaksi->create_transaksi)) }} {{ bulan_ini(date('m',strtotime($transaksi->create_transaksi))) }} {{ date('Y',strtotime($transaksi->create_transaksi)) }}</p>
+          <table width="630" border="0" cellspacing="0" cellpadding="0">
+            <tr valign="top">
+              <td width="200" align="center"></td>
+              <td width="200">&nbsp;</td>
+              <td width="230" align="center">{{ $transaksi->kota }},{{ date('d',strtotime($transaksi->create_transaksi)) }} {{ bulan_ini(date('m',strtotime($transaksi->create_transaksi))) }} {{ date('Y',strtotime($transaksi->create_transaksi)) }}</td>
+            </tr>
+            <tr valign="top">
+              <td width="200" align="center">{{ $input->nama_role }}<br />
+                {!! $tandaInput !!} <br />
+                <?php echo strtoupper($transaksi->nama); ?> </td>
+              <td width="200">&nbsp;</td>
+              <td width="230" align="center">Pelanggan,<br />
+               {!! $tandaPelanggan !!} <br />
+              <?php echo strtoupper($transaksi->nama_transaksi); ?></td>
+            </tr>
+          </table>
+            <p>
+          </div>
         @endif
 
         @if($transaksi->id_jenis_transaksi == 5)
@@ -520,18 +619,18 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
         <p>Demikian Surat pernyataan ini di buat untuk dipergunakan seperlunya. </p>
         <table width="650" border="0" cellspacing="0" cellpadding="0">
           <tr valign="top">
-            <td width="250" align="center">{{ $transaksi->kota }}, {{ hari_ini(date('D',strtotime($transaksi->create_transaksi))) .' '.bulan_ini(date('m',strtotime($transaksi->create_transaksi))).' '.date('Y',strtotime($transaksi->create_transaksi)) }}</td>
+            <td width="250" align="center">{{ $transaksi->kota }}, {{ date('d',strtotime($transaksi->create_transaksi)) .' '.bulan_ini(date('m',strtotime($transaksi->create_transaksi))).' '.date('Y',strtotime($transaksi->create_transaksi)) }}</td>
             <td width="200">&nbsp;</td>
             <td width="200" align="center">Menyetujui,</td>
           </tr>
           <tr valign="top">
             <td width="250" align="center">Pelanggan<br />
-              <img src="{{ asset('signature/'.$transaksi->signature_pelanggan_transaksi) }}" width="130" /> <br />
+              {!! $tandaPelanggan !!} <br />
               {{ strtoupper($transaksi->nama_transaksi) }}
             </td>
             <td width="200">&nbsp;</td>
             <td width="200" align="center">{{ $input->nama_role }}<br />
-              <img src="{{ asset('signature/'.$transaksi->signature_login) }}" width="130" /> <br />
+              {!! $tandaInput !!} <br />
                {{ strtoupper($transaksi->nama) }}
             </td>
           </tr>
@@ -552,7 +651,7 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
               @else
                   {{ 'dicabut'}}
               @endif Fasilitas Istimewa Berupa:</p>
-        <table width="421" border="0" cellspacing="0" cellpadding="0">
+        <table width="421" border="0" cellspacing="0" cellpadding="2">
          @foreach ($fitur as $f)
              @php
                  $tgk = FiturIndihome::where(['id_transaksi' => $transaksi->id_transaksi,'id_fitur' => $f->id_fitur])->first();
@@ -647,18 +746,18 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
             <p>Demikian Surat pernyataan ini di buat untuk dipergunakan seperlunya. </p>
               <table width="650" border="0" cellspacing="0" cellpadding="0">
                   <tr valign="top">
-                    <td width="250" align="center">{{ $transaksi->kota }}, {{ hari_ini(date('D',strtotime($transaksi->create_transaksi))) .' '.bulan_ini(date('m',strtotime($transaksi->create_transaksi))).' '.date('Y',strtotime($transaksi->create_transaksi)) }}</td>
+                    <td width="250" align="center">{{ $transaksi->kota }}, {{date('d',strtotime($transaksi->create_transaksi)) .' '.bulan_ini(date('m',strtotime($transaksi->create_transaksi))).' '.date('Y',strtotime($transaksi->create_transaksi)) }}</td>
                     <td width="200">&nbsp;</td>
                     <td width="200" align="center">Menyetujui,</td>
                   </tr>
                   <tr valign="top">
                     <td width="250" align="center">Pelanggan<br />
-                      <img src="{{ asset('signature/'.$transaksi->signature_pelanggan_transaksi) }}" width="130" /> <br />
+                      {!! $tandaPelanggan !!} <br />
                       {{ strtoupper($transaksi->nama_penerima_kuasa_transaksi) }}
                     </td>
                     <td width="200">&nbsp;</td>
                     <td width="200" align="center">{{ $input->nama_role }}<br />
-                      <img src="{{ asset('signature/'.$transaksi->signature_login) }}" width="130" /> <br />
+                       {!! $tandaInput !!} <br />
                        {{ strtoupper($transaksi->nama) }}
                     </td>
                   </tr>
@@ -721,18 +820,18 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
             <p>Demikian pengaduan kami. </p>
             <table width="650" border="0" cellspacing="0" cellpadding="0">
               <tr valign="top">
-                <td width="250" align="center">{{ $transaksi->kota }}, {{ hari_ini(date('D',strtotime($transaksi->create_transaksi))) .' '.bulan_ini(date('m',strtotime($transaksi->create_transaksi))).' '.date('Y',strtotime($transaksi->create_transaksi)) }}</td>
+                <td width="250" align="center">{{ $transaksi->kota }}, {{ date('d',strtotime($transaksi->create_transaksi)) .' '.bulan_ini(date('m',strtotime($transaksi->create_transaksi))).' '.date('Y',strtotime($transaksi->create_transaksi)) }}</td>
                 <td width="200">&nbsp;</td>
                 <td width="200" align="center"></td>
               </tr>
               <tr valign="top">
                 <td width="250" align="center">Pelanggan<br />
-                  <img src="{{ asset('signature/'.$transaksi->signature_pelanggan_transaksi) }}" width="130" /> <br />
+                  {!! $tandaPelanggan !!} <br />
                   <?php echo strtoupper($transaksi->nama_transaksi); ?>
                 </td>
                 <td width="200">&nbsp;</td>
                 <td width="200" align="center">{{ $input->nama_role}}<br />
-                  <img src="{{ asset('signature/'.$transaksi->signature_login) }}" width="130" /> <br />
+                  {!! $tandaInput !!} <br />
                   <?php echo strtoupper($transaksi->nama); ?>
                 </td>
               </tr>
@@ -834,12 +933,12 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
               </tr>
               <tr valign="top">
                 <td width="250" align="center">Pelanggan<br />
-                  <img src="{{ asset('signature/'.$transaksi->signature_pelanggan_transaksi) }}" width="130" /> <br />
+                  {!! $tandaPelanggan !!} <br />
                   {{ strtoupper($transaksi->nama_penerima_kuasa_transaksi) }}
                 </td>
                 <td width="200">&nbsp;</td>
                 <td width="200" align="center">{{ $input->nama_role }}<br />
-                  <img src="{{ asset('signature/'.$transaksi->signature_login) }}" width="130" /> <br />
+                  {!! $tandaInput !!} <br />
                   {{ strtoupper($transaksi->nama)}}
                 </td>
             </tr>
@@ -936,12 +1035,12 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
         </tr>
         <tr valign="top">
           <td width="200" align="center">{{ $input->nama_role }}<br />
-            <img src="{{ asset('signture/'.$transaksi->signature_login) }}" width="130" /> <br />
+            {!! $tandaInput !!} <br />
             {{ strtoupper($transaksi->nama)}}
           </td>
           <td width="200">&nbsp;</td>
           <td width="230" align="center">Pelanggan,<br />
-            <img src="{{ asset('signature/'.$transaksi->signature_pelangga_transaksi) }}" width="130" /> <br />
+            {!! $tandaPelanggan !!} <br />
             {{ strtoupper($transaksi->nama_transaksi) }}
         </tr>
         </table>
@@ -984,7 +1083,7 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
             </tr>
           </table>
         <p>Dengan ini menyatakan bahwa saya mempunyai tunggakan rekening {{ $transaksi->produk_transaksi }} mulai bulan {{ bulan_ini('0'.$transaksi->bulan_periode_mulai).' '.$transaksi->tahun_periode_mulai }}<br />s/d bulan {{ bulan_ini('0'.$transaksi->bulan_periode_sampai).' '.$transaksi->tahun_periode_sampai }} sebesar Rp <?php echo number_format($transaksi->jumlah_total_cicilan_transaksi,0,",","."); ?>,- dengan rincian sebagai berikut:</p>
-          <table width="700" border="1" cellspacing="0" cellpadding="0">
+          <table width="700" border="1" cellspacing="0" cellpadding="2">
             <thead>
                 <tr>
                     <th>Bln. Thn</th>
@@ -1049,12 +1148,12 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
             </tr>
             <tr valign="top">
               <td width="200" align="center">{{ $input->nama_role }},<br />
-                <img src="{{ asset('signature/'.$transaksi->signature_login) }}" width="130" /> <br />
+                {!! $tandaInput !!} <br />
                 {{ strtoupper($transaksi->nama) }}
               </td>
               <td width="200">&nbsp;</td>
               <td width="230" align="center">Pelanggan,<br />
-                <img src="{{ asset('signature/'.$transaksi->signature_pelanggan_transaksi) }}" width="130" /> <br />
+                {!! $tandaPelanggan !!} <br />
                 {{ strtoupper($transaksi->nama_transaksi) }}</td>
             </tr>
           </table>
@@ -1062,7 +1161,7 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
         </div>
         @endif
 
-        @if ($transaksi->id_jenis_transaksi != 3 && $transaksi->id_jenis_transaksi != 5 && $transaksi->id_jenis_transaksi != 6 && $transaksi->id_jenis_transaksi != 8 && $transaksi->id_jenis_transaksi != 9 && $transaksi->id_jenis_transaksi != 10 && $transaksi->id_jenis_transaksi != 11)
+        {{-- @if ($transaksi->id_jenis_transaksi != 3 && $transaksi->id_jenis_transaksi != 5 && $transaksi->id_jenis_transaksi != 6 && $transaksi->id_jenis_transaksi != 8 && $transaksi->id_jenis_transaksi != 9 && $transaksi->id_jenis_transaksi != 10 && $transaksi->id_jenis_transaksi != 11)
         <p><b><u>PERSETUJUAN PERMOHONAN </u></b></p>
 	      <p>Pada Hari ini {{ hari_ini(date('D',strtotime($transaksi->create_transaksi)))}}, tanggal {{ date('d',strtotime($transaksi->create_transaksi))}} bulan {{ bulan_ini(date('m',strtotime($transaksi->create_transaksi))) }} tahun {{ date('Y',strtotime($transaksi->create_transaksi))}}, pihak TELKOM 
 	      telah menyetujui permohonan PELANGGAN dimaksud<br />
@@ -1079,14 +1178,14 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
         </tr>
         <tr valign="top">
           <td width="200" align="center">{{ $input->nama_role }},<br />
-            <img src="{{ asset('signature/'.$transaksi->signature_login ) }}" width="130" /> <br />
+            {!! $tandaInput !!} <br />
             {{ strtoupper($transaksi->nama)}} </td>
           <td width="200">&nbsp;</td>
           <td width="230" align="center">Pelanggan,<br />
-            <img src="{{ asset('signature/'.$transaksi->signature_pelanggan_transaksi ) }}" width="130" /> <br />
+            {!! $tandaPelanggan !!} <br />
             {{ $transaksi->nama_transaksi }}</td>
         </tr>
       </table>
-      @endif
+      @endif --}}
 </div>
 </div>

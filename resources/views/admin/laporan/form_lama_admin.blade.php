@@ -114,7 +114,20 @@
 </section>
 <script>
     $(document).ready(function(){
-      $("#tableData").DataTable();
+    var title = '{{ $search }}';
+    $('title').html(title);
+    $("#tableData").DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: ':visible',
+                }
+            },
+            'colvis'
+        ]
+      });
       getPlasaSearch();
     });
 </script>

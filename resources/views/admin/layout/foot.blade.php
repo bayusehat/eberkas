@@ -267,6 +267,12 @@
                 'X-CSRF-TOKEN' : $('meta[name=csrf-token]').attr('content')
             },
             dataType : 'JSON',
+            beforeSend:function(){
+              $('body').loading();
+            },
+            complete:function(){
+              $('body').loading('stop');
+            },
             success:function(res){
                 var html = '<option value="">Semua Loker</option>';
                 $.each(res.plasa,function (i,v) { 
