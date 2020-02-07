@@ -10,10 +10,10 @@ class LogController extends Controller
     public function index()
     {
         $data = [
-            'title' => 'Data Log',
-            'content' => 'admin.pengaturan.log',
-            'urlActive' => 'log',
-            'parentActive' => 'penagturan'
+            'title'        => 'Data Log',
+            'content'      => 'admin.pengaturan.log',
+            'urlActive'    => 'log',
+            'parentActive' => 'pengaturan'
         ];
 
         return view('admin.layout.index',['data' =>  $data]);
@@ -71,7 +71,7 @@ class LogController extends Controller
                         $val->keterangan_log,
                         date('d F Y H:i',strtotime($val->create_log))
                     ];
-                    $nomor++;
+                $nomor++;
             }
         }
 

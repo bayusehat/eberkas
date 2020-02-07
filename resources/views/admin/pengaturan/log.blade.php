@@ -12,6 +12,7 @@
         </div>
         <div class="card-body">
             <button type="button" onclick="loadData()" class="btn btn-primary float-right"><i class="fas fa-sync"></i> Refresh</button>
+            <hr>
             <div class="table-responsive">
                 <table class="table table-hover table-bordered table-striped table-hover display nowrap" style="width:100%" id="tableData">
                     <thead>
