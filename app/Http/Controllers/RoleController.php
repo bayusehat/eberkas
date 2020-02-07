@@ -10,6 +10,7 @@ use Hash;
 use Str;
 use Validator;
 use DB;
+use LogActivity;
 
 class RoleController extends Controller
 {
@@ -68,6 +69,7 @@ class RoleController extends Controller
             $insert = Role::insert($data);
 
             if($insert){
+                LogActivity::store('Membuat Role '.$request->input('nama_role'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil menambah Role baru!'
@@ -109,6 +111,7 @@ class RoleController extends Controller
             $update = Role::where('id_role',$id)->update($data);
 
             if($update){
+                LogActivity::store('Mengupdate Role '.$request->input('nama_role'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil memperbarui Role!'
@@ -130,6 +133,7 @@ class RoleController extends Controller
         ]);
 
         if($role){
+            LogActivity::store('Menghapus Role '.$id);
             return response([
                 'status' => 200,
                 'result' => 'Berhasil menghapus data Role'
@@ -159,16 +163,22 @@ class RoleController extends Controller
 
     public function changeAccess($menu,$role)
     {
+        $nameMenu = Menu::where('id_menu',$menu)->first();
+        $nameRole = Role::where('id_role',$role)->first();
+
         $check = Access::where(['id_menu' => $menu,'id_role' => $role]);
         if($check->first()){
             $in = $check->delete();
             $message = 'Access deleted';
+            LogActivity::store('Menghapus access untuk role '.$nameRole->nama_role.' dengan Menu '.$nameMenu->nama_menu);
         }else{
+            
             $in = Access::insert([
                 'id_menu' => $menu,
                 'id_role' => $role
             ]);
             $message = 'Access created';
+            LogActivity::store('Menambah access untuk role '.$nameRole->nama_role.' dengan Menu '.$nameMenu->nama_menu);
         }
 
         if($in){

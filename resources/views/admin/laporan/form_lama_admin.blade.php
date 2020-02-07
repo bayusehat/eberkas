@@ -86,6 +86,7 @@
                                         <th>Jenis Transaksi</th>
                                         <th>Nomor Jastel</th>
                                         <th>Loker</th>
+                                        <th>Witel</th>
                                         <th>Nama Pelanggan</th>
                                     </tr>
                                 </thead>
@@ -101,6 +102,7 @@
                                             <td>{{ $d->nama_jenis_transaksi }}</td>
                                             <td>{{ $d->nomor_jastel }}</td>
                                             <td>{{ $d->loker }}</td>
+                                            <td>{{ $d->witel }}</td>
                                             <td>{{ $d->nama_transaksi }}</th>
                                         </tr>
                                     @endforeach

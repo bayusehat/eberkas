@@ -10,6 +10,7 @@ use App\NomorJastel;
 use App\Produk;
 use App\Tunggakan;
 use App\Lampiran;
+use LogActivity;
 
 class CicilanController extends Controller
 {
@@ -127,6 +128,7 @@ class CicilanController extends Controller
                        ]);
                     }
                 }
+                LogActivity::store('Membuat berkas Cicilan dengan id <a href="'.url('edit/'.$request->input('id_jenis_transaksi').'/'.$insert->id_transaksi).'" target="_blank">'.$insert->id_transaksi.'</a>');
                 return redirect()->back()->with('success','Berhasil menambahkan Berkas Cicilan baru!');
             }else{
                 return redirect()->back()->with('error','Gagal menambahkan Berkas Cicilan baru!');
@@ -213,6 +215,7 @@ class CicilanController extends Controller
                         ]);
                     }
                 }
+                LogActivity::store('Mengupdate berkas Cicilan dengan id <a href="'.url('edit/'.$request->input('id_jenis_transaksi').'/'.$id).'" target="_blank">'.$id.'</a>');
                 return redirect()->back()->with('success','Berhasil memperbarui Berkas Cicilan!');
             }else{
                 return redirect()->back()->with('error','Gagal memperbarui Berkas Cicilan!');

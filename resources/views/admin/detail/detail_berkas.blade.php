@@ -106,7 +106,7 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
               ->where('id',$transaksi->id_login)->first();
 if($transaksi->signature_pelanggan_transaksi != null || $transaksi->signature_pelanggan_transaksi != ""){
   if(file_exists(public_path().'/signature/'.$transaksi->signature_pelanggan_transaksi)){
-    $tandaPelanggan = '<img src="'.asset('signature/'.$transaksi->signature_pelanggan_transaksi).'" width="130" height="130">';
+    $tandaPelanggan = '<img src="'.asset('signature/'.$transaksi->signature_pelanggan_transaksi).'" width="130">';
   }else{
     $tandaPelanggan = '<div style="width:130px;height:130px"></div>';
   }
@@ -116,7 +116,7 @@ if($transaksi->signature_pelanggan_transaksi != null || $transaksi->signature_pe
 
 if($transaksi->signature_login != "" || $transaksi->signature_login != null){
   if(file_exists(public_path().'/signature/'.$transaksi->signature_login)){
-    $tandaInput = '<img src="'.asset('signature/'.$transaksi->signature_login).'" width="130" height="130">';
+    $tandaInput = '<img src="'.asset('signature/'.$transaksi->signature_login).'" width="130">';
   }else{
     $tandaInput = '<div style="width:130px;height:130px"></div>';
   }

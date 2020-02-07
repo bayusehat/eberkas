@@ -9,6 +9,7 @@ use App\Transaksi;
 use App\NomorJastel;
 use App\Produk;
 use App\Lampiran;
+use LogActivity;
 
 class ClaimController extends Controller
 {
@@ -118,6 +119,7 @@ class ClaimController extends Controller
                        ]);
                     }
                 }
+                LogActivity::store('Membuat berkas Kalim Tagihan dengan id <a href="'.url('edit/'.$request->input('id_jenis_transaksi').'/'.$insert->id_transaksi).'" target="_blank">'.$insert->id_transaksi.'</a>');
                 return redirect()->back()->with('success','Berhasil menambahkan Berkas Claim Tagihan baru!');
             }else{
                 return redirect()->back()->with('error','Gagal menambahkan Berkas Claim Tagihan baru!');
@@ -197,6 +199,7 @@ class ClaimController extends Controller
                         ]);
                     }
                 }
+                LogActivity::store('Mengupdate berkas Klaim Tagihan dengan id <a href="'.url('edit/'.$request->input('id_jenis_transaksi').'/'.$id).'" target="_blank">'.$id.'</a>');
                 return redirect()->back()->with('success','Berhasil memperbarui Berkas Claim Tagihan!');
             }else{
                 return redirect()->back()->with('error','Gagal memperbarui Berkas Claim Tagihan baru!');

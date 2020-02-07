@@ -10,6 +10,7 @@ use App\PaketTambahan;
 use App\JenisTransaksi;
 use App\Produk;
 use App\Fitur;
+use LogActivity;
 
 class MasterController extends Controller
 {
@@ -76,6 +77,7 @@ class MasterController extends Controller
             $act = Layanan::insert($data);
 
             if($act){
+                LogActivity::store('Membuat Layanan '.$request->input('nama_layanan'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil menambahkan Layanan baru!'
@@ -118,6 +120,7 @@ class MasterController extends Controller
             $act = Layanan::where('id_layanan',$id)->update($data);
 
             if($act){
+                LogActivity::store('Mengupdate Layanan '.$request->input('nama_layanan'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil memperbarui Layanan!'
@@ -138,6 +141,7 @@ class MasterController extends Controller
         ]);
 
         if($delete){
+            LogActivity::store('Menghapus Layanan '.$id);
             return response([
                 'status' => 200,
                 'result' => 'Berhasil menghapus data Layanan!' 
@@ -157,6 +161,7 @@ class MasterController extends Controller
         ]);
 
         if($update){
+            LogActivity::store('Mengupdate role Layanan '.$request->input('nama_layanan'));
             return response([
                 'status' => 200,
                 'result' => 'Berhasil merubah role!'
@@ -229,6 +234,7 @@ class MasterController extends Controller
             $act = JenisOnt::insert($data);
 
             if($act){
+                LogActivity::store('Membuat ONT '.$request->input('nama_ont'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil menambahkan ONT baru!'
@@ -269,6 +275,7 @@ class MasterController extends Controller
             $act = JenisOnt::where('id_ont',$id)->update($data);
 
             if($act){
+                LogActivity::store('Mengupdate ONT '.$request->input('nama_ont'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil memperbarui ONT!'
@@ -289,6 +296,7 @@ class MasterController extends Controller
         ]);
 
         if($delete){
+            LogActivity::store('Menghapus ONT '.$id);
             return response([
                 'status' => 200,
                 'result' => 'Berhasil menghapus data ONT!' 
@@ -359,6 +367,7 @@ class MasterController extends Controller
             $act = PaketTambahan::insert($data);
 
             if($act){
+                LogActivity::store('Membuat Paket Tambahan '.$request->input('nama_paket_tambahan'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil menambahkan Paket Tambahan baru!'
@@ -399,6 +408,7 @@ class MasterController extends Controller
             $act = PaketTambahan::where('id_paket_tambahan',$id)->update($data);
 
             if($act){
+                LogActivity::store('Mengupdate Paket Tambahan '.$request->input('nama_paket_tambahan'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil memperbarui Paket Tambahan!'
@@ -419,6 +429,7 @@ class MasterController extends Controller
         ]);
 
         if($delete){
+            LogActivity::store('Menghapus Paket Tambahan '.$id);
             return response([
                 'status' => 200,
                 'result' => 'Berhasil menghapus data Paket Tambahan!' 
@@ -489,6 +500,7 @@ class MasterController extends Controller
             $act = JenisTransaksi::insert($data);
 
             if($act){
+                LogActivity::store('Membuat Jenis Transaksi '.$request->input('nama_jenis_transaksi'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil menambahkan Jenis Transaksi baru!'
@@ -529,6 +541,7 @@ class MasterController extends Controller
             $act = JenisTransaksi::where('id_jenis_transaksi',$id)->update($data);
 
             if($act){
+                LogActivity::store('Mengupdate Jenis Transaksi '.$request->input('nama_jenis_transaksi'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil memperbarui Jenis Transaksi!'
@@ -549,6 +562,7 @@ class MasterController extends Controller
         ]);
 
         if($delete){
+            LogActivity::store('Menghapus Jenis Transaksi '.$id);
             return response([
                 'status' => 200,
                 'result' => 'Berhasil menghapus data Jenis Transaksi!' 
@@ -619,6 +633,7 @@ class MasterController extends Controller
             $act = Produk::insert($data);
 
             if($act){
+                LogActivity::store('Membuat Produk '.$request->input('nama_produk'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil menambahkan Produk baru!'
@@ -659,6 +674,7 @@ class MasterController extends Controller
             $act = Produk::where('id_produk',$id)->update($data);
 
             if($act){
+                LogActivity::store('Mengupdate Produk '.$request->input('nama_produk'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil memperbarui Produk!'
@@ -679,6 +695,7 @@ class MasterController extends Controller
         ]);
 
         if($delete){
+            LogActivity::store('Menghapus Produk '.$id);
             return response([
                 'status' => 200,
                 'result' => 'Berhasil menghapus data Produk!' 
@@ -749,6 +766,7 @@ class MasterController extends Controller
             $act = Fitur::insert($data);
 
             if($act){
+                LogActivity::store('Membuat Master Fitur '.$request->input('nama_fitur'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil menambahkan Fitur baru!'
@@ -789,6 +807,7 @@ class MasterController extends Controller
             $act = Fitur::where('id_fitur',$id)->update($data);
 
             if($act){
+                LogActivity::store('Mengupdate Master Fitur '.$request->input('nama_fitur'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil memperbarui Fitur!'
@@ -809,6 +828,7 @@ class MasterController extends Controller
         ]);
 
         if($delete){
+            LogActivity::store('Menghapus Master Fitur '.$id);
             return response([
                 'status' => 200,
                 'result' => 'Berhasil menghapus data Fitur!' 

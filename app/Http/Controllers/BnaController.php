@@ -9,6 +9,7 @@ use App\Transaksi;
 use App\NomorJastel;
 use App\Produk;
 use App\Lampiran;
+use LogActivity;
 
 class BnaController extends Controller
 {
@@ -102,6 +103,7 @@ class BnaController extends Controller
                        ]);
                     }
                 }
+                LogActivity::store('Membuat berkas Balik Nama dengan id <a href="'.url('edit/'.$request->input('id_jenis_transaksi').'/'.$insert->id_transaksi).'" target="_blank">'.$insert->id_transaksi.'</a>');
                 return redirect()->back()->with('success','Berhasil menambahkan Berkas Balik Nama baru!');
             }else{
                 return redirect()->back()->with('error','Gagal menambahkan Berkas Balik Nama baru!');
@@ -162,6 +164,7 @@ class BnaController extends Controller
                         ]);
                     }
                 }
+                LogActivity::store('Mengupdate berkas Balik Nama dengan id <a href="'.url('edit/'.$request->input('id_jenis_transaksi').'/'.$id).'" target="_blank">'.$id.'</a>');
                 return redirect()->back()->with('success','Berhasil memeperbarui Berkas Balik Nama!');
             }else{
                 return redirect()->back()->with('error','Gagal memperbarui Berkas Balik Nama!');

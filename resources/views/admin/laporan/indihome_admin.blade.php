@@ -75,6 +75,7 @@
                                         <th>Jenis Transaksi</th>
                                         <th>Nomor Internet</th>
                                         <th>Loker</th>
+                                        <th>Witel</th>
                                         <th>Nama Pelanggan</th>
                                     </tr>
                                 </thead>
@@ -90,6 +91,7 @@
                                             <td>Indihome</td>
                                             <td>{{ $d->no_internet_indihome }}</td>
                                             <td>{{ $d->loker }}</td>
+                                            <td>{{ $d->witel }}</td>
                                             <td>{{ $d->nama_tanda_indihome }}</td>
                                         </tr>
                                     @endforeach

@@ -9,6 +9,7 @@ use App\NewIndihome;
 use App\Lampiran;
 use App\JenisTransaksi;
 use DB;
+use LogActivity;
 
 class LaporanController extends Controller
 {
@@ -264,8 +265,8 @@ class LaporanController extends Controller
                     ->get();
         $jenis = JenisTransaksi::where('delete_jenis_transaksi',0)->get();
         $data = [
-            'title'        => 'Laporan Indihome for Admin',
-            'search'       => 'Semua data Indihome',
+            'title'        => 'Laporan Indihome Admin',
+            'search'       => 'Semua Data Form Indihome',
             'content'      => 'admin.laporan.indihome_admin',
             'urlActive'    => 'admin-indihome',
             'parentActive' => 'laporan',
@@ -349,7 +350,7 @@ class LaporanController extends Controller
         }
 
         $data = [
-            'title'        => 'Laporan Indihome for Admin',
+            'title'        => 'Laporan Indihome Admin',
             'search'       => 'Data Indihome '.$nama_witel.' '.$nama_loker.' '.$waktu,
             'content'      => 'admin.laporan.indihome_admin',
             'urlActive'    => 'admin-indihome',
@@ -376,8 +377,8 @@ class LaporanController extends Controller
                                 ->where('delete_transaksi',0)
                                 ->get();
         $data = [
-            'title'        => 'Laporan Form Lama for Admin',
-            'search'       => 'Data Form Lama',
+            'title'        => 'Laporan Form Existing Admin',
+            'search'       => 'Data Form Existing',
             'content'      => 'admin.laporan.form_lama_admin',
             'urlActive'    => 'admin-form-lama',
             'parentActive' => 'laporan',
@@ -531,8 +532,8 @@ class LaporanController extends Controller
         }
 
         $data = [
-            'title'        => 'Laporan Form Lama for Admin',
-            'search'       => 'Data Form Lama '.$nama_witel.' '.$nama_loker.' '.$transaksi.' '.$waktu,
+            'title'        => 'Laporan Form Existing Admin',
+            'search'       => 'Data Form Existing '.$nama_witel.' '.$nama_loker.' '.$transaksi.' '.$waktu,
             'content'      => 'admin.laporan.form_lama_admin',
             'parentActive' => 'laporan',
             'urlActive'    => 'admin-form-lama',

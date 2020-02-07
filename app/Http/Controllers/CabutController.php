@@ -9,6 +9,7 @@ use App\Transaksi;
 use App\NomorJastel;
 use App\Produk;
 use App\Lampiran;
+use LogActivity;
 
 class CabutController extends Controller
 {
@@ -111,6 +112,7 @@ class CabutController extends Controller
                        ]);
                     }
                 }
+                LogActivity::store('Membuat berkas Cabut dengan id <a href="'.url('edit/'.$request->input('id_jenis_transaksi').'/'.$insert->id_transaksi).'" target="_blank">'.$insert->id_transaksi.'</a>');
                 return redirect()->back()->with('success','Berhasil menambahkan Berkas Berhenti Berlangganan baru!');
             }else{
                 return redirect()->back()->with('error','Gagal menambahkan Berkas Berhenti Berlangganan baru!');
@@ -181,6 +183,7 @@ class CabutController extends Controller
                         ]);
                     }
                 }
+                LogActivity::store('Mengupdate berkas Cabut dengan id <a href="'.url('edit/'.$request->input('id_jenis_transaksi').'/'.$id).'" target="_blank">'.$id.'</a>');
                 return redirect()->back()->with('success','Berhasil memperbarui Berkas Berhenti Berlangganan!');
             }else{
                 return redirect()->back()->with('error','Gagal memeperbarui Berkas Berhenti Berlangganan!');

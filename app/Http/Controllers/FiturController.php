@@ -12,6 +12,7 @@ use App\Layanan;
 use App\Fitur;
 use App\FiturIndihome;
 use App\Lampiran;
+use LogActivity;
 
 class FiturController extends Controller
 {
@@ -129,6 +130,7 @@ class FiturController extends Controller
                         'anak_hunting_fitur_transaksi'  => $request->input('anak_hunting_fitur_transaksi')
                     ]);
                 }
+                LogActivity::store('Membuat berkas Fitur dengan id <a href="'.url('edit/'.$request->input('id_jenis_transaksi').'/'.$insert->id_transaksi).'" target="_blank">'.$insert->id_transaksi.'</a>');
                 return redirect()->back()->with('success','Berhasil menambahkan Berkas Fitur baru!');
             }else{
                 return redirect()->back()->with('error','Gagal menambahkan Berkas Fitur baru!');
@@ -212,6 +214,7 @@ class FiturController extends Controller
                         'anak_hunting_fitur_transaksi'  => $request->input('anak_hunting_fitur_transaksi')
                     ]);
                 }
+                LogActivity::store('Mengupdate berkas Fitur dengan id <a href="'.url('edit/'.$request->input('id_jenis_transaksi').'/'.$id).'" target="_blank">'.$id.'</a>');
                 return redirect()->back()->with('success','Berhasil memperbarui Berkas Fitur baru!');
             }else{
                 return redirect()->back()->with('error','Gagal memperbarui Berkas Fitur baru!');

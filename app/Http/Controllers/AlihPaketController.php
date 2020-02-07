@@ -13,6 +13,7 @@ use App\Fitur;
 use App\FiturIndihome;
 use App\Paket;
 use App\Lampiran;
+use App\LogActivity;
 
 class AlihPaketController extends Controller
 {
@@ -115,6 +116,7 @@ class AlihPaketController extends Controller
                        ]);
                     }
                 }
+                LogActivity::store('Membuat berkas Alih Paket dengan id <a href="'.url('edit/'.$request->input('id_jenis_transaksi').'/'.$insert->id_transaksi).'" target="_blank">'.$insert->id_transaksi.'</a>');
                 return redirect()->back()->with('success','Berhasil menambahkan Berkas Alih Paket baru!');
             }else{
                 return redirect()->back()->with('error','Gagal menambahkan Berkas Alih Paket baru!');
@@ -181,6 +183,7 @@ class AlihPaketController extends Controller
                         ]);
                     }
                 }
+                LogActivity::store('Mengupdate berkas Alih Paket dengan id <a href="'.url('edit/'.$request->input('id_jenis_transaksi').'/'.$id).'" target="_blank">'.$id.'</a>');
                 return redirect()->back()->with('success','Berhasil memperbarui Berkas Alih Paket!');
             }else{
                 return redirect()->back()->with('error','Gagal memperbarui Berkas Alih Paket!');

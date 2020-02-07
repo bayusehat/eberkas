@@ -8,6 +8,7 @@ use Validator;
 use App\Login;
 use App\Role;
 use App\Plasa;
+use LogActivity;
 
 class UserController extends Controller
 {
@@ -126,6 +127,7 @@ class UserController extends Controller
                 $login = Login::insert($data);
 
                 if($login){
+                    LogActivity::store('Menambah User baru dengan Username '.$request->input('username'));
                     return response([
                         'status' => 200,
                         'result' => 'Berhasil menambahkan User baru!'
@@ -186,6 +188,7 @@ class UserController extends Controller
             $login = Login::where('id',$id)->update($data);
 
             if($login){
+                LogActivity::store('Mengupdate User dengan Username '.$request->input('username'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil memperbarui User!'
@@ -211,6 +214,8 @@ class UserController extends Controller
         ]);
 
         if($user){
+            $userData = Login::where('id',$id)->first();
+            LogActivity::store('Merubah status user menjadi '.$setStatus.' dengan Username '.$userData->username);
             return response([
                 'status' => 200,
                 'result' => 'Status User berhasil diubah!'
@@ -251,6 +256,7 @@ class UserController extends Controller
             ]);
 
             if($ganti){
+                LogActivity::store('Merubah Password User dengan id '.session('id'));
                 return redirect()->back()->with('success','Password berhasil diubah');
             }else{
                 return redirect()->back()->with('error','Password gagal diubah');
@@ -265,6 +271,7 @@ class UserController extends Controller
         ]);
 
         if($reset){
+            LogActivity::store('Mereset Password User dengan id '.$id);
             return redirect()->back()->with('success','Password berhasil direset menjadi (telkom2020)');
         }else{
             return redirect()->back()->with('error','Password gagal direset');
@@ -289,6 +296,8 @@ class UserController extends Controller
         ]);
 
         if($user){
+            $userData = Login::where('id',session('id'))->first();
+            LogActivity::store('User '.$userData->username.' membuat tanda tangan');
             return redirect()->back()->with('success','Berhasil menyimpan Tanda Tangan pada database!');
         }else{
             return redirect()->back()->with('error','Gagal menyimpan Tanda Tangan pada database!');

@@ -207,4 +207,8 @@ Route::group(['middleware' => ['authLogin','web']], function () {
      Route::get('laporan/lama/admin','LaporanController@indexFormLamaAdmin');
      Route::post('laporan/lama/admin/search','LaporanController@formLamaAdmin');
      Route::get('plasa/get/{witel?}','LaporanController@getPlasa');
+
+     //Log
+     Route::get('log','LogController@index');
+     Route::get('log/load','LogController@loadData');
 });

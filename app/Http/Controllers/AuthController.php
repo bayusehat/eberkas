@@ -7,6 +7,7 @@ use Validator;
 use Hash;
 use Str;
 use App\Login;
+use LogActivity;
 
 class AuthController extends Controller
 {
@@ -47,6 +48,7 @@ class AuthController extends Controller
                                 'tokens'    => Str::random(60)
                             ];
                             session($session);
+                            LogActivity::store($data->nama.' melakukan Login');
                             return redirect('/home');
                         }else{
                             return redirect()->back()->with('error','Password yang anda masukkan salah!');

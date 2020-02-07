@@ -152,15 +152,18 @@
 
     function resetPass(){
         var username = $('#prener').val();
-        $.ajax({
-            url : '{{ url("user/change/password/reset") }}/'+username,
-            headers : {
-                'X-CSRF-TOKEN' : $('meta[name=csrf-token]').attr('content')
-            },
-            success:function(res){
-                location.reload();
-            }
-        })
+        if(username){
+            $.ajax({
+                url : '{{ url("user/change/password/reset") }}/'+username,
+                headers : {
+                    'X-CSRF-TOKEN' : $('meta[name=csrf-token]').attr('content')
+                },
+                success:function(res){
+                    location.reload();
+                }
+            })
+        }
+        
     }
 
     function batal(){
@@ -203,7 +206,17 @@
                 { name: 'action', searchable: false, orderable: false, className: 'text-center' }
             ],
             order: [[0, 'asc']],
-            iDisplayInLength: 10 
+            iDisplayInLength: 10,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    exportOptions: {
+                        columns: ':visible',
+                    }
+                },
+                'colvis'
+            ] 
         });
     }
 
@@ -288,6 +301,12 @@
                 'X-CSRF-TOKEN' : $('meta[name=csrf-token]').attr('content')
             },
             dataType : 'JSON',
+            beforeSend:function(){
+                $('body').loading();
+            },
+            complete:function(){
+                $('body').loading('stop');
+            },
             success:function(res){
                 $('#witel').val(res.witel_plasa);
                 $('#kota').val(res.kota_plasa);

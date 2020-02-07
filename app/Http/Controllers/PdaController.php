@@ -9,6 +9,7 @@ use App\Transaksi;
 use App\NomorJastel;
 use App\Produk;
 use App\Lampiran;
+use LogActivity;
 
 class PdaController extends Controller
 {
@@ -104,6 +105,7 @@ class PdaController extends Controller
                        ]);
                     }
                 }
+                LogActivity::store('Membuat berkas Pindah Alamat dengan id <a href="'.url('edit/'.$request->input('id_jenis_transaksi').'/'.$insert->id_transaksi).'" target="_blank">'.$insert->id_transaksi.'</a>');
                 return redirect()->back()->with('success','Berhasil menambahkan Berkas Pindah Alamat baru!');
             }else{
                 return redirect()->back()->with('error','Gagal menambahkan Berkas Pindah Alamat baru!');
@@ -167,6 +169,7 @@ class PdaController extends Controller
                         ]);
                     }
                 }
+                LogActivity::store('Mengupdate berkas Pindah Alamat dengan id <a href="'.url('edit/'.$request->input('id_jenis_transaksi').'/'.$id).'" target="_blank">'.$id.'</a>');
                 return redirect()->back()->with('success','Berhasil memperbarui Berkas Pindah Alamat!');
             }else{
                 return redirect()->back()->with('error','Gagal memperbarui Berkas Pindah Alamat!');

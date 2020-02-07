@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator;
 use Str;
 use App\Menu;
+use LogActivity;
 
 class MenuController extends Controller
 {
@@ -79,6 +80,7 @@ class MenuController extends Controller
             $insert = Menu::insert($data);
 
             if($insert){
+                LogActivity::store('Membuat Menu '.$request->input('nama_menu'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil menambahkan Menu baru!'
@@ -128,6 +130,7 @@ class MenuController extends Controller
             $update = Menu::where('id_menu',$id)->update($data);
 
             if($update){
+                LogActivity::store('Mengupdate Menu '.$request->input('nama_menu'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil memperbarui Menu baru!'
@@ -145,6 +148,7 @@ class MenuController extends Controller
     {
         $menu = Menu::where('id_menu',$id)->delete();
         if($delete){
+            LogActivity::store('Menghapus menu '.$id);
             return resposne([
                 'status' => 200,
                 'result' => 'Berhasil menghapus data Menu!'

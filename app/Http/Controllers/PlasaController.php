@@ -7,6 +7,7 @@ use App\Imports\ImportPlasa;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Plasa;
 use Validator;
+use LogActivity;
 
 class PlasaController extends Controller
 {
@@ -74,6 +75,7 @@ class PlasaController extends Controller
             $act = Plasa::insert($data);
 
             if($act){
+                LogActivity::store('Membuat Plasa '.$request->input('nama_plasa'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil menambahkan Plasa baru!'
@@ -118,6 +120,7 @@ class PlasaController extends Controller
             $act = Plasa::where('id_plasa',$id)->update($data);
 
             if($act){
+                LogActivity::store('Mengupdate Plasa '.$request->input('nama_plasa'));
                 return response([
                     'status' => 200,
                     'result' => 'Berhasil memperbarui Plasa!'
@@ -138,6 +141,7 @@ class PlasaController extends Controller
         ]);
 
         if($delete){
+            LogActivity::store('Menghapus Plasa '.$id);
             return response([
                 'status' => 200,
                 'result' => 'Berhasil menghapus data Plasa'

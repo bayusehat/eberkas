@@ -18,6 +18,7 @@ use App\JenisLayanan;
 use App\JenisOnt;
 use App\JenisTransaksi;
 use App\NewIndihome;
+use LogActivity;
 
 class EditController extends Controller
 {
@@ -438,6 +439,7 @@ class EditController extends Controller
         ]);
 
         if($delete){
+            LogActivity::store('Menghapus berkas Indihome/PSB dengan id '.$id);
             return redirect('cari/berkas')->with('success','Hapus berkas berhasil');
         }else{
             return redirect('cari/berkas')->with('error','Hapus berkas gagal');
@@ -451,6 +453,7 @@ class EditController extends Controller
         ]);
 
         if($delete){
+            LogActivity::store('Menghapus berkas Form Existing dengan id '.$id);
             return redirect('cari/berkas')->with('success','Hapus berkas berhasil');
         }else{
             return redirect('cari/berkas')->back()->with('error','Hapus berkas gagal');

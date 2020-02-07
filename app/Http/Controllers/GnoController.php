@@ -9,6 +9,7 @@ use App\Transaksi;
 use App\NomorJastel;
 use App\Produk;
 use App\Lampiran;
+use LogActivity;
 
 class GnoController extends Controller
 {
@@ -102,6 +103,7 @@ class GnoController extends Controller
                        ]);
                     }
                 }
+                LogActivity::store('Membuat berkas Ganti Nomor dengan id <a href="'.url('edit/'.$request->input('id_jenis_transaksi').'/'.$insert->id_transaksi).'">'.$insert->id_transaksi.'</a>');
                 return redirect()->back()->with('success','Berhasil menambahkan Berkas Ganti Nomor baru!');
             }else{
                 return redirect()->back()->with('error','Gagal menambahkan Berkas Ganti Nomor baru!');
@@ -158,11 +160,12 @@ class GnoController extends Controller
                     NomorJastel::where('id_transaksi',$id)->delete();
                     foreach ($request->input('nomor_jastel') as $v) {
                         NomorJastel::insert([
-                            'id_transaksi' => $insert->id_transaksi,
+                            'id_transaksi' => $id,
                             'nomor_jastel' => $v
                         ]);
                     }
                 }
+                LogActivity::store('Mengupdate berkas Ganti Nomor dengan id <a href="'.url('edit/'.$request->input('id_jenis_transaksi').'/'.$id).'" target="_blank">'.$id.'</a>');
                 return redirect()->back()->with('success','Berhasil memperbarui Berkas Ganti Nomor!');
             }else{
                 return redirect()->back()->with('error','Gagal memperbaui Berkas Ganti Nomor!');
