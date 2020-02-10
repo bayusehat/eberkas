@@ -13,7 +13,7 @@ use App\Fitur;
 use App\FiturIndihome;
 use App\Paket;
 use App\Lampiran;
-use App\LogActivity;
+use LogActivity;
 
 class AlihPaketController extends Controller
 {

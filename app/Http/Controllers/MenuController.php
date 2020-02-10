@@ -13,11 +13,11 @@ class MenuController extends Controller
     public function index()
     {
         $data = [
-            'title' => 'Data Menu',
-            'content' => 'admin.pengaturan.menu',
+            'title'        => 'Data Menu',
+            'content'      => 'admin.pengaturan.menu',
             'parentActive' => 'pengaturan',
-            'urlActive' => 'menu',
-            'parent_menu' => Menu::where('parent_menu','0')->get()
+            'urlActive'    => 'menu',
+            'parent_menu'  => Menu::where('parent_menu','0')->get()
         ];
 
         return view('admin.layout.index',['data' => $data]);
@@ -53,11 +53,11 @@ class MenuController extends Controller
     public function insert(Request $request)
     {
         $rules = [
-            'nama_menu' => 'required',
-            'url_menu' => 'required',
-            'parent_menu' => 'required',
+            'nama_menu'          => 'required',
+            'url_menu'           => 'required',
+            'parent_menu'        => 'required',
             'parent_active_menu' => 'required',
-            'url_active_menu' => 'required',
+            'url_active_menu'    => 'required',
         ];
 
         $isValid = Validator::make($request->all(),$rules);
@@ -103,11 +103,11 @@ class MenuController extends Controller
     public function update(Request $request,$id)
     {
         $rules = [
-            'nama_menu' => 'required',
-            'url_menu' => 'required',
-            'parent_menu' => 'required',
+            'nama_menu'          => 'required',
+            'url_menu'           => 'required',
+            'parent_menu'        => 'required',
             'parent_active_menu' => 'required',
-            'url_active_menu' => 'required',
+            'url_active_menu'    => 'required',
         ];
 
         $isValid = Validator::make($request->all(),$rules);
@@ -119,12 +119,12 @@ class MenuController extends Controller
             ]);
         }else{
             $data = [
-                'nama_menu' => $request->input('nama_menu'),
-                'url_menu' => $request->input('url_menu'),
-                'parent_menu' => $request->input('parent_menu'),
+                'nama_menu'          => $request->input('nama_menu'),
+                'url_menu'           => $request->input('url_menu'),
+                'parent_menu'        => $request->input('parent_menu'),
                 'parent_active_menu' => $request->input('parent_active_menu'),
-                'url_active_menu' => $request->input('url_active_menu'),
-                'icon_menu' => $request->input('icon_menu')
+                'url_active_menu'    => $request->input('url_active_menu'),
+                'icon_menu'          => $request->input('icon_menu')
             ];
 
             $update = Menu::where('id_menu',$id)->update($data);

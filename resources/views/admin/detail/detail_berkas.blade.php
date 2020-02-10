@@ -1160,32 +1160,5 @@ if($transaksi->signature_login != "" || $transaksi->signature_login != null){
         </ol>
         </div>
         @endif
-
-        {{-- @if ($transaksi->id_jenis_transaksi != 3 && $transaksi->id_jenis_transaksi != 5 && $transaksi->id_jenis_transaksi != 6 && $transaksi->id_jenis_transaksi != 8 && $transaksi->id_jenis_transaksi != 9 && $transaksi->id_jenis_transaksi != 10 && $transaksi->id_jenis_transaksi != 11)
-        <p><b><u>PERSETUJUAN PERMOHONAN </u></b></p>
-	      <p>Pada Hari ini {{ hari_ini(date('D',strtotime($transaksi->create_transaksi)))}}, tanggal {{ date('d',strtotime($transaksi->create_transaksi))}} bulan {{ bulan_ini(date('m',strtotime($transaksi->create_transaksi))) }} tahun {{ date('Y',strtotime($transaksi->create_transaksi))}}, pihak TELKOM 
-	      telah menyetujui permohonan PELANGGAN dimaksud<br />
-	      dan dengan ini TELKOM dan PELANGGAN sepakat untuk saling mengikatkan diri dalam kontrak berlangganan<br />
-	      sambungan telekomunikasi "<strong>{{ $transaksi->produk_transaksi }}</strong>".</p>
-	      <p>&nbsp;Data dan Informasi di atas adalah benar dan ketentuan berlangganan dalam kontrak berlangganan<br />
-	      sambungan telekomunikasi tersebut telah di pahami dan berlaku bagi kedua belah pihak sejak di tandatangani <br />
-	      oleh PELANGGAN dan PETUGAS TELKOM  yang berwenang.</p>       
-	    <table width="630" border="0" cellspacing="0" cellpadding="0">
-        <tr valign="top">
-          <td width="200" align="center"><p>{{ $transaksi->kota.', '.date('d',strtotime($transaksi->create_transaksi)).' '.bulan_ini(date('m',strtotime($transaksi->create_transaksi))).' '.date('Y',strtotime($transaksi->create_transaksi)) }}</p></td>
-          <td width="200">&nbsp;</td>
-          <td width="230" align="center">{{ $transaksi->kota.', '.date('d',strtotime($transaksi->create_transaksi)).' '.bulan_ini(date('m',strtotime($transaksi->create_transaksi))).' '.date('Y',strtotime($transaksi->create_transaksi)) }}</td>
-        </tr>
-        <tr valign="top">
-          <td width="200" align="center">{{ $input->nama_role }},<br />
-            {!! $tandaInput !!} <br />
-            {{ strtoupper($transaksi->nama)}} </td>
-          <td width="200">&nbsp;</td>
-          <td width="230" align="center">Pelanggan,<br />
-            {!! $tandaPelanggan !!} <br />
-            {{ $transaksi->nama_transaksi }}</td>
-        </tr>
-      </table>
-      @endif --}}
 </div>
 </div>
