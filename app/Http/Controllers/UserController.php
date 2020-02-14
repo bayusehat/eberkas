@@ -52,11 +52,11 @@ class UserController extends Controller
                         ->get();
         }else{
             $user = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
-                        ->where('id_role','>',session('id_role'))
+                        ->where('eberkas_role.id_role','>',session('id_role'))
                         ->where(function($query){
                             $query->where('loker',session('plasa'));
                             $query->where('witel',session('witel'));
-                            $query->where('id_role','!=',5);
+                            $query->where('eberkas_role.id_role','!=',5);
                         })
                         ->orderBy('witel','asc')
                         ->get();
