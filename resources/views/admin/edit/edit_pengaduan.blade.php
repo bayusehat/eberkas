@@ -125,7 +125,7 @@
                         </div>
                         <div class="form-group">
                             <label for="isi_pengaduan_transaks">Isi Pengaduan<span class="text-danger">*</span> :</label>
-                            <textarea name="isi_pengduan_transaksi" id="isi_pengduan_transaksi" class="form-control form-control-sm">{{ $transaksi->isi_pengaduan_transaksi }}</textarea>
+                            <textarea name="isi_pengaduan_transaksi" id="isi_pengaduan_transaksi" class="form-control form-control-sm">{{ $transaksi->isi_pengaduan_transaksi }}</textarea>
                             @error('isi_pengaduan_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                         <div class="form-group">

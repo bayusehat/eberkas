@@ -124,7 +124,7 @@ class PengaduanController extends Controller
             'no_identitas_transaksi'              => 'required',
             'status_penggunaan_transaksi'         => 'required',
             'status_pemohon_transaksi'            => 'required',
-            'isi_pengduan_transaksi'              => 'required',
+            'isi_pengaduan_transaksi'              => 'required',
             'keadaan_sambungan_telepon_transaksi' => 'required',
             'cp_transaksi'                        => 'required',
             'tanggal_lahir_transaksi'             => 'required',
