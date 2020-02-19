@@ -659,22 +659,25 @@ if($transaksi->signature_login != "" || $transaksi->signature_login != null){
              <tr>
                <td><input type="checkbox" value="{{ $f->id_fitur }}" @if($tgk) {{'checked'}} @else {{''}} @endif> {{ $f->nama_fitur }}</td>
              </tr>
-             @php
+         @endforeach
+        </table>
+        <table>
+            @php
                 $hunt = FiturIndihome::where(['id_transaksi' =>  $transaksi->id_transaksi,'id_fitur' => 9])->first();
              @endphp
-             @if ($hunt)
+             @if ($hunt) 
+             <caption style="text-align:left"><strong>Hunting</strong></caption>
               <tr>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Induk Hunting </td>
-                <td colspan="2">: {{ $transaksi->induk_hunting_transaksi }}</td>
+                <td colspan="2">: {{ $transaksi->induk_hunting_fitur_transaksi }}</td>
               </tr>
               <tr>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anak Hunting </td>
-                <td colspan="2">: {{ $transaksi->anak_hunting_transaksi }}</td>
+                <td colspan="2">: {{ $transaksi->anak_hunting_fitur_transaksi }}</td>
               </tr>
              @else
                 {{''}}
              @endif
-         @endforeach
         </table>
         <p>Dengan ketentuan bahwa biaya pasang, percakapan, dan biaya lainnya yang berhubungan dengan <br />
         pemasangan / pencabutan fasilitas tersebut menjadi tanggung jawab saya: </p>
