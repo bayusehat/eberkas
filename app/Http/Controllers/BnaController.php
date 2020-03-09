@@ -48,6 +48,7 @@ class BnaController extends Controller
             'keterangan_transaksi'       => 'required',
             'tanggal_lahir_transaksi'    => 'required',
             'no_hp_transaksi'            => 'required',
+            'nama_bna_baru'              => 'required'
         ];
 
         $isValid = Validator::make($request->all(),$rules);
@@ -60,6 +61,7 @@ class BnaController extends Controller
                 'produk_transaksi'           => $request->input('produk_transaksi'),
                 'id_jenis_transaksi'         => $request->input('id_jenis_transaksi'),
                 'nama_transaksi'             => $request->input('nama_transaksi'),
+                'nama_bna_baru'              => $request->input('nama_bna_baru'),
                 'alamat_identitas_transaksi' => $request->input('alamat_identitas_transaksi'),
                 'alamat_instalasi_transaksi' => $request->input('alamat_instalasi_transaksi'),
                 'jenis_identitas_transaksi'  => $request->input('jenis_identitas_transaksi'),
@@ -127,6 +129,7 @@ class BnaController extends Controller
             'keterangan_transaksi'       => 'required',
             'tanggal_lahir_transaksi'    => 'required',
             'no_hp_transaksi'            => 'required',
+            'nama_bna_baru'              => 'required'
         ];
 
         $isValid = Validator::make($request->all(),$rules);
@@ -138,6 +141,7 @@ class BnaController extends Controller
                 'produk_transaksi'           => $request->input('produk_transaksi'),
                 'id_jenis_transaksi'         => $request->input('id_jenis_transaksi'),
                 'nama_transaksi'             => $request->input('nama_transaksi'),
+                'nama_bna_baru'              => $request->input('nama_bna_baru'),
                 'alamat_identitas_transaksi' => $request->input('alamat_identitas_transaksi'),
                 'alamat_instalasi_transaksi' => $request->input('alamat_instalasi_transaksi'),
                 'jenis_identitas_transaksi'  => $request->input('jenis_identitas_transaksi'),

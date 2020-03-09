@@ -96,6 +96,11 @@
                             <input type="text" class="form-control form-control-sm" name="no_identitas_transaksi" id="no_identitas_transaksi" value="{{ $transaksi->no_identitas_transaksi }}">
                             @error('no_identitas_transaksi') <small class="text-danger">{{ $message }}</small>@enderror
                         </div>
+                        <div class="form-group">
+                            <label for="no_identitas_transaksi">Nama Baru<span class="text-danger">*</span> :</label>
+                            <input type="text" class="form-control form-control-sm" name="nama_bna_baru" id="nama_bna_baru" value="{{ $transaksi->nama_bna_baru }}">
+                            @error('nama_bna_baru') <small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
                     </div>
                     <div class="col-md-6 col-sm-12 col-xl-6">
                         <div class="form-group">

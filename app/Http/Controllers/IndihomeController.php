@@ -12,6 +12,7 @@ use App\Layanan;
 use App\PaketTambahan;
 use App\JenisOnt;
 use App\Lampiran;
+use LogActivity;
 
 class IndihomeController extends Controller
 {

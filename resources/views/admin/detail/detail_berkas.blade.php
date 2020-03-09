@@ -160,6 +160,11 @@ if($transaksi->signature_login != "" || $transaksi->signature_login != null){
                 <td>:</td>
                 <td>{{ $transaksi->jenis_identitas_transaksi .'-'. $transaksi->no_identitas_transaksi }}</td>
             </tr>
+            <tr>
+              <td>Nama Baru :</td>
+              <td>:</td>
+              <td>{{ $transaksi->nama_bna_baru }}</td>
+          </tr>
         </table>
 
         <p><b><u>Spesifikasi Fasilitas Jasa Telekomunikasi</u></b></p>
