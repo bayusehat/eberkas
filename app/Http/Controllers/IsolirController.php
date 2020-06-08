@@ -79,6 +79,8 @@ class IsolirController extends Controller
                 'kota_transaksi'             => session('kota'),
                 'create_transaksi'           => date('Y-m-d H:i:s'),
                 'update_transaksi'           => date('Y-m-d H:i:s'),
+                'isolir_dari'                => $request->input('isolir_dari'),
+                'isolir_sampai'              => $request->input('isolir_sampai')
             ];
             $insert = Transaksi::create($data);
 
@@ -155,6 +157,8 @@ class IsolirController extends Controller
                 'email_transaksi'            => $request->input('email_transaksi'),
                 'signature_pelanggan_transaksi'=> $request->input('id_signature'),
                 'update_transaksi'           => date('Y-m-d H:i:s'),
+                'isolir_dari'                => $request->input('isolir_dari'),
+                'isolir_sampai'              => $request->input('isolir_sampai')
             ];
             $update = Transaksi::where('id_transaksi',$id)->update($data);
 

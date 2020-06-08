@@ -91,7 +91,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($data as $i => $d)
+                                    {{-- @foreach ($data as $i => $d)
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             <td class="text-center">
@@ -105,7 +105,7 @@
                                             <td>{{ $d->witel }}</td>
                                             <td>{{ $d->nama_transaksi }}</th>
                                         </tr>
-                                    @endforeach
+                                    @endforeach --}}
                                 </tbody>
                             </table>
                         </div>
@@ -114,6 +114,9 @@
             </div>
         </div>
 </section>
+@php
+    dd($data);
+@endphp
 <script>
     $(document).ready(function(){
     var title = '{{ $search }}';

@@ -76,6 +76,8 @@ class Transaksi extends Model
         'plasa_transaksi',
         'kota_transaksi',
         'bertindak_transaksi',
-        'nama_bna_baru'
+        'nama_bna_baru',
+        'isolir_dari',
+        'isolir_sampai'
     ];
 }

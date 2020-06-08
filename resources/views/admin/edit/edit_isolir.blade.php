@@ -144,6 +144,21 @@
                             @error('lama_isolir_transaksi') <small class="text-danger">{{ $message }}</small> @enderror
                         </div>
                         <div class="form-group">
+                            <label for="">Range Tanggal Isolir<span class="text-danger">*</span> :</label>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 col-xl-6">
+                                    <label for="isolir_dari">Dari Tanggal</label>
+                                    <input type="text" class="form-control form-control-sm datepicker" name="isolir_dari" id="isolir_dari" value="{{ date('Y-m-d',strtotime($transaksi->isolir_dari)) }}">
+                                    @error('isolir_dari') <small class="text-danger">{{ $message }}</small> @enderror
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-xl-6">
+                                    <label for="isolir_sampai">Sampai Tanggal</label>
+                                    <input type="text" class="form-control form-control-sm datepicker" name="isolir_sampai" id="isolir_sampai" value="{{  date('Y-m-d',strtotime($transaksi->isolir_sampai)) }}">
+                                    @error('isolir_sampai') <small class="text-danger">{{ $message }}</small> @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="cp_transaksi">Contact Person<span class="text-danger">*</span> :</label>
                             <input type="text" class="form-control form-control-sm" name="cp_transaksi" id="cp_transaksi" value="{{ $transaksi->cp_transaksi }}">
                             @error('cp_transaksi') <small class="text-danger">{{ $message }}</small> @enderror

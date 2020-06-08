@@ -616,7 +616,7 @@ if($transaksi->signature_login != "" || $transaksi->signature_login != null){
             }
             
         @endphp
-        <p>Selama <strong>{{ $transaksi->lama_isolir_transaksi }} </strong>Terhitung Mulai tanggal<strong> {{ date('d',strtotime($isolirInput))}} </strong><strong> {{bulan_ini(date('m',strtotime($isolirInput)))}} </strong><strong> {{ date('Y',strtotime($isolirInput))}} </strong>s/d<strong> {{ date('d',strtotime($nextDate))}} </strong><strong> {{bulan_ini(date('m',strtotime($nextDate)))}} </strong><strong> {{ date('Y',strtotime($nextDate)) }} </strong></p>
+        <p>Selama <strong>{{ $transaksi->lama_isolir_transaksi }} </strong>Terhitung Mulai tanggal<strong> {{ date('d',strtotime($transaksi->isolir_dari))}} </strong><strong> {{bulan_ini(date('m',strtotime($transaksi->isolir_dari)))}} </strong><strong> {{ date('Y',strtotime($transaksi->isolir_dari))}} </strong>s/d<strong> {{ date('d',strtotime($transaksi->isolir_sampai))}} </strong><strong> {{bulan_ini(date('m',strtotime($transaksi->isolir_sampai)))}} </strong><strong> {{ date('Y',strtotime($transaksi->isolir_sampai)) }} </strong></p>
         <p>Selama proses isolir kami bersedia untuk:</p>
         <p>1. Menyelesaikan tagihan telepon tiap bulan<br />2. Menanggung segala akibat proses isolir <br />
         3. Menunjukan kuitansi tel-69 apabila mengajukan pembukaan isolir sebelum batas waktu isolir habis</p>
