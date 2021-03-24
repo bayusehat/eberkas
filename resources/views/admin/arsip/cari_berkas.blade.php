@@ -93,6 +93,7 @@
                                                 <td>{{ date('d F H:i',strtotime($ri->create_indihome)) }}</td>
                                                 <td>{{ $ri->kontak_hp_indihome }}</td>
                                                 <td>
+                                                    <a href="{{ url('cetak/7/'.$ri->id_indihome) }}" class="btn btn-primary btn-sm btn-block" target="_blank"><i class="fas fa-file"></i> PDF</a>
                                                     <a href="{{ url('edit/7/'.$ri->id_indihome) }}" class="btn btn-warning btn-sm btn-block"><i class="fas fa-edit"></i> Edit</a>
                                                     <a href="{{ url('delete/indihome/'.$ri->id_indihome) }}" class="btn btn-danger btn-sm btn-block"><i class="fas fa-trash"></i> Hapus</a>
                                                 </td>
@@ -131,6 +132,7 @@
                                                 <td>{{ date('d F H:i',strtotime($rt->create_transaksi)) }}</td>
                                                 <td>{{ $rt->no_hp_transaksi }}</td>
                                                 <td>
+                                                    <a href="{{ url('cetak/'.$rt->id_jenis_transaksi.'/'.$rt->id_transaksi) }}" target="_blank" class="btn btn-primary btn-sm btn-block"><i class="fas fa-file"></i> PDF</a>
                                                     <a href="{{ url('edit/'.$rt->id_jenis_transaksi.'/'.$rt->id_transaksi) }}" class="btn btn-warning btn-sm btn-block"><i class="fas fa-edit"></i> Edit</a>
                                                     <a href="{{ url('delete/lama/'.$rt->id_transaksi) }}" class="btn btn-danger btn-sm btn-block"><i class="fas fa-trash"></i> Hapus</a>
                                                 </td>

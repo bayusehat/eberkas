@@ -11,6 +11,7 @@ body{
 @php
     use App\PaketTambahan;
     use App\PaketTambahanIndihome;
+    use App\Lampiran;
 
     $pLeft = PaketTambahan::skip(0)->take(3)->get();
     $pRight= PaketTambahan::skip(4)->take(3)->get();
@@ -121,8 +122,8 @@ return $bulan_ini;
 <table width="100%" align="center"><tr><td>
 <table width="100%">
 <tr>
-	<td><strong><font size="2px">KONTRAK BERLANGGANAN INDIHOME</font></strong></td>
-	<td align="right"><img src="{{ asset('images/indi.jpg') }}" /></td>
+	<td><strong><font size="2px">FORM PENGAJUAN BERLANGGANAN INDIHOME</font></strong></td>
+	<td align="right"><img src="{{ public_path('images/indi.jpg') }}" /></td>
 </tr>
 </table>
 
@@ -397,7 +398,7 @@ Alamat Penagihan*: {{ $indihome->alamat_penagihan_indihome }} &nbsp;&nbsp;&nbsp;
 <td valign="top">&nbsp;<input name="pl2" type="checkbox" value="1" @if($p[1] == 'YA') {{'checked'}} @else {{''}} @endif/></td>
 </tr>
 
-<tr>
+{{-- <tr>
 <td colspan="2" valign="top">3. Menyetujui bahwa dengan diberlakukannya dokumen kontrak berlangganan IndiHome ini, maka kontrak berlangganan lama untuk produk Telepon dan atau Internet dan atau Usee TV dianggap tidak berlaku lagi (Khusus bagi Pelanggan Upgrade Layanan) </td>
 <td valign="top">&nbsp;<input name="pl3" type="checkbox" value="1" @if($p[2] == 'YA') {{'checked'}} @else {{''}} @endif/></td>
 </tr>
@@ -415,10 +416,10 @@ Alamat Penagihan*: {{ $indihome->alamat_penagihan_indihome }} &nbsp;&nbsp;&nbsp;
 <tr>
 <td colspan="2" valign="top">6. Bila pelanggan berhenti berlangganan, Telkom akan mengambil perangkat CPE milik TELKOM yang terinstal di alamat Pelanggan untuk layanan IndiHome</td>
 <td valign="top">&nbsp;<input name="pl6" type="checkbox" value="1" @if($p[5] == 'YA') {{'checked'}} @else {{''}} @endif/></td>
-</tr>
+</tr> --}}
 
 <tr>
-<td colspan="2" valign="top">7. Besaran tagihan IndiHome, paket tambahan dan sewa ONT - STB dapat berubah sewaktu-waktu</td>
+<td colspan="2" valign="top">3. Besaran tagihan IndiHome, paket tambahan dan sewa ONT - STB dapat berubah sewaktu-waktu</td>
 <td valign="top">&nbsp;<input name="pl7" type="checkbox" value="1" @if($p[6] == 'YA') {{'checked'}} @else {{''}} @endif/></td>
 </tr>
 </table>
@@ -440,11 +441,20 @@ Alamat Penagihan*: {{ $indihome->alamat_penagihan_indihome }} &nbsp;&nbsp;&nbsp;
 	</tr>
 	<tr>
 		<td width="10%" align="center">
-			<img src="{{ asset('signature/'.$indihome->signature_login) }}" align="center"; width="100" />
+            @if ($indihome->signature_login != '')
+                <img src="{{ public_path('signature/'.$indihome->signature_login) }}" align="center"; width="100" />
+            @else
+                {{ '' }}
+            @endif
+			
 		</td>
 		<td width="80%">&nbsp;</td>
 		<td width="10%" align="center">
-		    <img src="{{ asset('signature/'.$indihome->signature_pelanggan_indihome) }}" align="center"; width="100" />
+            @if ($indihome->signature_pelanggan_indihome != ''))
+                <img src="{{ public_path('signature/'.$indihome->signature_pelanggan_indihome) }}" align="center"; width="100" />
+            @else
+                {{ '' }}
+            @endif
 		</td>
 	</tr>
 	<tr>
@@ -457,8 +467,19 @@ Alamat Penagihan*: {{ $indihome->alamat_penagihan_indihome }} &nbsp;&nbsp;&nbsp;
 		</td>
 	</tr>
 </table>
-
-
 </td></tr></table>
+
+<div style="page-break-before: always;">
+    <h1>Lampiran Berkas</h1>
+@php
+    $lampiran = Lampiran::where('id_berkas',$indihome->id_indihome)
+                          ->where('id_jenis_transaksi',7)
+                          ->get();
+    foreach ($lampiran as $l => $lv) {
+        echo '<img src="'.public_path().'/lampiranfile/'.$lv->lampiran.'" alt="'.$lv->keterangan_lampiran.'"/><br>';
+    }
+@endphp
+</div>
+
 </body>
 </html>

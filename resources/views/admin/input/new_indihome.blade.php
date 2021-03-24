@@ -40,7 +40,7 @@
                         <label for="jenis_permohonan_indihome">Jenis Permohonan<span class="text-danger">*</span> :</label>
                         <select name="jenis_permohonan_indihome" id="jenis_permohonan_indihome" class="form-control form-control-sm" onchange="getPermohonan()">
                             <option value="">-- Pilih Jenis Permohonan --</option>
-                            <option value="KONTRAK BARU">KONTRAK BARU</option>
+                            <option value="PASANG BARU">PASANG BARU</option>
                             <option value="UPGRADE LAYANAN/DOWNGRADE LAYANAN">UPGRADE LAYANAN/DOWNGRADE LAYANAN</option>
                         </select>
                         @error('jenis_permohonan_indihome') <small class="text-danger">{{ $message }}</small> @enderror

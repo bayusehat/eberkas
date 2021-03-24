@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('cetak/{id_jenis}/{id}','EditController@cetakPDF');
 Route::group(['middleware' => ['ifLogged']], function () {
     Route::get('/','AuthController@login');
     Route::post('/login','AuthController@doLogin');
@@ -211,4 +212,10 @@ Route::group(['middleware' => ['authLogin','web']], function () {
      //Log
      Route::get('log','LogController@index');
      Route::get('log/load','LogController@loadData');
+
+     //Old File Indihome
+     Route::get('indihome/old/load','OldFileController@loadData');
+     Route::get('indihome/old','OldFileController@index');
+     Route::get('indihome/old/detail/{id}','OldFileController@detailFile');
+     Route::get('indihome/old/download/{id}','OldFileController@downloadFile');
 });

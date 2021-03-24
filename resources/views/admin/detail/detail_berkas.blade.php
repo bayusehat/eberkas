@@ -1,3 +1,4 @@
+
 @php
     function hari_ini($hari){
  
@@ -101,12 +102,13 @@ use App\FiturIndihome;
 use App\Layanan;
 use App\NomorJastel;
 use App\Login;
+use App\Lampiran;
 
 $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
               ->where('id',$transaksi->id_login)->first();
 if($transaksi->signature_pelanggan_transaksi != null || $transaksi->signature_pelanggan_transaksi != ""){
   if(file_exists(public_path().'/signature/'.$transaksi->signature_pelanggan_transaksi)){
-    $tandaPelanggan = '<img src="'.asset('signature/'.$transaksi->signature_pelanggan_transaksi).'" width="130">';
+    $tandaPelanggan = '<img src="'.public_path('signature/'.$transaksi->signature_pelanggan_transaksi).'" width="130">';
   }else{
     $tandaPelanggan = '<div style="width:130px;height:52px"></div>';
   }
@@ -116,7 +118,7 @@ if($transaksi->signature_pelanggan_transaksi != null || $transaksi->signature_pe
 
 if($transaksi->signature_login != "" || $transaksi->signature_login != null){
   if(file_exists(public_path().'/signature/'.$transaksi->signature_login)){
-    $tandaInput = '<img src="'.asset('signature/'.$transaksi->signature_login).'" width="130">';
+    $tandaInput = '<img src="'.public_path('signature/'.$transaksi->signature_login).'" width="130">';
   }else{
     $tandaInput = '<div style="width:130px;height:52px"></div>';
   }
@@ -126,7 +128,7 @@ if($transaksi->signature_login != "" || $transaksi->signature_login != null){
 @endphp
 <table width="849" border="0" cellspacing="0" cellpadding=0>
     <tr>
-        <td width="162"><img src="{{ asset('images/logo.png') }}" alt=""></td>
+        <td width="162"><img src="{{ public_path('images/logo.png') }}" alt=""></td>
         <td width="461">&nbsp;</td>
         <td>
             {{-- <div align="right"><img src="{{ asset('images/logo_flexi.jpg') }}" height="70"/></div> --}}
@@ -181,7 +183,9 @@ if($transaksi->signature_login != "" || $transaksi->signature_login != null){
             </tr>
             <tr>
               <td>1</td>
-              <td>{{ $nojastel[0]->nomor_jastel }}</td>
+              <td>@foreach ($nojastel as $v)
+                  {!! $v->nomor_jastel.'<br>'!!}
+              @endforeach</td>
               <td>{{ $transaksi->nama_jenis_transaksi }}</td>
               <td>{{ $transaksi->segment_transaksi }}</td>
               <td>{{ $transaksi->jenis_layanan_transaksi }}</td>
@@ -446,7 +450,7 @@ if($transaksi->signature_login != "" || $transaksi->signature_login != null){
                           @endif
                             <br>
                           @if($atasan)
-                            <img src="{{ asset('signature/'.$atasan->signature_login) }}"width="100" /><br /> 
+                            <img src="{{ public_path('signature/'.$atasan->signature_login) }}"width="100" /><br /> 
                             {{ strtoupper($atasan->nama) }}
                           @else 
                             {!! '<div style="width:100px;height:100px"></div>' !!}
@@ -848,7 +852,7 @@ if($transaksi->signature_login != "" || $transaksi->signature_login != null){
         @endif
 
         @if ($transaksi->id_jenis_transaksi == 9)
-        <p><strong><U>Side Letter Penggantian Paket Telkom Speedy </U></strong><BR />
+        <p><strong><U>Side Letter Penggantian Paket Telkom </U></strong><BR />
         </p>
         <p>Yang bertanda tangan di bawah ini: </p>
         <table width="425" border="0" cellspacing="0" cellpadding="0">
@@ -914,7 +918,7 @@ if($transaksi->signature_login != "" || $transaksi->signature_login != null){
               <td>{{ $transaksi->jenis_identitas_transaksi.'/'.$transaksi->no_identitas_transaksi }}</td>
             </tr>
            <tr>
-              <td>Nomor Speedy</td>
+              <td>Nomor Layanan</td>
               <td>:</td>
               <td>
                 @foreach ($nojastel as $nj)
@@ -927,7 +931,7 @@ if($transaksi->signature_login != "" || $transaksi->signature_login != null){
               $lama = Layanan::where(['id_layanan' => $transaksi->paket_lama_transaksi])->first();
               $baru = Layanan::where(['id_layanan' => $transaksi->paket_baru_transaksi])->first();
           @endphp
-        <p>Bersedia mengganti paket Telkom Speedy :</p>
+        <p>Bersedia mengganti paket Telkom :</p>
             <p>Dari Paket: <b>{{ $lama->nama_layanan }}</b><br />
               Menjadi paket: <b>{{ $baru->nama_layanan }}</b></p>
             <p>Terhitung Mulai Hari: {{hari_ini(date('D',strtotime($transaksi->create_transaksi)))}}, tanggal {{date('d',strtotime($transaksi->create_transaksi))}} bulan {{bulan_ini(date('m',strtotime($transaksi->create_transaksi)))}} tahun {{date('Y',strtotime($transaksi->create_transaksi))}}.</p>
@@ -1170,3 +1174,13 @@ if($transaksi->signature_login != "" || $transaksi->signature_login != null){
         @endif
 </div>
 </div>
+
+<h1>Lampiran Berkas</h1>
+@php
+    $lampiran = Lampiran::where('id_berkas',$transaksi->id_transaksi)
+                          ->where('id_jenis_transaksi',$transaksi->id_jenis_transaksi)
+                          ->get();
+    foreach ($lampiran as $l => $lv) {
+        echo '<img src="'.public_path().'/lampiranfile/'.$lv->lampiran.'" alt="'.$lv->keterangan_lampiran.'"/><br>';
+    }
+@endphp

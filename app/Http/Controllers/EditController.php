@@ -19,6 +19,7 @@ use App\JenisOnt;
 use App\JenisTransaksi;
 use App\NewIndihome;
 use LogActivity;
+use PDF;
 
 class EditController extends Controller
 {
@@ -458,5 +459,150 @@ class EditController extends Controller
         }else{
             return redirect('cari/berkas')->back()->with('error','Hapus berkas gagal');
         }
+    }
+
+    public function cetakPDF($id_jenis,$id)
+    {
+        set_time_limit(0);
+        if($id_jenis == 1 || $id_jenis == 2 || $id_jenis == 3 || $id_jenis == 4 || $id_jenis == 5 || $id_jenis == 8 || $id_jenis == 9 || $id_jenis == 10){
+            //BNA // GNO // Cabut // PDA //ISOLIR //Pengaduan //Alih Paket //klaim
+            $query      = Transaksi::join('eberkas_login','eberkas_login.id','=','eberkas_transaksi.id_login')
+                                    ->join('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
+                                    ->where(['id_transaksi'=>$id,'delete_transaksi' => 0])
+                                    ->first();
+            $jenis_transaksi = JenisTransaksi::where('id_jenis_transaksi',$id_jenis)->first();
+            $nojastel   = NomorJastel::where(['id_transaksi' => $id])->get();
+            if($id_jenis == 1){
+                $content = 'admin.edit.edit_bna';
+            }else if($id_jenis == 2){
+                $content = 'admin.edit.edit_gno';
+            }else if($id_jenis == 3){
+                $content = 'admin.edit.edit_cabut';
+            }else if($id_jenis == 4){
+                $content = 'admin.edit.edit_pda';
+            }else if($id_jenis == 5){
+                $content = 'admin.edit.edit_isolir';
+            }else if($id_jenis == 8){
+                $content = 'admin.edit.edit_pengaduan';
+            }else if($id_jenis == 9){
+                $content = 'admin.edit.edit_alih_paket';
+            }else if($id_jenis == 10){
+                $content = 'admin.edit.edit_claim';
+            }
+            $data = [
+                'title'        => 'Edit Berkas '.$jenis_transaksi->nama_jenis_transaksi,
+                'content'      => 'admin.detail.detail_berkas',
+                'parentActive' => 'arsip',
+                'urlActive'    => 'cari',
+                'transaksi'    => $query,
+                'nojastel'     => $nojastel,
+                'produk'       => Produk::where('delete_produk',0)->get(),
+                'paketlama'    => Layanan::where(['role_layanan' => 1,'delete_layanan' => 0])->get(),
+                'paketbaru'    => Layanan::where(['role_layanan' => 0,'delete_layanan' => 0])->orderBy('nama_layanan','asc')->get()
+            ];
+
+        }else if($id_jenis == 6){
+            //fitur
+            $query          = Transaksi::join('eberkas_login','eberkas_login.id','=','eberkas_transaksi.id_login')
+                                ->join('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
+                                ->where(['id_transaksi'=>$id,'delete_transaksi' => 0])
+                                ->first();
+            $nojastel       = NomorJastel::where(['id_transaksi' => $id])->get();
+            $fiturIndihome  = FiturIndihome::join('eberkas_fitur','eberkas_fitur.id_fitur','=','eberkas_fitur_indihome.id_fitur')->get();
+            $content        = 'admin.edit.edit_fitur';
+
+            $data = [
+                'title'        => 'Edit Berkas '.$query->nama_jenis_transaksi,
+                'content'      => 'admin.detail.detail_berkas',
+                'parentActive' => 'arsip',
+                'urlActive'    => 'cari',
+                'transaksi'    => $query,
+                'nojastel'     => $nojastel,
+                'fiturIndihome'=> $fiturIndihome,
+                'fitur'        => Fitur::where('delete_fitur',0)->get(),
+                'layanan'      => Layanan::where('delete_layanan',0)->get(),
+                'produk'       => Produk::where('delete_produk',0)->get(),
+            ];
+        }else if($id_jenis == 7){
+            //new indihome
+            $query                  = NewIndihome::join('eberkas_layanan','eberkas_layanan.id_layanan','=','eberkas_indihome.id_layanan')
+                                                ->join('eberkas_ont','eberkas_ont.id_ont','=','eberkas_indihome.id_ont')
+                                                ->join('eberkas_login','eberkas_login.id','=','eberkas_indihome.id_login')
+                                                ->leftJoin('eberkas_pembayaran','eberkas_pembayaran.id_indihome','=','eberkas_indihome.id_indihome')
+                                                ->where('eberkas_indihome.id_indihome',$id)
+                                                ->where('delete_indihome',0)
+                                                ->first();
+            $jenisOnt               = JenisOnt::where('delete_ont',0)->get();
+            $paketTambahan          = PaketTambahan::where('delete_paket_tambahan',0)->get();
+            
+            $paketTambahanIndihome  = PaketTambahanIndihome::join('eberkas_paket_tambahan','eberkas_paket_tambahan.id_paket_tambahan','=','eberkas_paket_tambahan_indihome.id_paket_tambahan')->where('id_indihome',$id)->get();
+            $pembayaran             = Pembayaran::where('id_indihome',$id)->get();
+            $content                = 'admin.edit.edit_new_indihome';
+
+            $data = [
+                'title'                 => 'Edit Berkas Indihome',
+                'content'               => 'admin.detail.detail_berkas_indihome',
+                'parentActive'          => 'arsip',
+                'urlActive'             => 'cari',
+                'indihome'              => $query,
+                'jenis_ont'             => $jenisOnt,
+                'paket_tambahan'        => $paketTambahan,
+                'paketTambahanIndihome' => $paketTambahanIndihome,
+                'pembayaran'            => $pembayaran,
+                'produk'                => Produk::where('delete_produk',0)->get(),
+            ];
+            // return view('admin.detail.detail_berkas_indihome',$data);
+            $pdf = PDF::loadView('admin.detail.detail_berkas_indihome',$data)->setPaper(array(0,0,900,841), 'landscape')->setWarnings(false);
+            return $pdf->stream('Detail Berkas Indihome.pdf',array('Attachment'=>false));
+        }else{
+            //Cicilan
+            $query      = Transaksi::join('eberkas_login','eberkas_login.id','=','eberkas_transaksi.id_login')
+                                ->join('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
+                                ->where(['id_transaksi'=>$id,'delete_transaksi' => 0])
+                                ->first();
+            $nojastel   = NomorJastel::where(['id_transaksi' => $id])->get();
+            $tunggakan  = Tunggakan::where('id_transaksi',$id)->get();
+            $content    = 'admin.edit.edit_cicilan';
+            $data = [
+                'title'        => 'Edit Berkas '.$query->nama_jenis_transaksi,
+                'content'      => 'admin.detail.detail_berkas',
+                'parentActive' => 'arsip',
+                'urlActive'    => 'cari',
+                'transaksi'    => $query,
+                'nojastel'     => $nojastel,
+                'tunggakan'    => $tunggakan,
+                'produk'       => Produk::where('delete_produk',0)->get(),
+            ];
+        }
+        
+        $pdf = PDF::loadView('admin.detail.detail_berkas',$data)->setPaper(array(0,0,900,841), 'landscape')->setWarnings(false);
+        return $pdf->stream('Detail Berkas '.$query->nama_jenis_transaksi.'.pdf',array('Attachment'=>false));
+    }
+
+    public function downloadPdf($jenis,$tgl1,$tgl2)
+    {
+        if($jenis == 'indihome'){
+            $query = NewIndihome::select('eberkas_indihome.*','eberkas_layanan.nama_layanan','eberkas_ont.nama_ont','eberkas_login.nama')
+                                ->join('eberkas_layanan','eberkas_layanan.id_layanan','=','eberkas_indihome.id_layanan')
+                                ->join('eberkas_ont','eberkas_ont.id_ont','=','eberkas_indihome.id_ont')
+                                ->join('eberkas_login','eberkas_login.id','=','eberkas_indihome.id_login')
+                                ->whereBetween('create_indihome',[$tgl1,$tgl2])
+                                ->get();
+
+        }else{
+            $query = NomorJastel::select('eberkas_nomor_jastel.*','eberkas_transaksi.*','eberkas_jenis_transaksi.*')
+                                ->join('eberkas_transaksi','eberkas_transaksi.id_transaksi','=','eberkas_nomor_jastel.id_transaksi')
+                                ->join('eberkas_jenis_transaksi','eberkas_jenis_transaksi.id_jenis_transaksi','=','eberkas_transaksi.id_jenis_transaksi')
+                                ->whereBetween('create_transaksi',[$tgl1,$tgl2])
+                                ->get();
+        }
+
+        $data = [
+            'title' => 'Pencarian berdasarkan tanggal '.$tgl.' s./d. '.$tgl2,
+            'content'      => 'admin.detail.detail_berkas',
+            'parentActive' => 'arsip',
+            'urlActive'    => 'cari',
+        ];
+
     }
 }
