@@ -24,11 +24,11 @@
                     </button>
                 </div>
             @endif
-                {{-- <div class="row">
+                <div class="row">
                     <div class="col-md-12 col-sm-12 col-xl-12">
-                        <a href="{{ url('lampiran/create/'.request()->segment(3).'/'.request()->segment(4)) }}" class="btn btn-success float-right"><i class="fas fa-plus"></i> Tambah Lampiran</a>
+                        <a href="{{ url('indihome/old/pdf/'.request()->segment(4)) }}" class="btn btn-success float-right" target="_blank"><i class="fas fa-file"></i> Create PDF</a>
                     </div>
-                </div> --}}
+                </div>
                 <div class="row mt-5">
                     <div class="col-md-12 col-sm-12 col-xl-12">
                         <div class="table-responsive">

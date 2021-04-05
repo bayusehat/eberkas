@@ -13,6 +13,43 @@ class OldFileController extends Controller
 {
     public function loadData(Request $request)
     {
+        $loker = $request->input('loker');
+        $witel = $request->input('witel');
+        $dari_tgl = $request->input('dari_tgl');
+        $sampai_tgl = $request->input('sampai_tgl');
+
+        if($loker == 'all'){
+            $lokerq = "1=1";
+        }else{
+            $lokerq = "loker = '$loker'";
+        }
+
+        if($witel == 'all'){
+            $witelq = "1=1";
+        }else{
+            $witelq = "witel_plasa = '$witel'";
+        }
+
+        if($dari_tgl == ''){
+            $dt = "2017-01-01";
+        }else{
+            $dt = $dari_tgl;
+        }
+
+        if($sampai_tgl == ''){
+            $st = "2017-01-31";
+        }else{
+            $st = $sampai_tgl;
+        }
+
+        $tglq = " tgl_input between '$dt' and '$st'";
+
+        if(!empty($search)){
+            $globq  = "nama like '%$search%' or nomer_indihome like '%$search%'";
+        }else{
+            $globq  = "1=1";
+        }
+
         $whereLike = [
             'id',
             'nama',
@@ -20,7 +57,7 @@ class OldFileController extends Controller
             'witel_plasa',
             'loker',
             'tgl_input',
-            'file',
+            'jumlah',
         ];
 
         $start  = $request->input('start');
@@ -31,39 +68,42 @@ class OldFileController extends Controller
 
         $totalData = Old::join('eberkas_plasa','eberkas_plasa.nama_plasa','=','old_tbl_indihome.loker')->count();
         if (empty($search)) {
-            $queryData = Old::join('eberkas_plasa','eberkas_plasa.nama_plasa','=','old_tbl_indihome.loker')
-                ->offset($start)
-                ->limit($length)
-                ->orderBy($order, $dir)
-                ->get();
+            $queryData = DB::select("select a.*, coalesce(b.jumlah,0) jumlah from(
+                select * from old_tbl_indihome a 
+                left join eberkas_plasa b on a.loker = b.nama_plasa 
+                where $lokerq and $witelq and $tglq and $globq
+                limit $length offset $start
+                ) a left join 
+                (select count(*) jumlah, idx from old_arsip_indihome group by idx)
+                b on a.id = b.idx::integer
+                order by $order $dir");
             $totalFiltered = Old::count();
         } else {
-            $queryData = Old::join('eberkas_plasa','eberkas_plasa.nama_plasa','=','old_tbl_indihome.loker')
-                ->where(function($query) use ($search) {
-                    $query->where('old_tbl_indihome.nama', 'like', "%{$search}%");
-                    $query->orWhere('witel_plasa','like',"%{$search}%");
-                    $query->orWhere('loker','like',"%{$search}%");
-                    $query->orWhere('nomer_indihome','like',"%{$search}%");
-                })
-                ->offset($start)
-                ->limit($length)
-                ->orderBy($order, $dir)
-                ->get();
-            $totalFiltered = Old::join('eberkas_plasa','eberkas_plasa.nama_plasa','=','old_tbl_indihome.loker')
-                ->where(function($query) use ($search) {
-                    $query->where('old_tbl_indihome.nama', 'like', "%{$search}%");
-                    $query->orWhere('witel_plasa','like',"%{$search}%");
-                    $query->orWhere('loker','like',"%{$search}%");
-                    $query->orWhere('nomer_indihome','like',"%{$search}%");
-                })
-                ->count();
+            $queryData = DB::select("select a.*, coalesce(b.jumlah,0) jumlah from(
+                select * from old_tbl_indihome a 
+                left join eberkas_plasa b on a.loker = b.nama_plasa 
+                where $lokerq and $witelq and $tglq and $globq
+                limit $length offset $start
+                ) a left join 
+                (select count(*) jumlah, idx from old_arsip_indihome group by idx)
+                b on a.id = b.idx::integer
+                order by $order $dir");
+            $totalFiltered = DB::select("select a.*, coalesce(b.jumlah,0) jumlah from(
+                select * from old_tbl_indihome a 
+                left join eberkas_plasa b on a.loker = b.nama_plasa 
+                where $lokerq and $witelq and $tglq and $globq
+                limit $length offset $start
+                ) a left join 
+                (select count(*) jumlah, idx from old_arsip_indihome group by idx)
+                b on a.id = b.idx::integer
+                order by $order $dir");
+            $totalFiltered = count($totalFiltered);
         }
 
         $response['data'] = [];
         if($queryData <> FALSE) {
             $nomor = $start + 1;
             foreach ($queryData as $val) {
-                $jumlah_file = DB::select("select count(*) jumlah from old_arsip_indihome where idx = '$val->id'");
                     $response['data'][] = [
                         $nomor,
                         $val->nama,
@@ -71,8 +111,9 @@ class OldFileController extends Controller
                         $val->witel_plasa,
                         $val->loker,
                         date('d F Y',strtotime($val->tgl_input)),
-                        '<div class="badge badge-success">'.$jumlah_file[0]->jumlah.' file ditemukan</div><br>
-                        <a href="'.url('indihome/old/detail/'.$val->id).'" class="btn btn-primary" target="_blank"><i class="fa fa-eye"></i> Detail file</a>'
+                        $val->jumlah,
+                        '<a href="'.url('indihome/old/detail/'.$val->id).'" class="btn btn-primary btn-block" target="_blank"><i class="fa fa-eye"></i> Detail file</a><br>
+                        <a href="'.url('indihome/old/pdf/'.$val->id).'" class="btn btn-success btn-block" target="_blank"><i class="fa fa-file"></i> Check PDF</a>'
                     ];
                 $nomor++;
             }
@@ -97,7 +138,9 @@ class OldFileController extends Controller
             'title' => 'Old List Table Indihome',
             'content' => 'admin.arsip.old_indihome',
             'parentActive' => 'arsip',
-            'urlActive'    => 'indiold'
+            'urlActive'    => 'indiold',
+            'witel' => DB::select('select distinct witel_plasa from eberkas_plasa'),
+            'plasa' => DB::select('select * from eberkas_plasa')
         ];
 
         return view('admin.layout.index',['data' => $data]);
@@ -135,10 +178,42 @@ class OldFileController extends Controller
         $filename = $name;
         $tempImage = tempnam(sys_get_temp_dir(), $filename);
         
-        if(!copy($pathToFile, $tempImage)){
-            return redirect()->back()->with('error','Terjadi kesalahan, download gagal!');
+        if(!@copy($pathToFile, $tempImage)){
+            return redirect()->back()->with('error','Terjadi kesalahan, download gagal! file tidak ditemukan');
         }else{
             return response()->download($tempImage, $filename);
         }
+    }
+
+    public function viewFile($id)
+    {
+        
+        $file = [];
+        $ind = DB::select("select * from old_tbl_indihome where id = ".$id);
+        $query = DB::select("select * from old_arsip_indihome where idx = '$id'");
+        foreach ($query as $i => $v) {
+            if($v->file_type == 'image/jpeg'){
+                $path = 'http://10.110.9.82/list/ind/'.$v->id.'.jpg';
+                $type = pathinfo($path, PATHINFO_EXTENSION);
+                $data = file_get_contents($path);
+                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+
+                $file[] = [
+                    'nama_file' => $v->file_name,
+                    'id' => $v->id,
+                    'file_type' => $v->file_type,
+                    'id_indihome' => $v->idx,
+                    'path' => $base64
+                ];
+            }
+        }
+        $name = $ind[0]->id.'-'.$ind[0]->nama.'-'.$ind[0]->nomer_indihome.'.pdf';
+        $data = [
+            'title' => $name,
+            'content' => 'admin.arsip.create_pdf',
+            'data' => $file
+        ];
+        
+        return view('admin.arsip.create_pdf',$data);
     }
 }

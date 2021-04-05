@@ -218,4 +218,5 @@ Route::group(['middleware' => ['authLogin','web']], function () {
      Route::get('indihome/old','OldFileController@index');
      Route::get('indihome/old/detail/{id}','OldFileController@detailFile');
      Route::get('indihome/old/download/{id}','OldFileController@downloadFile');
+     Route::get('indihome/old/pdf/{id}','OldFileController@viewFile');
 });
