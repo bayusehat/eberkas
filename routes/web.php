@@ -219,4 +219,11 @@ Route::group(['middleware' => ['authLogin','web']], function () {
      Route::get('indihome/old/detail/{id}','OldFileController@detailFile');
      Route::get('indihome/old/download/{id}','OldFileController@downloadFile');
      Route::get('indihome/old/pdf/{id}','OldFileController@viewFile');
+
+     //New File Indihome
+     Route::get('indihome/new/load','IndihomeController@loadData');
+     Route::get('indihome/new','IndihomeController@index_new');
+     Route::get('indihome/new/detail/{id}','IndihomeController@detailFile');
+     Route::get('indihome/new/download/{id}','IndihomeController@downloadFile');
+     Route::get('indihome/new/pdf/{id}','IndihomeController@viewFile');
 });

@@ -112,8 +112,7 @@ class OldFileController extends Controller
                         $val->loker,
                         date('d F Y',strtotime($val->tgl_input)),
                         $val->jumlah,
-                        '<a href="'.url('indihome/old/detail/'.$val->id).'" class="btn btn-primary btn-block" target="_blank"><i class="fa fa-eye"></i> Detail file</a><br>
-                        <a href="'.url('indihome/old/pdf/'.$val->id).'" class="btn btn-success btn-block" target="_blank"><i class="fa fa-file"></i> Check PDF</a>'
+                        '<a href="'.url('indihome/old/detail/'.$val->id).'" class="btn btn-primary btn-block" target="_blank"><i class="fa fa-eye"></i> Detail file</a>'
                     ];
                 $nomor++;
             }

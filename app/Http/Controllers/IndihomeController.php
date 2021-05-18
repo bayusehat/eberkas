@@ -12,7 +12,9 @@ use App\Layanan;
 use App\PaketTambahan;
 use App\JenisOnt;
 use App\Lampiran;
+use App\Produk;
 use LogActivity;
+use DB;
 
 class IndihomeController extends Controller
 {
@@ -287,5 +289,203 @@ class IndihomeController extends Controller
                 return redirect()->back()->with('error','Gagal menambahkan Berkas Indihome!');
             }
         }
+    }
+
+    public function loadData(Request $request)
+    {
+        $loker = $request->input('loker');
+        $witel = $request->input('witel');
+        $dari_tgl = $request->input('dari_tgl');
+        $sampai_tgl = $request->input('sampai_tgl');
+
+        if($loker == 'all'){
+            $lokerq = "1=1";
+        }else{
+            $lokerq = "plasa_indihome = '$loker'";
+        }
+
+        if($witel == 'all'){
+            $witelq = "1=1";
+        }else{
+            $witelq = "witel_indihome = '$witel'";
+        }
+
+        if($dari_tgl == ''){
+            $dt = "";
+        }else{
+            $dt = $dari_tgl;
+        }
+
+        if($sampai_tgl == ''){
+            $st = "";
+        }else{
+            $st = $sampai_tgl;
+        }
+
+        if($dari_tgl == '' && $sampai_tgl == ''){
+            $tglq = " 1=1";
+        }else{
+            $tglq = " tgl_input between '$dt' and '$st'";
+        }
+
+        if(!empty($search)){
+            $globq  = "nama_tanda_indihome like '%$search%' or no_internet like '%$search%'";
+        }else{
+            $globq  = "1=1";
+        }
+
+        $whereLike = [
+            'id_indihome',
+            'nama_tanda_indihome',
+            'no_internet',
+            'witel_indihome',
+            'plasa_indihome',
+            'create_indihome',
+            'jenis_permohonan_indihome',
+        ];
+
+        $start  = $request->input('start');
+        $length = $request->input('length');
+        $order  = $whereLike[$request->input('order.0.column')];
+        $dir    = $request->input('order.0.dir');
+        $search = $request->input('search.value');
+
+        $totalData = NewIndihome::count();
+        if (empty($search)) {
+            $queryData = DB::select("select id_indihome,no_internet_indihome,jenis_permohonan_indihome, nama_tanda_indihome, witel_indihome, plasa_indihome,create_indihome
+            from eberkas_indihome
+            where $lokerq and $witelq and $tglq and $globq
+            order by $order $dir
+            limit $length offset $start");
+            $totalFiltered = NewIndihome::count();
+        } else {
+            $queryData = DB::select("select id_indihome,no_internet_indihome,jenis_permohonan_indihome, nama_tanda_indihome, witel_indihome, plasa_indihome,create_indihome
+            from eberkas_indihome
+            where $lokerq and $witelq and $tglq and $globq
+            order by $order $dir
+            limit $length offset $start");
+
+            $totalFiltered = DB::select("select id_indihome,no_internet_indihome,jenis_permohonan_indihome, nama_tanda_indihome, witel_indihome, plasa_indihome,create_indihome
+            from eberkas_indihome
+            where $lokerq and $witelq and $tglq and $globq
+            order by $order $dir
+            limit $length offset $start");
+            $totalFiltered = count($totalFiltered);
+        }
+
+        $response['data'] = [];
+        if($queryData <> FALSE) {
+            $nomor = $start + 1;
+            foreach ($queryData as $val) {
+                    $response['data'][] = [
+                        $nomor,
+                        $val->nama_tanda_indihome,
+                        $val->no_internet_indihome,
+                        $val->witel_indihome,
+                        $val->plasa_indihome,
+                        date('d F Y',strtotime($val->create_indihome)),
+                        $val->jenis_permohonan_indihome,
+                        '<a href="'.url('indihome/new/detail/'.$val->id_indihome).'" class="btn btn-primary btn-block" target="_blank"><i class="fa fa-eye"></i> Detail file</a>'
+                    ];
+                $nomor++;
+            }
+        }
+
+        $response['recordsTotal'] = 0;
+        if ($totalData <> FALSE) {
+            $response['recordsTotal'] = $totalData;
+        }
+
+        $response['recordsFiltered'] = 0;
+        if ($totalFiltered <> FALSE) {
+            $response['recordsFiltered'] = $totalFiltered;
+        }
+
+        return response()->json($response);
+    }
+
+    public function index_new()
+    {
+        $data = [
+            'title' => 'New List File Indihome',
+            'content' => 'admin.arsip.new_indihome',
+            'parentActive' => 'arsip',
+            'urlActive'    => 'indinew',
+            'witel' => DB::select('select distinct witel_plasa from eberkas_plasa'),
+            'plasa' => DB::select('select * from eberkas_plasa')
+        ];
+
+        return view('admin.layout.index',['data' => $data]);
+    }
+
+    public function detailFile($id)
+    {
+        $pr = DB::select("select nama_tanda_indihome, no_internet_indihome from eberkas_indihome where id_indihome = $id");
+        $query = DB::select("select id_lampiran, id_berkas, lampiran,keterangan_lampiran
+        from eberkas_lampiran
+        where id_berkas = $id and id_jenis_transaksi = 7");
+        $data = [
+            'title' => 'File '.$pr[0]->nama_tanda_indihome.'/'.$pr[0]->no_internet_indihome,
+            'content' => 'admin.arsip.new_indihome_detail',
+            'parentActive' => 'arsip',
+            'urlActive'    => 'indinew',
+            'data' => $query
+        ];
+
+        return view('admin.layout.index',['data' => $data]);
+    }
+
+    public function downloadFile($id)
+    {
+        $query = DB::select("select id_lampiran, id_berkas, lampiran,keterangan_lampiran
+        from eberkas_lampiran
+        where id_jenis_transaksi = 7 and id_lampiran = $id");
+        $id_berkas = $query[0]->id_berkas;
+        $pr = DB::select("select id_indihome,nama_tanda_indihome, no_internet_indihome from eberkas_indihome where id_indihome = $id_berkas");
+        
+        $pathToFile = asset('lampiranfile/'.$query[0]->lampiran);
+        $_ext =  pathinfo(asset('lampiranfile/'.$query[0]->lampiran),PATHINFO_EXTENSION);
+        $name = $pr[0]->id_indihome.'-'.$pr[0]->nama_tanda_indihome.'-'.$pr[0]->no_internet_indihome.'.'.$_ext;
+
+        $filename = $name;
+        $tempImage = tempnam(sys_get_temp_dir(), $filename);
+        
+        if(!@copy($pathToFile, $tempImage)){
+            return redirect()->back()->with('error','Terjadi kesalahan, download gagal! file tidak ditemukan');
+        }else{
+            return response()->download($tempImage, $filename);
+        }
+    }
+
+    public function viewFile($id)
+    {
+        $query                  = NewIndihome::join('eberkas_layanan','eberkas_layanan.id_layanan','=','eberkas_indihome.id_layanan')
+                                ->join('eberkas_ont','eberkas_ont.id_ont','=','eberkas_indihome.id_ont')
+                                ->join('eberkas_login','eberkas_login.id','=','eberkas_indihome.id_login')
+                                ->leftJoin('eberkas_pembayaran','eberkas_pembayaran.id_indihome','=','eberkas_indihome.id_indihome')
+                                ->where('eberkas_indihome.id_indihome',$id)
+                                ->where('delete_indihome',0)
+                                ->first();
+        $jenisOnt               = JenisOnt::where('delete_ont',0)->get();
+        $paketTambahan          = PaketTambahan::where('delete_paket_tambahan',0)->get();
+
+        $paketTambahanIndihome  = PaketTambahanIndihome::join('eberkas_paket_tambahan','eberkas_paket_tambahan.id_paket_tambahan','=','eberkas_paket_tambahan_indihome.id_paket_tambahan')->where('id_indihome',$id)->get();
+        $pembayaran             = Pembayaran::where('id_indihome',$id)->get();
+        $content                = 'admin.edit.edit_new_indihome';
+        $nama                   = $query->id_indihome.'-'.$query->nama_tanda_indihome.'-'.$query->no_internet_indihome.'.pdf';
+
+        $data = [
+        'title'                 => $nama,
+        'content'               => 'admin.detail.detail_berkas_indihome_pdf',
+        'parentActive'          => 'arsip',
+        'urlActive'             => 'cari',
+        'indihome'              => $query,
+        'jenis_ont'             => $jenisOnt,
+        'paket_tambahan'        => $paketTambahan,
+        'paketTambahanIndihome' => $paketTambahanIndihome,
+        'pembayaran'            => $pembayaran,
+        'produk'                => Produk::where('delete_produk',0)->get(),
+        ];
+        return view('admin.detail.detail_berkas_indihome_pdf',$data);
     }
 }
