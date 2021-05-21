@@ -58,6 +58,24 @@
                     </div>
                     <div class="col-md-3 col-sm-3 col-xl-3">
                         <div class="form-group">
+                            <label for="">ND</label>
+                            <input type="text" name="nd" id="nd" class="form-control" placeholder="Nomor Inet Indihome">
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xl-3">
+                        <div class="form-group">
+                            <label for="">Kelengkapan Berkas</label>
+                            <select name="kelengkapan" id="kelengkapan" class="form-control">
+                                <option value="all">ALL</option>
+                                <option value="1">Lengkap</option>
+                                <option value="2">Tidak ada TTD CSR</option>
+                                <option value="3">Tidak ada TTD PELANGGAN</option>
+                                <option value="4">Tidak ada lampiran</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xl-3">
+                        <div class="form-group">
                             <br>
                             <button type="button" class="btn btn-success btn-block" onclick="loadData()"><i class="fa fa-search"></i> Cari</button>
                         </div>
@@ -79,6 +97,7 @@
                                         <th>Plasa</th>
                                         <th>Tanggal Input</th>
                                         <th>Permohonan</th>
+                                        <th>Jumlah Lampiran</th>
                                         <th>File</th>
                                     </tr>
                                 </thead>
@@ -109,7 +128,9 @@
                     'witel'     : $("#witel").val(),
                     'loker'     : $("#loker").val(),
                     'dari_tgl'  : $("#dari_tgl").val(),
-                    'sampai_tgl': $("#sampai_tgl").val()
+                    'sampai_tgl': $("#sampai_tgl").val(),
+                    'nd'        : $("#nd").val(),
+                    'kelengkapan': $("#kelengkapan").val()
                 }
             },
             columns: [
@@ -120,6 +141,7 @@
                 { name: 'plasa_indihome' },
                 { name: 'tgl_input'},
                 { name: 'jenis_permohonan_indihome'},
+                { name: 'jml_lampiran'},
                 { name: 'file'}
             ],
             lengthMenu: [10],

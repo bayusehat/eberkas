@@ -420,6 +420,7 @@
                     </div>
                     <div class="form-group">
                         <label for="lampiran_indihome" class="text-danger"><i>Lampiran Tambahkan melalui menu Lampiran (Arsip->Lampiran)</i></label>
+                        <label for="lampiran_indihome" class="text-danger"><i>Jika belum terdapat tanda tangan, dapat ditambahkan dengan mencontoh lampiran dibawah</i></label>
                     </div>
                     <div class="form-group">
                         <a href="javascript:void(0)" class="btn btn-primary btn-sm btn-block" id="signature"><i class="fas fa-sign"></i> Tanda Tangan Pelanggan</a>
@@ -462,6 +463,16 @@
                 </div>
             </div>
         </form>
+        <hr>
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <h4>LAMPIRAN</h4>
+                <p class="text-danger">*lampiran untuk contoh ttd pelanggan</p>
+                @foreach ($lampiran as $l)
+                    <img src="{{ asset('lampiranfile/'.$l->lampiran) }}" alt="{{ $l->keterangan_lampiran}}" style="width: 300px"/><br>
+                @endforeach
+            </div>
+        </div>
         </div>
     </div>
 </section>

@@ -19,7 +19,8 @@ use App\JenisOnt;
 use App\JenisTransaksi;
 use App\NewIndihome;
 use LogActivity;
-use PDF;
+// use PDF;
+use DB;
 
 class EditController extends Controller
 {
@@ -218,6 +219,7 @@ class EditController extends Controller
             $paketTambahanIndihome  = PaketTambahanIndihome::join('eberkas_paket_tambahan','eberkas_paket_tambahan.id_paket_tambahan','=','eberkas_paket_tambahan_indihome.id_paket_tambahan')->where('id_indihome',$id)->get();
             $pembayaran             = Pembayaran::where('id_indihome',$id)->get();
             $content                = 'admin.edit.edit_new_indihome';
+            $lampiran               = DB::select("select * from eberkas_lampiran where id_berkas = $id and id_jenis_transaksi = 7");
 
             $data = [
                 'title'                 => 'Edit Berkas Indihome',
@@ -231,6 +233,7 @@ class EditController extends Controller
                 'paketTambahanIndihome' => $paketTambahanIndihome,
                 'pembayaran'            => $pembayaran,
                 'produk'                => Produk::where('delete_produk',0)->get(),
+                'lampiran'              => $lampiran
             ];
         }else{
             //Cicilan

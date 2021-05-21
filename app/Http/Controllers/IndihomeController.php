@@ -297,6 +297,8 @@ class IndihomeController extends Controller
         $witel = $request->input('witel');
         $dari_tgl = $request->input('dari_tgl');
         $sampai_tgl = $request->input('sampai_tgl');
+        $nd = $request->input('nd');
+        $kelengkapan = $request->input('kelengkapan');
 
         if($loker == 'all'){
             $lokerq = "1=1";
@@ -334,6 +336,28 @@ class IndihomeController extends Controller
             $globq  = "1=1";
         }
 
+        if(!empty($nd)){
+            $nd = "no_internet_indihome like '%$nd%'";
+        }else{
+            $nd = "1=1";
+        }
+
+        if(!empty($kelengkapan)){
+            if($kelengkapan == '1'){
+                $kel = "signature_login is not null and signature_pelanggan_indihome is not null and jml_lampiran > 0";
+            }elseif($kelengkapan == '2'){
+                $kel = "signature_login is null";
+            }elseif($kelengkapan == '3'){
+                $kel = "signature_pelanggan_indihome is null";
+            }elseif($kelengkapan == '4'){
+                $kel = "jml_lampiran <= 0 or jml_lampiran is null";
+            }else{
+                $kel = "1=1";
+            }
+        }else{
+            $kel = "1=1";
+        }
+
         $whereLike = [
             'id_indihome',
             'nama_tanda_indihome',
@@ -350,27 +374,65 @@ class IndihomeController extends Controller
         $dir    = $request->input('order.0.dir');
         $search = $request->input('search.value');
 
-        $totalData = NewIndihome::count();
-        if (empty($search)) {
-            $queryData = DB::select("select id_indihome,no_internet_indihome,jenis_permohonan_indihome, nama_tanda_indihome, witel_indihome, plasa_indihome,create_indihome
-            from eberkas_indihome
-            where $lokerq and $witelq and $tglq and $globq
+        // $totalData = NewIndihome::count();
+        if ($loker == 'all' && $witel == 'all' && empty($nd) && empty($kelengkapan) && $dari_tgl == '' && $sampai_tgl == '') {
+            $queryData = DB::select("
+            select c.*, coalesce(jml_lampiran,0) jml_lampiran
+            from(
+            select id_login,id_indihome,no_internet_indihome,jenis_permohonan_indihome, nama_tanda_indihome, witel_indihome, plasa_indihome,create_indihome,
+            signature_login, signature_pelanggan_indihome
+            from eberkas_indihome a
+            left join eberkas_login b on a.id_login = b.id
+            ) c left join (
+                select id_berkas, count(*) jml_lampiran from eberkas_lampiran where id_jenis_transaksi = 7 group by id_berkas
+            ) d on c.id_indihome = d.id_berkas
+            where $kel and $lokerq and $witelq and $tglq and $globq and $nd
             order by $order $dir
-            limit $length offset $start");
+            limit $length offset $start
+            ");
             $totalFiltered = NewIndihome::count();
+            $totalData = NewIndihome::count();
         } else {
-            $queryData = DB::select("select id_indihome,no_internet_indihome,jenis_permohonan_indihome, nama_tanda_indihome, witel_indihome, plasa_indihome,create_indihome
-            from eberkas_indihome
-            where $lokerq and $witelq and $tglq and $globq
+            $queryData = DB::select("select c.*, coalesce(jml_lampiran,0) jml_lampiran
+            from(
+            select id_login,id_indihome,no_internet_indihome,jenis_permohonan_indihome, nama_tanda_indihome, witel_indihome, plasa_indihome,create_indihome,
+            signature_login, signature_pelanggan_indihome
+            from eberkas_indihome a
+            left join eberkas_login b on a.id_login = b.id
+            ) c left join (
+                select id_berkas, count(*) jml_lampiran from eberkas_lampiran where id_jenis_transaksi = 7 group by id_berkas
+            ) d on c.id_indihome = d.id_berkas
+            where $kel and $lokerq and $witelq and $tglq and $globq and $nd
             order by $order $dir
             limit $length offset $start");
 
-            $totalFiltered = DB::select("select id_indihome,no_internet_indihome,jenis_permohonan_indihome, nama_tanda_indihome, witel_indihome, plasa_indihome,create_indihome
-            from eberkas_indihome
-            where $lokerq and $witelq and $tglq and $globq
+            $totalFiltered = DB::select("select c.*, coalesce(jml_lampiran,0) jml_lampiran
+            from(
+            select id_login,id_indihome,no_internet_indihome,jenis_permohonan_indihome, nama_tanda_indihome, witel_indihome, plasa_indihome,create_indihome,
+            signature_login, signature_pelanggan_indihome
+            from eberkas_indihome a
+            left join eberkas_login b on a.id_login = b.id
+            ) c left join (
+                select id_berkas, count(*) jml_lampiran from eberkas_lampiran where id_jenis_transaksi = 7 group by id_berkas
+            ) d on c.id_indihome = d.id_berkas
+            where $kel and $lokerq and $witelq and $tglq and $globq and $nd
             order by $order $dir
             limit $length offset $start");
-            $totalFiltered = count($totalFiltered);
+
+            $totalData = DB::select("select c.*, coalesce(jml_lampiran,0) jml_lampiran
+            from(
+            select id_login,id_indihome,no_internet_indihome,jenis_permohonan_indihome, nama_tanda_indihome, witel_indihome, plasa_indihome,create_indihome,
+            signature_login, signature_pelanggan_indihome
+            from eberkas_indihome a
+            left join eberkas_login b on a.id_login = b.id
+            ) c left join (
+                select id_berkas, count(*) jml_lampiran from eberkas_lampiran where id_jenis_transaksi = 7 group by id_berkas
+            ) d on c.id_indihome = d.id_berkas
+            where $kel and $lokerq and $witelq and $tglq and $globq and $nd
+            order by $order $dir");
+
+            $totalFiltered = count($totalData);
+            $totalData = count($totalData);
         }
 
         $response['data'] = [];
@@ -385,6 +447,7 @@ class IndihomeController extends Controller
                         $val->plasa_indihome,
                         date('d F Y',strtotime($val->create_indihome)),
                         $val->jenis_permohonan_indihome,
+                        $val->jml_lampiran,
                         '<a href="'.url('indihome/new/detail/'.$val->id_indihome).'" class="btn btn-primary btn-block" target="_blank"><i class="fa fa-eye"></i> Detail file</a>'
                     ];
                 $nomor++;
@@ -392,12 +455,12 @@ class IndihomeController extends Controller
         }
 
         $response['recordsTotal'] = 0;
-        if ($totalData <> FALSE) {
+        if ($totalData > 0) {
             $response['recordsTotal'] = $totalData;
         }
 
         $response['recordsFiltered'] = 0;
-        if ($totalFiltered <> FALSE) {
+        if ($totalFiltered > 0) {
             $response['recordsFiltered'] = $totalFiltered;
         }
 
