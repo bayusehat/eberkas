@@ -439,6 +439,12 @@ class IndihomeController extends Controller
         if($queryData <> FALSE) {
             $nomor = $start + 1;
             foreach ($queryData as $val) {
+                $btn = '<a href="'.url('indihome/new/detail/'.$val->id_indihome).'" class="btn btn-primary btn-block" target="_blank"><i class="fa fa-eye"></i> Detail file</a>';
+                if($kelengkapan == 3){
+                    $btn .= '<a href="'.url('edit/7/'.$val->id_indihome).'" class="btn btn-warning btn-block" target="_blank"><i class="fa fa-edit"></i> Edit</a>';
+                }else if($kelengkapan == 4){
+                    $btn .= '<a href="'.url('lampiran/create/7/'.$val->id_indihome).'" class="btn btn-success btn-block" target="_blank"><i class="fa fa-file"></i> Tambah Lampiran</a>';
+                }
                     $response['data'][] = [
                         $nomor,
                         $val->nama_tanda_indihome,
@@ -448,7 +454,7 @@ class IndihomeController extends Controller
                         date('d F Y',strtotime($val->create_indihome)),
                         $val->jenis_permohonan_indihome,
                         $val->jml_lampiran,
-                        '<a href="'.url('indihome/new/detail/'.$val->id_indihome).'" class="btn btn-primary btn-block" target="_blank"><i class="fa fa-eye"></i> Detail file</a>'
+                        $btn
                     ];
                 $nomor++;
             }
