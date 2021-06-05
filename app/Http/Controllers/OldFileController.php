@@ -37,7 +37,7 @@ class OldFileController extends Controller
         }
 
         if($sampai_tgl == ''){
-            $st = "2017-01-31";
+            $st = date('Y-m-d');
         }else{
             $st = $sampai_tgl;
         }
@@ -71,33 +71,45 @@ class OldFileController extends Controller
             $queryData = DB::select("select a.*, coalesce(b.jumlah,0) jumlah from(
                 select * from old_tbl_indihome a 
                 left join eberkas_plasa b on a.loker = b.nama_plasa 
-                where $lokerq and $witelq and $tglq and $globq
-                limit $length offset $start
                 ) a left join 
                 (select count(*) jumlah, idx from old_arsip_indihome group by idx)
                 b on a.id = b.idx::integer
-                order by $order $dir");
+                where $lokerq and $witelq and $tglq and $globq
+                order by $order $dir
+                limit $length offset $start");
             $totalFiltered = Old::count();
+            $totalData = Old::count();
         } else {
             $queryData = DB::select("select a.*, coalesce(b.jumlah,0) jumlah from(
                 select * from old_tbl_indihome a 
                 left join eberkas_plasa b on a.loker = b.nama_plasa 
-                where $lokerq and $witelq and $tglq and $globq
-                limit $length offset $start
                 ) a left join 
                 (select count(*) jumlah, idx from old_arsip_indihome group by idx)
                 b on a.id = b.idx::integer
-                order by $order $dir");
+                where $lokerq and $witelq and $tglq and $globq
+                order by $order $dir
+                limit $length offset $start");
             $totalFiltered = DB::select("select a.*, coalesce(b.jumlah,0) jumlah from(
                 select * from old_tbl_indihome a 
                 left join eberkas_plasa b on a.loker = b.nama_plasa 
-                where $lokerq and $witelq and $tglq and $globq
-                limit $length offset $start
                 ) a left join 
                 (select count(*) jumlah, idx from old_arsip_indihome group by idx)
                 b on a.id = b.idx::integer
+                where $lokerq and $witelq and $tglq and $globq
+                order by $order $dir
+                limit $length offset $start");
+            
+            $totalData = DB::select("select a.*, coalesce(b.jumlah,0) jumlah from(
+                select * from old_tbl_indihome a 
+                left join eberkas_plasa b on a.loker = b.nama_plasa 
+                ) a left join 
+                (select count(*) jumlah, idx from old_arsip_indihome group by idx)
+                b on a.id = b.idx::integer
+                where $lokerq and $witelq and $tglq and $globq
                 order by $order $dir");
+
             $totalFiltered = count($totalFiltered);
+            $totalData = count($totalData);
         }
 
         $response['data'] = [];
@@ -119,12 +131,12 @@ class OldFileController extends Controller
         }
 
         $response['recordsTotal'] = 0;
-        if ($totalData <> FALSE) {
+        if ($totalData > 0) {
             $response['recordsTotal'] = $totalData;
         }
 
         $response['recordsFiltered'] = 0;
-        if ($totalFiltered <> FALSE) {
+        if ($totalFiltered > 0) {
             $response['recordsFiltered'] = $totalFiltered;
         }
 

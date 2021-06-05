@@ -327,7 +327,7 @@ class IndihomeController extends Controller
         if($dari_tgl == '' && $sampai_tgl == ''){
             $tglq = " 1=1";
         }else{
-            $tglq = " tgl_input between '$dt' and '$st'";
+            $tglq = " create_indihome between '$dt 00:00:00' and '$st 23:59:59'";
         }
 
         if(!empty($search)){

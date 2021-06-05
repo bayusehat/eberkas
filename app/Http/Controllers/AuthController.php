@@ -8,6 +8,8 @@ use Hash;
 use Str;
 use App\Login;
 use LogActivity;
+use Session;
+use Artisan;
 
 class AuthController extends Controller
 {
@@ -67,7 +69,7 @@ class AuthController extends Controller
 
     public function doLogout()
     {
-        session()->flush();
-        return redirect('/home');
+        Artisan::call('cache:clear');
+        return redirect('/');
     }
 }
