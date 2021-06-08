@@ -15,7 +15,7 @@ class AuthLogin
      */
     public function handle($request, Closure $next)
     {
-        if(!session('tokens') || empty(session('tokens'))){
+        if(!session('is_logged')){
             return redirect('/');
         };
         return $next($request);

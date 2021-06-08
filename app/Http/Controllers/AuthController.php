@@ -47,7 +47,8 @@ class AuthController extends Controller
                                 'nama'     => $data->nama,
                                 'kota'     => $data->kota,
                                 'id_role'  => $data->id_role,
-                                'tokens'    => Str::random(60)
+                                'tokens'    => Str::random(60),
+                                'is_logged' => true
                             ];
                             session($session);
                             LogActivity::store($data->nama.' melakukan Login');
@@ -69,7 +70,8 @@ class AuthController extends Controller
 
     public function doLogout()
     {
-        Artisan::call('cache:clear');
+        Session::put('is_logged',false);
+        Session::save();
         return redirect('/');
     }
 }
