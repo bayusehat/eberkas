@@ -13,6 +13,7 @@ class OldFileController extends Controller
 {
     public function loadData(Request $request)
     {
+        $search = $request->input('search.value');
         $loker = $request->input('loker');
         $witel = $request->input('witel');
         $dari_tgl = $request->input('dari_tgl');
@@ -64,7 +65,6 @@ class OldFileController extends Controller
         $length = $request->input('length');
         $order  = $whereLike[$request->input('order.0.column')];
         $dir    = $request->input('order.0.dir');
-        $search = $request->input('search.value');
 
         $totalData = Old::join('eberkas_plasa','eberkas_plasa.nama_plasa','=','old_tbl_indihome.loker')->count();
         if (empty($search)) {

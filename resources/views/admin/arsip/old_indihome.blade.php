@@ -102,7 +102,7 @@
             processing: true,
             serverSide: true,
             destroy: true,
-            searching: false,
+            searching: true,
             ajax: {
                 url: '{{ url("indihome/old/load") }}',
                 data : {

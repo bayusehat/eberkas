@@ -108,7 +108,7 @@ $input = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id
               ->where('id',$transaksi->id_login)->first();
 if($transaksi->signature_pelanggan_transaksi != null || $transaksi->signature_pelanggan_transaksi != ""){
   if(file_exists(public_path().'/signature/'.$transaksi->signature_pelanggan_transaksi)){
-    $tandaPelanggan = '<img src="'.public_path('signature/'.$transaksi->signature_pelanggan_transaksi).'" width="130">';
+    $tandaPelanggan = '<img src="'.asset('signature/'.$transaksi->signature_pelanggan_transaksi).'" width="130">';
   }else{
     $tandaPelanggan = '<div style="width:130px;height:52px"></div>';
   }
@@ -118,7 +118,7 @@ if($transaksi->signature_pelanggan_transaksi != null || $transaksi->signature_pe
 
 if($transaksi->signature_login != "" || $transaksi->signature_login != null){
   if(file_exists(public_path().'/signature/'.$transaksi->signature_login)){
-    $tandaInput = '<img src="'.public_path('signature/'.$transaksi->signature_login).'" width="130">';
+    $tandaInput = '<img src="'.asset('signature/'.$transaksi->signature_login).'" width="130">';
   }else{
     $tandaInput = '<div style="width:130px;height:52px"></div>';
   }
@@ -128,7 +128,7 @@ if($transaksi->signature_login != "" || $transaksi->signature_login != null){
 @endphp
 <table width="849" border="0" cellspacing="0" cellpadding=0>
     <tr>
-        <td width="162"><img src="{{ public_path('images/logo.png') }}" alt=""></td>
+        <td width="162"><img src="{{ asset('images/logo.png') }}" alt=""></td>
         <td width="461">&nbsp;</td>
         <td>
             {{-- <div align="right"><img src="{{ asset('images/logo_flexi.jpg') }}" height="70"/></div> --}}
@@ -432,6 +432,15 @@ if($transaksi->signature_login != "" || $transaksi->signature_login != null){
                                 $atasan = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
                                             ->where('loker','PLASA GIANYAR')->where('eberkas_login.id_role',3)->first();
                               }
+                            }else if($transaksi->witel == 'PASURUAN' && $input->loker == 'PROBOLINGGO'){
+                              $atasan = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
+                                            ->where('loker','PLASA PROBOLINGGO')->where('eberkas_login.id_role',2)->first();
+                              if($atasan){
+                                $atasan = $atasan;
+                              }else{
+                                $atasan = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
+                                            ->where('loker','PLASA PROBOLINGGO')->where('eberkas_login.id_role',3)->first();
+                              }
                             }else{
                               $atasan = Login::join('eberkas_role','eberkas_role.id_role','=','eberkas_login.id_role')
                                             ->where('loker',$transaksi->loker)->where('eberkas_login.id_role',2)->first();
@@ -450,7 +459,7 @@ if($transaksi->signature_login != "" || $transaksi->signature_login != null){
                           @endif
                             <br>
                           @if($atasan)
-                            <img src="{{ public_path('signature/'.$atasan->signature_login) }}"width="100" /><br /> 
+                            <img src="{{ asset('signature/'.$atasan->signature_login) }}"width="100" /><br /> 
                             {{ strtoupper($atasan->nama) }}
                           @else 
                             {!! '<div style="width:100px;height:100px"></div>' !!}
@@ -1175,12 +1184,13 @@ if($transaksi->signature_login != "" || $transaksi->signature_login != null){
 </div>
 </div>
 
+<div style="page-break-before: always;"></div>
 <h1>Lampiran Berkas</h1>
 @php
     $lampiran = Lampiran::where('id_berkas',$transaksi->id_transaksi)
                           ->where('id_jenis_transaksi',$transaksi->id_jenis_transaksi)
                           ->get();
     foreach ($lampiran as $l => $lv) {
-        echo '<img src="'.public_path().'/lampiranfile/'.$lv->lampiran.'" alt="'.$lv->keterangan_lampiran.'"/><br>';
+        echo '<img src="'.asset('/lampiranfile/'.$lv->lampiran).'" alt="'.$lv->keterangan_lampiran.'"/><br>';
     }
 @endphp
